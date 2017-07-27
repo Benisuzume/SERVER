@@ -438,8 +438,6 @@ namespace pvpgn
 		static int _handle_squelch_command(t_connection * c, char const * text);
 		static int _handle_unsquelch_command(t_connection * c, char const * text);
 		static int _handle_kick_command(t_connection * c, char const * text);
-		static int _handle_ban_command(t_connection * c, char const * text);
-		static int _handle_unban_command(t_connection * c, char const * text);
 		static int _handle_reply_command(t_connection * c, char const * text);
 		static int _handle_realmann_command(t_connection * c, char const * text);
 		static int _handle_watch_command(t_connection * c, char const * text);
@@ -534,8 +532,6 @@ namespace pvpgn
 			{ "/unignore", _handle_unsquelch_command },
 			{ "/unsquelch", _handle_unsquelch_command },
 			{ "/kick", _handle_kick_command },
-			{ "/ban", _handle_ban_command },
-			{ "/unban", _handle_unban_command },
 			{ "/tos", _handle_tos_command },
 
 			{ "/ann", _handle_announce_command },
@@ -2491,121 +2487,7 @@ namespace pvpgn
 
 			return 0;
 		}
-
-		static int _handle_ban_command(t_connection * c, char const *text)
-		{
-			char const * username;
-			t_channel *    channel;
-			t_connection * buc;
-
-			std::vector<std::string> args = split_command(text, 2);
-
-			if (args[1].empty())
-			{
-				describe_command(c, args[0].c_str());
-				return -1;
-			}
-			username = args[1].c_str(); // username
-			text = args[2].c_str(); // reason
-
-			if (!(channel = conn_get_channel(c)))
-			{
-				message_send_text(c, message_type_error, c, localize(c, "This command can only be used inside a channel."));
-				return -1;
-			}
-			if (account_get_auth_admin(conn_get_account(c), NULL) != 1 && /* default to false */
-				account_get_auth_admin(conn_get_account(c), channel_get_name(channel)) != 1 && /* default to false */
-				account_get_auth_operator(conn_get_account(c), NULL) != 1 && /* default to false */
-				account_get_auth_operator(conn_get_account(c), channel_get_name(channel)) != 1) /* default to false */
-			{
-				message_send_text(c, message_type_error, c, localize(c, "You have to be at least a Channel Operator to use this command."));
-				return -1;
-			}
-			{
-				t_account * account;
-
-				if (!(account = accountlist_find_account(username)))
-				{
-					message_send_text(c, message_type_info, c, localize(c, "That account doesn't currently exist."));
-					return -1;
-				}
-				else if (account_get_auth_admin(account, NULL) == 1 || account_get_auth_admin(account, channel_get_name(channel)) == 1)
-				{
-					message_send_text(c, message_type_error, c, localize(c, "You cannot ban administrators."));
-					return -1;
-				}
-				else if (account_get_auth_operator(account, NULL) == 1 ||
-					account_get_auth_operator(account, channel_get_name(channel)) == 1)
-				{
-					message_send_text(c, message_type_error, c, localize(c, "You cannot ban operators."));
-					return -1;
-				}
-			}
-
-			if (channel_ban_user(channel, username) < 0)
-			{
-				msgtemp = localize(c, "Unable to ban {}.", username);
-				message_send_text(c, message_type_error, c, msgtemp);
-			}
-			else
-			{
-				char const * tname;
-
-				tname = conn_get_loggeduser(c);
-				if (text[0] != '\0')
-					msgtemp = localize(c, "{} has been banned by {} ({}).", username, tname ? tname : "unknown", text);
-				else
-					msgtemp = localize(c, "{} has been banned by {}.", username, tname ? tname : "unknown");
-				channel_message_send(channel, message_type_info, c, msgtemp.c_str());
-			}
-			if ((buc = connlist_find_connection_by_accountname(username)) &&
-				conn_get_channel(buc) == channel)
-				conn_set_channel(buc, CHANNEL_NAME_BANNED);
-
-			return 0;
-		}
-
-		static int _handle_unban_command(t_connection * c, char const *text)
-		{
-			t_channel *  channel;
-
-			std::vector<std::string> args = split_command(text, 1);
-
-			if (args[1].empty())
-			{
-				describe_command(c, args[0].c_str());
-				return -1;
-			}
-			text = args[1].c_str(); // username
-
-			if (!(channel = conn_get_channel(c)))
-			{
-				message_send_text(c, message_type_error, c, localize(c, "This command can only be used inside a channel."));
-				return -1;
-			}
-			if (account_get_auth_admin(conn_get_account(c), NULL) != 1 && /* default to false */
-				account_get_auth_admin(conn_get_account(c), channel_get_name(channel)) != 1 && /* default to false */
-				account_get_auth_operator(conn_get_account(c), NULL) != 1 && /* default to false */
-				account_get_auth_operator(conn_get_account(c), channel_get_name(channel)) != 1) /* default to false */
-			{
-				message_send_text(c, message_type_error, c, localize(c, "You are not a channel operator."));
-				return -1;
-			}
-
-			if (channel_unban_user(channel, text) < 0)
-			{
-				message_send_text(c, message_type_error, c, localize(c, "That user is not banned."));
-				return -1;
-			}
-			else
-			{
-				msgtemp = localize(c, "{} is no longer banned from this channel.", text);
-				message_send_text(c, message_type_info, c, msgtemp);
-			}
-
-			return 0;
-		}
-
+		
 		static int _handle_reply_command(t_connection * c, char const *text)
 		{
 			char const * dest;
