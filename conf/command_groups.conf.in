@@ -164,7 +164,7 @@
 #	-- Access to group '6' allows users to not only make others Server Admins & Server Operators
 #		but will allow them to make themselves Server Admin & Server Operator.
 
-6	/operator /admin /flag /tag
+6 /flag /tag
 6	/log
 
 7	/set
@@ -187,3 +187,4 @@
 
 # New
 8 /botchatblue /botchatred
+8 /operator /admin
