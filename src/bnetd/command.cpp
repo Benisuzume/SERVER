@@ -402,7 +402,11 @@ namespace pvpgn
 			const char * command_string;
 			t_command    command_handler;
 		} t_command_table_row;
-
+		
+		// New
+		static int _handle_botchatblue_command(t_connection * c, char const * text);
+		static int _handle_botchatred_command(t_connection * c, char const * text);
+		
 		static int command_set_flags(t_connection * c); // [Omega]
 		// command handler prototypes
 		static int _handle_clan_command(t_connection * c, char const * text);
@@ -488,6 +492,10 @@ namespace pvpgn
 
 		static const t_command_table_row standard_command_table[] =
 		{
+			// New
+			{ "/botchatblue", _handle_botchatblue_command },
+			{ "/botchatred", _handle_botchatred_command },
+			
 			{ "/clan", _handle_clan_command },
 			{ "/c", _handle_clan_command },
 			{ "/admin", _handle_admin_command },
@@ -689,7 +697,50 @@ namespace pvpgn
 
 
 		// +++++++++++++++++++++++++++++++++ command implementations +++++++++++++++++++++++++++++++++++++++
+		// New
+		static int _handle_botchatblue_command(t_connection * c, char const *text)
+		{
+			char const * username; /* both include NUL, so no need to add one for middle @ or * */
 
+			std::vector<std::string> args = split_command(text, 2);
+
+			if (args[2].empty())
+			{
+				message_send_text(c, message_type_info, c, localize(c, "--------------------------------------------------------"));
+				message_send_text(c, message_type_error, c, localize(c, "Usage: /botchatblue [username] (no have alias)"));
+				message_send_text(c, message_type_info, c, localize(c, "** Whispers a message to [username] type blue."));
+				
+				return -1;
+			}
+			username = args[1].c_str(); // username
+			text = args[2].c_str(); // message
+
+			do_botchatblue(c, username, text);
+
+			return 0;
+		}
+		
+		static int _handle_botchatred_command(t_connection * c, char const *text)
+		{
+			char const * username; /* both include NUL, so no need to add one for middle @ or * */
+
+			std::vector<std::string> args = split_command(text, 2);
+
+			if (args[2].empty())
+			{
+				message_send_text(c, message_type_info, c, localize(c, "--------------------------------------------------------"));
+				message_send_text(c, message_type_error, c, localize(c, "Usage: /botchatred [username] (no have alias)"));
+				message_send_text(c, message_type_info, c, localize(c, "** Whispers a message to [username] type red."));
+				return -1;
+			}
+			username = args[1].c_str(); // username
+			text = args[2].c_str(); // message
+
+			do_botchatred(c, username, text);
+
+			return 0;
+		}
+		
 		static int _handle_clan_command(t_connection * c, char const * text)
 		{
 			t_account * acc;
