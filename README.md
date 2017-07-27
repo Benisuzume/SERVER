@@ -6,6 +6,7 @@ Version: 1.99.7.1.1 <br/>
 <b> ** PREFIX COMMAND : </b><br/>
 [+] Change /admin -- dited from "bnhelp.conf" to "command.cpp". <br/>
 [+] Change /operator -- edited from "bnhelp.conf" to "command.cpp". <br/>
+[+] Remove /aop, /op /vop, /ban & /unban. <br/>
 <hr>
 
 <b> ** CHANGELOG : </b><br/>
