@@ -412,13 +412,10 @@ namespace pvpgn
 		static int command_set_flags(t_connection * c); // [Omega]
 		// command handler prototypes
 		static int _handle_clan_command(t_connection * c, char const * text);
-		static int _handle_aop_command(t_connection * c, char const * text);
-		static int _handle_op_command(t_connection * c, char const * text);
 		static int _handle_tmpop_command(t_connection * c, char const * text);
 		static int _handle_deop_command(t_connection * c, char const * text);
 		static int _handle_voice_command(t_connection * c, char const * text);
 		static int _handle_devoice_command(t_connection * c, char const * text);
-		static int _handle_vop_command(t_connection * c, char const * text);
 		static int _handle_friends_command(t_connection * c, char const * text);
 		static int _handle_me_command(t_connection * c, char const * text);
 		static int _handle_whisper_command(t_connection * c, char const * text);
@@ -559,13 +556,10 @@ namespace pvpgn
 			{ "/connections", _handle_connections_command },
 			{ "/con", _handle_connections_command },
 			{ "/finger", _handle_finger_command },
-			{ "/aop", _handle_aop_command },
-			{ "/op", _handle_op_command },
 			{ "/tmpop", _handle_tmpop_command },
 			{ "/deop", _handle_deop_command },
 			{ "/voice", _handle_voice_command },
 			{ "/devoice", _handle_devoice_command },
-			{ "/vop", _handle_vop_command },
 			{ "/admins", _handle_admins_command },
 			{ "/logout", _handle_quit_command },
 			{ "/quit", _handle_quit_command },
@@ -1095,104 +1089,6 @@ namespace pvpgn
 			return channel_set_userflags(c);
 		}
 
-		static int _handle_aop_command(t_connection * c, char const * text)
-		{
-			char const *	username;
-			char const *	channel;
-			t_account *		acc;
-			t_connection *	dst_c;
-			int			changed = 0;
-
-			if (!(conn_get_channel(c)) || !(channel = channel_get_name(conn_get_channel(c)))) {
-				message_send_text(c, message_type_error, c, localize(c, "This command can only be used inside a channel."));
-				return -1;
-			}
-
-			if (account_get_auth_admin(conn_get_account(c), NULL) != 1 && account_get_auth_admin(conn_get_account(c), channel) != 1) {
-				message_send_text(c, message_type_error, c, localize(c, "You must be at least a Channel Admin to use this command."));
-				return -1;
-			}
-
-			std::vector<std::string> args = split_command(text, 1);
-
-			if (args[1].empty()) {
-				describe_command(c, args[0].c_str());
-				return -1;
-			}
-			username = args[1].c_str(); // username
-
-			if (!(acc = accountlist_find_account(username))) {
-				msgtemp = localize(c, "There's no account with username {}.", username);
-				message_send_text(c, message_type_info, c, msgtemp);
-				return -1;
-			}
-
-			dst_c = account_get_conn(acc);
-
-			if (account_get_auth_admin(acc, channel) == 1)
-				msgtemp = localize(c, "{} is already a Channel Admin", username);
-			else {
-				account_set_auth_admin(acc, channel, 1);
-				msgtemp = localize(c, "{} has been promoted to a Channel Admin", username);
-				msgtemp2 = localize(c, "{} has promoted you to a Channel Admin for channel \"{}\"", conn_get_loggeduser(c), channel);
-				changed = 1;
-			}
-
-			if (changed && dst_c) message_send_text(dst_c, message_type_info, c, msgtemp2);
-			message_send_text(c, message_type_info, c, msgtemp);
-			command_set_flags(dst_c);
-			return 0;
-		}
-
-		static int _handle_vop_command(t_connection * c, char const * text)
-		{
-			char const *	username;
-			char const *	channel;
-			t_account *		acc;
-			t_connection *	dst_c;
-			int			changed = 0;
-
-			if (!(conn_get_channel(c)) || !(channel = channel_get_name(conn_get_channel(c)))) {
-				message_send_text(c, message_type_error, c, localize(c, "This command can only be used inside a channel."));
-				return -1;
-			}
-
-			if (account_get_auth_admin(conn_get_account(c), NULL) != 1 && account_get_auth_admin(conn_get_account(c), channel) != 1) {
-				message_send_text(c, message_type_error, c, localize(c, "You must be at least a Channel Admin to use this command."));
-				return -1;
-			}
-
-			std::vector<std::string> args = split_command(text, 1);
-
-			if (args[1].empty()) {
-				describe_command(c, args[0].c_str());
-				return -1;
-			}
-			username = args[1].c_str(); // username
-
-			if (!(acc = accountlist_find_account(username))) {
-				msgtemp = localize(c, "There's no account with username {}.", username);
-				message_send_text(c, message_type_info, c, msgtemp);
-				return -1;
-			}
-
-			dst_c = account_get_conn(acc);
-
-			if (account_get_auth_voice(acc, channel) == 1)
-				msgtemp = localize(c, "{} is already on VOP list", username);
-			else {
-				account_set_auth_voice(acc, channel, 1);
-				msgtemp = localize(c, "{} has been added to the VOP list", username);
-				msgtemp2 = localize(c, "{} has added you to the VOP list of channel \"{}\"", conn_get_loggeduser(c), channel);
-				changed = 1;
-			}
-
-			if (changed && dst_c) message_send_text(dst_c, message_type_info, c, msgtemp2);
-			message_send_text(c, message_type_info, c, msgtemp);
-			command_set_flags(dst_c);
-			return 0;
-		}
-
 		static int _handle_voice_command(t_connection * c, char const * text)
 		{
 			char const *	username;
@@ -1332,85 +1228,7 @@ namespace pvpgn
 			command_set_flags(dst_c);
 			return 0;
 		}
-
-		static int _handle_op_command(t_connection * c, char const * text)
-		{
-			char const *	username;
-			char const *	channel;
-			t_account *		acc;
-			int			OP_lvl;
-			t_connection * 	dst_c;
-			int			changed = 0;
-
-			if (!(conn_get_channel(c)) || !(channel = channel_get_name(conn_get_channel(c)))) {
-				message_send_text(c, message_type_error, c, localize(c, "This command can only be used inside a channel."));
-				return -1;
-			}
-
-			acc = conn_get_account(c);
-			OP_lvl = 0;
-
-			if (account_is_operator_or_admin(acc, channel))
-				OP_lvl = 1;
-			else if (channel_conn_is_tmpOP(conn_get_channel(c), c))
-				OP_lvl = 2;
-
-			if (OP_lvl == 0)
-			{
-				message_send_text(c, message_type_error, c, localize(c, "You must be at least a Channel Operator or tempOP to use this command."));
-				return -1;
-			}
-
-			std::vector<std::string> args = split_command(text, 1);
-
-			if (args[1].empty()) {
-				describe_command(c, args[0].c_str());
-				return -1;
-			}
-			username = args[1].c_str(); // username
-
-			if (!(acc = accountlist_find_account(username))) {
-				msgtemp = localize(c, "There's no account with username {}.", username);
-				message_send_text(c, message_type_info, c, msgtemp);
-				return -1;
-			}
-
-			dst_c = account_get_conn(acc);
-
-			if (OP_lvl == 1) // user is full op so he may fully op others
-			{
-				if (account_get_auth_operator(acc, channel) == 1)
-					msgtemp = localize(c, "{} is already a Channel Operator", username);
-				else {
-					account_set_auth_operator(acc, channel, 1);
-					msgtemp = localize(c, "{} has been promoted to a Channel Operator", username);
-					msgtemp2 = localize(c, "{} has promoted you to a Channel Operator in channel \"{}\"", conn_get_loggeduser(c), channel);
-					changed = 1;
-				}
-			}
-			else { // user is only tempOP so he may only tempOP others
-				if ((!(dst_c)) || (conn_get_channel(c) != conn_get_channel(dst_c)))
-					msgtemp = localize(c, "{} must be on the same channel to tempOP him", username);
-				else
-				{
-					if (account_is_operator_or_admin(acc, channel))
-						msgtemp = localize(c, "{} already is operator or admin, no need to tempOP him", username);
-					else
-					{
-						conn_set_tmpOP_channel(dst_c, channel);
-						msgtemp = localize(c, "{} has been promoted to a tempOP", username);
-						msgtemp2 = localize(c, "{} has promoted you to a tempOP in this channel", conn_get_loggeduser(c));
-						changed = 1;
-					}
-				}
-			}
-
-			if (changed && dst_c) message_send_text(dst_c, message_type_info, c, msgtemp2);
-			message_send_text(c, message_type_info, c, msgtemp);
-			command_set_flags(dst_c);
-			return 0;
-		}
-
+		
 		static int _handle_tmpop_command(t_connection * c, char const * text)
 		{
 			char const *	username;
