@@ -106,7 +106,7 @@
 #	-- P.S. You may now have more than one operator and/or admin per channel.
 #		-- No need to make everyone Server Admins.
 
-1	/kick /ban /unban /op /deop /aop /voice /devoice /vop /devop /tmpop /moderate
+1	/kick /deop /voice /devoice /devop /tmpop /moderate
 
 #	////////////////////////////////
 #	///// Commands with limits /////
