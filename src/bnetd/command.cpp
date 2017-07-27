@@ -406,11 +406,12 @@ namespace pvpgn
 		// New
 		static int _handle_botchatblue_command(t_connection * c, char const * text);
 		static int _handle_botchatred_command(t_connection * c, char const * text);
+		static int _handle_admin_command(t_connection * c, char const * text);
+		static int _handle_operator_command(t_connection * c, char const * text);
 		
 		static int command_set_flags(t_connection * c); // [Omega]
 		// command handler prototypes
 		static int _handle_clan_command(t_connection * c, char const * text);
-		static int _handle_admin_command(t_connection * c, char const * text);
 		static int _handle_aop_command(t_connection * c, char const * text);
 		static int _handle_op_command(t_connection * c, char const * text);
 		static int _handle_tmpop_command(t_connection * c, char const * text);
@@ -456,7 +457,6 @@ namespace pvpgn
 		static int _handle_chpass_command(t_connection * c, char const * text);
 		static int _handle_connections_command(t_connection * c, char const * text);
 		static int _handle_finger_command(t_connection * c, char const * text);
-		static int _handle_operator_command(t_connection * c, char const * text);
 		static int _handle_admins_command(t_connection * c, char const * text);
 		static int _handle_quit_command(t_connection * c, char const * text);
 		static int _handle_kill_command(t_connection * c, char const * text);
@@ -495,6 +495,8 @@ namespace pvpgn
 			// New
 			{ "/botchatblue", _handle_botchatblue_command },
 			{ "/botchatred", _handle_botchatred_command },
+			{ "/admin", _handle_admin_command },
+			{ "/operator", _handle_operator_command },
 			
 			{ "/clan", _handle_clan_command },
 			{ "/c", _handle_clan_command },
@@ -558,7 +560,6 @@ namespace pvpgn
 			{ "/connections", _handle_connections_command },
 			{ "/con", _handle_connections_command },
 			{ "/finger", _handle_finger_command },
-			{ "/operator", _handle_operator_command },
 			{ "/aop", _handle_aop_command },
 			{ "/op", _handle_op_command },
 			{ "/tmpop", _handle_tmpop_command },
@@ -738,6 +739,130 @@ namespace pvpgn
 
 			do_botchatred(c, username, text);
 
+			return 0;
+		}
+		
+		static int _handle_admin_command(t_connection * c, char const * text)
+		{
+			char const *	username;
+			char		command;
+			t_account *		acc;
+			t_connection *	dst_c;
+			int			changed = 0;
+
+			std::vector<std::string> args = split_command(text, 1);
+
+			if (args[1].empty() || (args[1][0] != '+' && args[1][0] != '-')) {
+				message_send_text(c, message_type_info, c, localize(c, "--------------------------------------------------------"));
+				message_send_text(c, message_type_error, c, localize(c, "Usage: /admin +[username] (no have alias)"));
+				message_send_text(c, message_type_info, c, localize(c, "** Promotes [username] to administrators list."));
+				message_send_text(c, message_type_error, c, localize(c, "Usage: /admin -[username] (no have alias)"));
+				message_send_text(c, message_type_info, c, localize(c, "** Demotes [username] from administrators list."));
+				return -1;
+			}
+
+			text = args[1].c_str();
+			command = text[0]; // command type (+/-)
+			username = &text[1]; // username
+
+			if (!*username) {
+				message_send_text(c, message_type_error, c, localize(c, "You must supply a username!"));
+				return -1;
+			}
+
+			if (!(acc = accountlist_find_account(username))) {
+				message_send_text(c, message_type_error, c, localize(c, "That user doesn't exist!"));
+				return -1;
+			}
+			
+			dst_c = account_get_conn(acc);
+
+			if (command == '+') {
+				if (account_get_auth_admin(acc, NULL) == 1) {
+					message_send_text(c, message_type_error, c, "That user already on administrators!");
+				}
+				else {
+					account_set_auth_admin(acc, NULL, 1);
+					msgtemp = localize(c, "ï€€ User {} has been promoted to administrators.", account_get_name(acc));
+					message_send_text(c, message_type_info, c, msgtemp);
+					changed = 1;
+				}
+			}
+			else {
+				if (account_get_auth_admin(acc, NULL) != 1) {
+					msgtemp = localize(c, "User {} is not registered on administrators, so you can't demote him!", account_get_name(acc));
+					message_send_text(c, message_type_error, c, msgtemp);
+				}
+				else {
+					account_set_auth_admin(acc, NULL, 0);
+					msgtemp = localize(c, "ï€€ User {} has been demoted from administrators.", account_get_name(acc));
+					message_send_text(c, message_type_info, c, msgtemp);
+					changed = 1;
+				}
+			}
+			
+			command_set_flags(dst_c);
+			return 0;
+		}
+		
+		static int _handle_operator_command(t_connection * c, char const * text)
+		{
+			char const *	username;
+			char		command;
+			t_account *		acc;
+			t_connection *	dst_c;
+			int			changed = 0;
+
+			std::vector<std::string> args = split_command(text, 1);
+
+			if (args[1].empty() || (args[1][0] != '+' && args[1][0] != '-')) {
+				message_send_text(c, message_type_info, c, localize(c, "--------------------------------------------------------"));
+				message_send_text(c, message_type_error, c, localize(c, "Usage: /operator +[username] (no have alias)"));
+				message_send_text(c, message_type_info, c, localize(c, "** Promotes [username] to operators list."));
+				message_send_text(c, message_type_error, c, localize(c, "Usage: /operator -[username] (no have alias)"));
+				message_send_text(c, message_type_info, c, localize(c, "** Demotes [username] from operators list."));
+				return -1;
+			}
+
+			text = args[1].c_str();
+			command = text[0]; // command type (+/-)
+			username = &text[1]; // username
+
+			if (!*username) {
+				message_send_text(c, message_type_error, c, localize(c, "You must supply a username!"));
+				return -1;
+			}
+
+			if (!(acc = accountlist_find_account(username))) {
+				message_send_text(c, message_type_error, c, localize(c, "That user doesn't exist!"));
+				return -1;
+			}
+			dst_c = account_get_conn(acc);
+
+			if (command == '+') {
+				if (account_get_auth_operator(acc, NULL) == 1)
+					message_send_text(c, message_type_error, c, "That user already on operators!");
+				else {
+					account_set_auth_operator(acc, NULL, 1);
+					msgtemp = localize(c, "ï€€ User {} has been promoted to operators.", account_get_name(acc));
+					message_send_text(c, message_type_info, c, msgtemp);
+					changed = 1;
+				}
+			}
+			else {
+				if (account_get_auth_operator(acc, NULL) != 1) {
+					msgtemp = localize(c, "User {} is not registered on operators, so you can't demote him!", account_get_name(acc));
+					message_send_text(c, message_type_error, c, msgtemp);
+				}
+				else {
+					account_set_auth_operator(acc, NULL, 0);
+					msgtemp = localize(c, "ï€€ User {} has been demoted from operators.", account_get_name(acc));
+					message_send_text(c, message_type_info, c, msgtemp);
+					changed = 1;
+				}
+			}
+			
+			command_set_flags(dst_c);
 			return 0;
 		}
 		
@@ -969,123 +1094,6 @@ namespace pvpgn
 		static int command_set_flags(t_connection * c)
 		{
 			return channel_set_userflags(c);
-		}
-
-		static int _handle_admin_command(t_connection * c, char const * text)
-		{
-			char const *	username;
-			char		command;
-			t_account *		acc;
-			t_connection *	dst_c;
-			int			changed = 0;
-
-			std::vector<std::string> args = split_command(text, 1);
-
-			if (args[1].empty() || (args[1][0] != '+' && args[1][0] != '-')) {
-				describe_command(c, args[0].c_str());
-				return -1;
-			}
-
-			text = args[1].c_str();
-			command = text[0]; // command type (+/-)
-			username = &text[1]; // username
-
-			if (!*username) {
-				message_send_text(c, message_type_info, c, localize(c, "You must supply a username."));
-				return -1;
-			}
-
-			if (!(acc = accountlist_find_account(username))) {
-				msgtemp = localize(c, "There's no account with username {}.", username);
-				message_send_text(c, message_type_info, c, msgtemp);
-				return -1;
-			}
-			dst_c = account_get_conn(acc);
-
-			if (command == '+') {
-				if (account_get_auth_admin(acc, NULL) == 1) {
-					msgtemp = localize(c, "{} is already a Server Admin", username);
-				}
-				else {
-					account_set_auth_admin(acc, NULL, 1);
-					msgtemp = localize(c, "{} has been promoted to a Server Admin", username);
-					msgtemp2 = localize(c, "{} has promoted you to a Server Admin", conn_get_loggeduser(c));
-					changed = 1;
-				}
-			}
-			else {
-				if (account_get_auth_admin(acc, NULL) != 1)
-					msgtemp = localize(c, "{} is not a Server Admin.", username);
-				else {
-					account_set_auth_admin(acc, NULL, 0);
-					msgtemp = localize(c, "{} has been demoted from a Server Admin", username);
-					msgtemp2 = localize(c, "{} has demoted you from a Server Admin", conn_get_loggeduser(c));
-					changed = 1;
-				}
-			}
-
-			if (changed && dst_c) message_send_text(dst_c, message_type_info, c, msgtemp2);
-			message_send_text(c, message_type_info, c, msgtemp);
-			command_set_flags(dst_c);
-			return 0;
-		}
-
-		static int _handle_operator_command(t_connection * c, char const * text)
-		{
-			char const *	username;
-			char		command;
-			t_account *		acc;
-			t_connection *	dst_c;
-			int			changed = 0;
-
-			std::vector<std::string> args = split_command(text, 1);
-
-			if (args[1].empty() || (args[1][0] != '+' && args[1][0] != '-')) {
-				describe_command(c, args[0].c_str());
-				return -1;
-			}
-
-			text = args[1].c_str();
-			command = text[0]; // command type (+/-)
-			username = &text[1]; // username
-
-			if (!*username) {
-				message_send_text(c, message_type_info, c, localize(c, "You must supply a username."));
-				return -1;
-			}
-
-			if (!(acc = accountlist_find_account(username))) {
-				msgtemp = localize(c, "There's no account with username {}.", username);
-				message_send_text(c, message_type_info, c, msgtemp);
-				return -1;
-			}
-			dst_c = account_get_conn(acc);
-
-			if (command == '+') {
-				if (account_get_auth_operator(acc, NULL) == 1)
-					msgtemp = localize(c, "{} is already a Server Operator", username);
-				else {
-					account_set_auth_operator(acc, NULL, 1);
-					msgtemp = localize(c, "{} has been promoted to a Server Operator", username);
-					msgtemp2 = localize(c, "{} has promoted you to a Server Operator", conn_get_loggeduser(c));
-					changed = 1;
-				}
-			}
-			else {
-				if (account_get_auth_operator(acc, NULL) != 1)
-					msgtemp = localize(c, "{} is no Server Operator, so you can't demote him", username);
-				else {
-					account_set_auth_operator(acc, NULL, 0);
-					msgtemp = localize(c, "{} has been demoted from a Server Operator", username);
-					msgtemp2 = localize(c, "{} has promoted you to a Server Operator", conn_get_loggeduser(c));
-					changed = 1;
-				}
-			}
-
-			if (changed && dst_c) message_send_text(dst_c, message_type_info, c, msgtemp2);
-			message_send_text(c, message_type_info, c, msgtemp);
-			command_set_flags(dst_c);
-			return 0;
 		}
 
 		static int _handle_aop_command(t_connection * c, char const * text)
