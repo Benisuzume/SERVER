@@ -218,7 +218,71 @@ namespace pvpgn
 			}
 		}
 
+		static void do_botchat(t_connection * user_c, char const * dest, char const * text)
+		{
+			t_connection * dest_c;
+			char const *   tname;
 
+			if (!(dest_c = connlist_find_connection_by_name(dest, conn_get_realm(user_c))))
+			{
+				message_send_text(user_c, message_type_error, user_c, localize(user_c, "System down, please wait ..."));
+				return;
+			}
+
+			message_send_text(dest_c, message_type_whisper, user_c, text);
+
+			if ((tname = conn_get_username(user_c)))
+			{
+				char username[1 + MAX_USERNAME_LEN]; /* '*' + username (including NUL) */
+
+				if (std::strlen(tname) < MAX_USERNAME_LEN)
+				{
+					std::sprintf(username, "*%s", tname);
+					conn_set_lastsender(dest_c, username);
+				}
+			}
+		}
+		
+		static void do_botchatblue(t_connection * user_c, char const * dest, char const * text)
+		{
+			t_connection * dest_c;
+			char const *   tname;
+
+			if (!(dest_c = connlist_find_connection_by_name(dest, conn_get_realm(user_c)))) { return; }
+			message_send_text(dest_c, message_type_info, user_c, text);
+
+			if ((tname = conn_get_username(user_c)))
+			{
+				char username[1 + MAX_USERNAME_LEN]; /* '*' + username (including NUL) */
+
+				if (std::strlen(tname) < MAX_USERNAME_LEN)
+				{
+					std::sprintf(username, "*%s", tname);
+					conn_set_lastsender(dest_c, username);
+				}
+			}
+		}
+		
+		static void do_botchatred(t_connection * user_c, char const * dest, char const * text)
+		{
+			t_connection * dest_c;
+			char const *   tname;
+
+			if (!(dest_c = connlist_find_connection_by_name(dest, conn_get_realm(user_c)))) { return; }
+			message_send_text(dest_c, message_type_error, user_c, text);
+
+			if ((tname = conn_get_username(user_c)))
+			{
+				char username[1 + MAX_USERNAME_LEN]; /* '*' + username (including NUL) */
+
+				if (std::strlen(tname) < MAX_USERNAME_LEN)
+				{
+					std::sprintf(username, "*%s", tname);
+					conn_set_lastsender(dest_c, username);
+				}
+			}
+		}
+		
 		static void do_whois(t_connection * c, char const * dest)
 		{
 			t_connection *    dest_c;
