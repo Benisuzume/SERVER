@@ -500,7 +500,6 @@ namespace pvpgn
 			
 			{ "/clan", _handle_clan_command },
 			{ "/c", _handle_clan_command },
-			{ "/admin", _handle_admin_command },
 			{ "/f", _handle_friends_command },
 			{ "/friends", _handle_friends_command },
 			{ "/me", _handle_me_command },
