@@ -1,8 +1,11 @@
-** Server Version: 1.99.7.1.1 ** <br/>
+<b> SERVER INFO </b> <br/>
+Re-Build: EXILEDNONAME <br/>
+Version: 1.99.7.1.1 <br/>
+<hr>
 
 <b> PREFIX COMMAND : </b><br/>
-[+] /admin -- dited from "bnhelp.conf" to "command.cpp".
-[+] /operator -- edited from "bnhelp.conf" to "command.cpp".
+[+] /admin -- dited from "bnhelp.conf" to "command.cpp". <br/>
+[+] /operator -- edited from "bnhelp.conf" to "command.cpp". <br/>
 <hr>
 
 <b> CHANGELOG : </b><br/>
