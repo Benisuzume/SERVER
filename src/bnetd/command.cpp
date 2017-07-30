@@ -408,6 +408,10 @@ namespace pvpgn
 		static int _handle_botchatred_command(t_connection * c, char const * text);
 		static int _handle_admin_command(t_connection * c, char const * text);
 		static int _handle_operator_command(t_connection * c, char const * text);
+		static int _handle_watch_command(t_connection * c, char const * text);
+		static int _handle_unwatch_command(t_connection * c, char const * text);
+		static int _handle_watchall_command(t_connection * c, char const * text);
+		static int _handle_unwatchall_command(t_connection * c, char const * text);
 		
 		static int command_set_flags(t_connection * c); // [Omega]
 		// command handler prototypes
@@ -440,10 +444,6 @@ namespace pvpgn
 		static int _handle_kick_command(t_connection * c, char const * text);
 		static int _handle_reply_command(t_connection * c, char const * text);
 		static int _handle_realmann_command(t_connection * c, char const * text);
-		static int _handle_watch_command(t_connection * c, char const * text);
-		static int _handle_unwatch_command(t_connection * c, char const * text);
-		static int _handle_watchall_command(t_connection * c, char const * text);
-		static int _handle_unwatchall_command(t_connection * c, char const * text);
 		static int _handle_lusers_command(t_connection * c, char const * text);
 		static int _handle_news_command(t_connection * c, char const * text);
 		static int _handle_games_command(t_connection * c, char const * text);
@@ -492,6 +492,10 @@ namespace pvpgn
 			{ "/botchatred", _handle_botchatred_command },
 			{ "/admin", _handle_admin_command },
 			{ "/operator", _handle_operator_command },
+			{ "/watch", _handle_watch_command },
+			{ "/unwatch", _handle_unwatch_command },
+			{ "/watchall", _handle_watchall_command },
+			{ "/unwatchall", _handle_unwatchall_command },
 			
 			{ "/clan", _handle_clan_command },
 			{ "/c", _handle_clan_command },
@@ -538,10 +542,6 @@ namespace pvpgn
 			{ "/r", _handle_reply_command },
 			{ "/reply", _handle_reply_command },
 			{ "/realmann", _handle_realmann_command },
-			{ "/watch", _handle_watch_command },
-			{ "/unwatch", _handle_unwatch_command },
-			{ "/watchall", _handle_watchall_command },
-			{ "/unwatchall", _handle_unwatchall_command },
 			{ "/lusers", _handle_lusers_command },
 			{ "/news", _handle_news_command },
 			{ "/games", _handle_games_command },
@@ -852,6 +852,135 @@ namespace pvpgn
 			}
 			
 			command_set_flags(dst_c);
+			return 0;
+		}
+		
+		static int _handle_watch_command(t_connection * c, char const *text)
+		{
+			t_account *  account;
+
+			std::vector<std::string> args = split_command(text, 1);
+
+			if (args[1].empty())
+			{
+				message_send_text(c, message_type_info, c, localize(c, "--------------------------------------------------------"));
+				message_send_text(c, message_type_error, c, localize(c, "Usage: /watch [username] (no have alias)"));
+				message_send_text(c, message_type_info, c, localize(c, "** Enables notifications for [username]."));
+				return -1;
+			}
+			text = args[1].c_str(); // username
+
+			if (!(account = accountlist_find_account(text)))
+			{
+				message_send_text(c, message_type_error, c, localize(c, "That user doesn't exist!"));
+				return -1;
+			}
+
+			if (conn_add_watch(c, account, 0) < 0) /* FIXME: adds all events for now */
+			{
+				message_send_text(c, message_type_error, c, localize(c, "Add to watch list failed!"));
+				return -1;
+			}
+			else
+			{
+				msgtemp = localize(c, "ï€€ User {} added to your watch list.", account_get_name(account));
+				message_send_text(c, message_type_info, c, msgtemp);
+			}
+
+			return 0;
+		}
+
+		static int _handle_unwatch_command(t_connection * c, char const *text)
+		{
+			t_account *  account;
+
+			std::vector<std::string> args = split_command(text, 1);
+
+			if (args[1].empty())
+			{
+				message_send_text(c, message_type_info, c, localize(c, "--------------------------------------------------------"));
+				message_send_text(c, message_type_error, c, localize(c, "Usage: /unwatch [username] (no have alias)"));
+				message_send_text(c, message_type_info, c, localize(c, "** Disables notifications for [username]."));
+				return -1;
+			}
+			text = args[1].c_str(); // username
+			if (!(account = accountlist_find_account(text)))
+			{
+				message_send_text(c, message_type_error, c, localize(c, "That user doesn't exist!"));
+				return -1;
+			}
+
+			if (conn_del_watch(c, account, 0) < 0) /* FIXME: deletes all events for now */
+			{
+				message_send_text(c, message_type_error, c, localize(c, "Removal from watch list failed."));
+				return -1;
+			}
+			else
+			{
+				msgtemp = localize(c, "ï€€ User {} removed from your watch list.", account_get_name(account));
+				message_send_text(c, message_type_info, c, msgtemp);
+			}
+
+			return 0;
+		}
+		
+		static int _handle_watchall_command(t_connection * c, char const *text)
+		{
+			t_clienttag clienttag = 0;
+			char const * clienttag_str;
+
+			std::vector<std::string> args = split_command(text, 1);
+			clienttag_str = args[1].c_str(); // clienttag
+
+			if (clienttag_str[0] != '\0')
+			{
+				if ( !(clienttag = tag_validate_client(args[1].c_str())) )
+				{
+					describe_command(c, args[0].c_str());
+					return -1;
+				}
+			}
+
+			if (conn_add_watch(c, NULL, clienttag) < 0) /* FIXME: adds all events for now */
+				message_send_text(c, message_type_error, c, localize(c, "Add to watch list failed!"));
+			else
+			if (clienttag) {
+				msgtemp = localize(c, "ï€€ All {} users added to your watch list.", tag_uint_to_str((char*)clienttag_str, clienttag));
+				message_send_text(c, message_type_info, c, msgtemp);
+			}
+			else
+				message_send_text(c, message_type_info, c, localize(c, "ï€€ All users added to your watch list."));
+
+			return 0;
+		}
+
+		static int _handle_unwatchall_command(t_connection * c, char const *text)
+		{
+			t_clienttag clienttag = 0;
+			char const * clienttag_str;
+
+			std::vector<std::string> args = split_command(text, 1);
+			clienttag_str = args[1].c_str(); // clienttag
+
+			if (clienttag_str[0] != '\0')
+			{
+				if (!(clienttag = tag_validate_client(args[1].c_str())))
+				{
+					describe_command(c, args[0].c_str());
+					return -1;
+				}
+			}
+
+			if (conn_del_watch(c, NULL, clienttag) < 0) /* FIXME: deletes all events for now */
+				message_send_text(c, message_type_error, c, localize(c, "Removal from watch list failed!"));
+			else
+			if (clienttag) {
+				msgtemp = localize(c, "ï€€ All {} users removed from your watch list.", tag_uint_to_str((char*)clienttag_str, clienttag));
+				message_send_text(c, message_type_info, c, msgtemp);
+			}
+			else
+				message_send_text(c, message_type_info, c, localize(c, "ï€€ All users removed from your watch list."));
+
 			return 0;
 		}
 		
@@ -2554,131 +2683,6 @@ namespace pvpgn
 			}
 
 			message_destroy(message);
-
-			return 0;
-		}
-
-		static int _handle_watch_command(t_connection * c, char const *text)
-		{
-			t_account *  account;
-
-			std::vector<std::string> args = split_command(text, 1);
-
-			if (args[1].empty())
-			{
-				describe_command(c, args[0].c_str());
-				return -1;
-			}
-			text = args[1].c_str(); // username
-
-			if (!(account = accountlist_find_account(text)))
-			{
-				message_send_text(c, message_type_info, c, localize(c, "That user does not exist."));
-				return -1;
-			}
-
-			if (conn_add_watch(c, account, 0) < 0) /* FIXME: adds all events for now */
-			{
-				message_send_text(c, message_type_error, c, localize(c, "Add to watch list failed."));
-				return -1;
-			}
-			else
-			{
-				msgtemp = localize(c, "User {} added to your watch list.", text);
-				message_send_text(c, message_type_info, c, msgtemp);
-			}
-
-			return 0;
-		}
-
-		static int _handle_unwatch_command(t_connection * c, char const *text)
-		{
-			t_account *  account;
-
-			std::vector<std::string> args = split_command(text, 1);
-
-			if (args[1].empty())
-			{
-				describe_command(c, args[0].c_str());
-				return -1;
-			}
-			text = args[1].c_str(); // username
-			if (!(account = accountlist_find_account(text)))
-			{
-				message_send_text(c, message_type_info, c, localize(c, "That user does not exist."));
-				return -1;
-			}
-
-			if (conn_del_watch(c, account, 0) < 0) /* FIXME: deletes all events for now */
-			{
-				message_send_text(c, message_type_error, c, localize(c, "Removal from watch list failed."));
-				return -1;
-			}
-			else
-			{
-				msgtemp = localize(c, "User {} removed from your watch list.", text);
-				message_send_text(c, message_type_info, c, msgtemp);
-			}
-
-			return 0;
-		}
-
-		static int _handle_watchall_command(t_connection * c, char const *text)
-		{
-			t_clienttag clienttag = 0;
-			char const * clienttag_str;
-
-			std::vector<std::string> args = split_command(text, 1);
-			clienttag_str = args[1].c_str(); // clienttag
-
-			if (clienttag_str[0] != '\0')
-			{
-				if ( !(clienttag = tag_validate_client(args[1].c_str())) )
-				{
-					describe_command(c, args[0].c_str());
-					return -1;
-				}
-			}
-
-			if (conn_add_watch(c, NULL, clienttag) < 0) /* FIXME: adds all events for now */
-				message_send_text(c, message_type_error, c, localize(c, "Add to watch list failed."));
-			else
-			if (clienttag) {
-				msgtemp = localize(c, "All {} users added to your watch list.", tag_uint_to_str((char*)clienttag_str, clienttag));
-				message_send_text(c, message_type_info, c, msgtemp);
-			}
-			else
-				message_send_text(c, message_type_info, c, localize(c, "All users added to your watch list."));
-
-			return 0;
-		}
-
-		static int _handle_unwatchall_command(t_connection * c, char const *text)
-		{
-			t_clienttag clienttag = 0;
-			char const * clienttag_str;
-
-			std::vector<std::string> args = split_command(text, 1);
-			clienttag_str = args[1].c_str(); // clienttag
-
-			if (clienttag_str[0] != '\0')
-			{
-				if (!(clienttag = tag_validate_client(args[1].c_str())))
-				{
-					describe_command(c, args[0].c_str());
-					return -1;
-				}
-			}
-
-			if (conn_del_watch(c, NULL, clienttag) < 0) /* FIXME: deletes all events for now */
-				message_send_text(c, message_type_error, c, localize(c, "Removal from watch list failed."));
-			else
-			if (clienttag) {
-				msgtemp = localize(c, "All {} users removed from your watch list.", tag_uint_to_str((char*)clienttag_str, clienttag));
-				message_send_text(c, message_type_info, c, msgtemp);
-			}
-			else
-				message_send_text(c, message_type_info, c, localize(c, "All users removed from your watch list."));
 
 			return 0;
 		}
