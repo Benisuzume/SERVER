@@ -11,6 +11,10 @@ Version: 1.99.7.1.1 <br/>
 [+] Change /unwatch -- edited from "bnhelp.conf" to "command.cpp". <br/>
 [+] Change /watchall -- edited from "bnhelp.conf" to "command.cpp". <br/>
 [+] Change /unwatchall -- edited from "bnhelp.conf" to "command.cpp". <br/>
+[+] Change /squelch -- edited from "bnhelp.conf" to "command.cpp" (alias: /ignore). <br/>
+[+] Change /unsquelch -- edited from "bnhelp.conf" to "command.cpp" (alias: /unignore). <br/>
+[+] Remove /version /copyright /tos /motd /license. <br/>
+[+] Remove /beep /unbeep. <br/>
 <hr>
 
 <b> ** CHANGELOG : </b><br/>
