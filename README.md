@@ -4,9 +4,13 @@ Version: 1.99.7.1.1 <br/>
 <hr>
 
 <b> ** PREFIX COMMAND : </b><br/>
-[+] Change /admin -- dited from "bnhelp.conf" to "command.cpp". <br/>
+[+] Change /admin -- edited from "bnhelp.conf" to "command.cpp". <br/>
 [+] Change /operator -- edited from "bnhelp.conf" to "command.cpp". <br/>
 [+] Remove /aop, /op /vop, /ban & /unban. <br/>
+[+] Change /watch -- edited from "bnhelp.conf" to "command.cpp". <br/>
+[+] Change /unwatch -- edited from "bnhelp.conf" to "command.cpp". <br/>
+[+] Change /watchall -- edited from "bnhelp.conf" to "command.cpp". <br/>
+[+] Change /unwatchall -- edited from "bnhelp.conf" to "command.cpp". <br/>
 <hr>
 
 <b> ** CHANGELOG : </b><br/>
