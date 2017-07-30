@@ -412,6 +412,8 @@ namespace pvpgn
 		static int _handle_unwatch_command(t_connection * c, char const * text);
 		static int _handle_watchall_command(t_connection * c, char const * text);
 		static int _handle_unwatchall_command(t_connection * c, char const * text);
+		static int _handle_squelch_command(t_connection * c, char const * text);
+		static int _handle_unsquelch_command(t_connection * c, char const * text);
 		
 		static int command_set_flags(t_connection * c); // [Omega]
 		// command handler prototypes
@@ -439,8 +441,6 @@ namespace pvpgn
 		static int _handle_rejoin_command(t_connection * c, char const * text);
 		static int _handle_away_command(t_connection * c, char const * text);
 		static int _handle_dnd_command(t_connection * c, char const * text);
-		static int _handle_squelch_command(t_connection * c, char const * text);
-		static int _handle_unsquelch_command(t_connection * c, char const * text);
 		static int _handle_kick_command(t_connection * c, char const * text);
 		static int _handle_reply_command(t_connection * c, char const * text);
 		static int _handle_realmann_command(t_connection * c, char const * text);
@@ -496,6 +496,10 @@ namespace pvpgn
 			{ "/unwatch", _handle_unwatch_command },
 			{ "/watchall", _handle_watchall_command },
 			{ "/unwatchall", _handle_unwatchall_command },
+			{ "/ignore", _handle_squelch_command },
+			{ "/squelch", _handle_squelch_command },
+			{ "/unignore", _handle_unsquelch_command },
+			{ "/unsquelch", _handle_unsquelch_command },
 			
 			{ "/clan", _handle_clan_command },
 			{ "/c", _handle_clan_command },
@@ -531,10 +535,6 @@ namespace pvpgn
 			{ "/rejoin", _handle_rejoin_command },
 			{ "/away", _handle_away_command },
 			{ "/dnd", _handle_dnd_command },
-			{ "/ignore", _handle_squelch_command },
-			{ "/squelch", _handle_squelch_command },
-			{ "/unignore", _handle_unsquelch_command },
-			{ "/unsquelch", _handle_unsquelch_command },
 			{ "/kick", _handle_kick_command },
 			{ "/tos", _handle_tos_command },
 
@@ -2446,7 +2446,7 @@ namespace pvpgn
 
 			return 0;
 		}
-
+		
 		static int _handle_squelch_command(t_connection * c, char const *text)
 		{
 			t_account *  account;
@@ -2455,7 +2455,9 @@ namespace pvpgn
 
 			if (args[1].empty())
 			{
-				describe_command(c, args[0].c_str());
+				message_send_text(c, message_type_info, c, localize(c, "--------------------------------------------------------"));
+				message_send_text(c, message_type_error, c, localize(c, "Usage: /squelch [username] (alias: ignore, see also: /unsquelch)"));
+				message_send_text(c, message_type_info, c, localize(c, "** Blocks future messages sent from [username]."));
 				return -1;
 			}
 			text = args[1].c_str(); // username
@@ -2466,24 +2468,24 @@ namespace pvpgn
 
 			if (!(account = accountlist_find_account(text)))
 			{
-				message_send_text(c, message_type_error, c, localize(c, "No such user."));
+				message_send_text(c, message_type_error, c, localize(c, "That user doesn't exist!"));
 				return -1;
 			}
 
 			if (conn_get_account(c) == account)
 			{
-				message_send_text(c, message_type_error, c, localize(c, "You can't squelch yourself."));
+				message_send_text(c, message_type_error, c, localize(c, "You can't squelch yourself!"));
 				return -1;
 			}
 
 			if (conn_add_ignore(c, account) < 0)
 			{
-				message_send_text(c, message_type_error, c, localize(c, "Could not squelch user."));
+				message_send_text(c, message_type_error, c, localize(c, "Could not squelch user!"));
 				return -1;
 			}
 			else
 			{
-				msgtemp = localize(c, "{} has been squelched.", account_get_name(account));
+				msgtemp = localize(c, " User {} has been squelched.", account_get_name(account));
 				message_send_text(c, message_type_info, c, msgtemp);
 			}
 
@@ -2499,7 +2501,9 @@ namespace pvpgn
 
 			if (args[1].empty())
 			{
-				describe_command(c, args[0].c_str());
+				message_send_text(c, message_type_info, c, localize(c, "--------------------------------------------------------"));
+				message_send_text(c, message_type_error, c, localize(c, "Usage: /unsquelch [username] (alias: /unignore)"));
+				message_send_text(c, message_type_info, c, localize(c, "** Allows a previously squelched [player] to talk to you normally."));
 				return -1;
 			}
 			text = args[1].c_str(); // username
@@ -2510,7 +2514,7 @@ namespace pvpgn
 
 			if (!(account = accountlist_find_account(text)))
 			{
-				message_send_text(c, message_type_info, c, localize(c, "No such user."));
+				message_send_text(c, message_type_error, c, localize(c, "That user doesn't exist!"));
 				return -1;
 			}
 
@@ -2536,7 +2540,7 @@ namespace pvpgn
 
 			return 0;
 		}
-
+		
 		static int _handle_kick_command(t_connection * c, char const *text)
 		{
 			char const * username;
