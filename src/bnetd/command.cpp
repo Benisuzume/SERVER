@@ -430,10 +430,6 @@ namespace pvpgn
 		static int _handle_whois_command(t_connection * c, char const * text);
 		static int _handle_whoami_command(t_connection * c, char const * text);
 		static int _handle_announce_command(t_connection * c, char const * text);
-		static int _handle_beep_command(t_connection * c, char const * text);
-		static int _handle_nobeep_command(t_connection * c, char const * text);
-		static int _handle_version_command(t_connection * c, char const * text);
-		static int _handle_copyright_command(t_connection * c, char const * text);
 		static int _handle_uptime_command(t_connection * c, char const * text);
 		static int _handle_stats_command(t_connection * c, char const * text);
 		static int _handle_time_command(t_connection * c, char const * text);
@@ -519,12 +515,6 @@ namespace pvpgn
 			{ "/where", _handle_whois_command },
 			{ "/whoami", _handle_whoami_command },
 			{ "/announce", _handle_announce_command },
-			{ "/beep", _handle_beep_command },
-			{ "/nobeep", _handle_nobeep_command },
-			{ "/version", _handle_version_command },
-			{ "/copyright", _handle_copyright_command },
-			{ "/warranty", _handle_copyright_command },
-			{ "/license", _handle_copyright_command },
 			{ "/uptime", _handle_uptime_command },
 			{ "/stats", _handle_stats_command },
 			{ "/astat", _handle_stats_command },
@@ -2050,53 +2040,6 @@ namespace pvpgn
 					message_send_text(c, message_type_info, c, localize(c, "Could not broadcast message."));
 				message_destroy(message);
 			}
-
-			return 0;
-		}
-
-		static int _handle_beep_command(t_connection * c, char const *text)
-		{
-			message_send_text(c, message_type_info, c, localize(c, "Audible notification on.")); /* FIXME: actually do something */
-			return 0; /* FIXME: these only affect CHAT clients... I think they prevent ^G from being sent */
-		}
-
-		static int _handle_nobeep_command(t_connection * c, char const *text)
-		{
-			message_send_text(c, message_type_info, c, localize(c, "Audible notification off.")); /* FIXME: actually do something */
-			return 0;
-		}
-
-		static int _handle_version_command(t_connection * c, char const *text)
-		{
-			message_send_text(c, message_type_info, c, PVPGN_SOFTWARE " " PVPGN_VERSION);
-			return 0;
-		}
-
-		static int _handle_copyright_command(t_connection * c, char const *text)
-		{
-			static char const * const info[] =
-			{
-				" Copyright (C) 2002 - 2014  See source for details",
-				" ",
-				" PvPGN is free software; you can redistribute it and/or",
-				" modify it under the terms of the GNU General Public License",
-				" as published by the Free Software Foundation; either version 2",
-				" of the License, or (at your option) any later version.",
-				" ",
-				" This program is distributed in the hope that it will be useful,",
-				" but WITHOUT ANY WARRANTY; without even the implied warranty of",
-				" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the",
-				" GNU General Public License for more details.",
-				" ",
-				" You should have received a copy of the GNU General Public License",
-				" along with this program; if not, write to the Free Software",
-				" Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.",
-				NULL
-			};
-			unsigned int i;
-
-			for (i = 0; info[i]; i++)
-				message_send_text(c, message_type_info, c, info[i]);
 
 			return 0;
 		}
