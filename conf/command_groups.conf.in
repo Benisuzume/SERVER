@@ -137,6 +137,6 @@
 #	//////////////////////////////////////
 
 # New
-1	/watch /unwatch /watchall /unwatchall
+1 /watch /unwatch /watchall /unwatchall
 8 /botchatblue /botchatred
 8 /operator /admin
