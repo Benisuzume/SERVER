@@ -414,6 +414,7 @@ namespace pvpgn
 		static int _handle_unwatchall_command(t_connection * c, char const * text);
 		static int _handle_squelch_command(t_connection * c, char const * text);
 		static int _handle_unsquelch_command(t_connection * c, char const * text);
+		static int _handle_quit_command(t_connection * c, char const * text);
 		
 		static int command_set_flags(t_connection * c); // [Omega]
 		// command handler prototypes
@@ -440,21 +441,15 @@ namespace pvpgn
 		static int _handle_kick_command(t_connection * c, char const * text);
 		static int _handle_reply_command(t_connection * c, char const * text);
 		static int _handle_realmann_command(t_connection * c, char const * text);
-		static int _handle_lusers_command(t_connection * c, char const * text);
-		static int _handle_news_command(t_connection * c, char const * text);
+		
+		
 		static int _handle_games_command(t_connection * c, char const * text);
 		static int _handle_channels_command(t_connection * c, char const * text);
 		static int _handle_addacct_command(t_connection * c, char const * text);
 		static int _handle_chpass_command(t_connection * c, char const * text);
-		static int _handle_connections_command(t_connection * c, char const * text);
 		static int _handle_finger_command(t_connection * c, char const * text);
-		static int _handle_admins_command(t_connection * c, char const * text);
-		static int _handle_quit_command(t_connection * c, char const * text);
 		static int _handle_kill_command(t_connection * c, char const * text);
 		static int _handle_killsession_command(t_connection * c, char const * text);
-		static int _handle_gameinfo_command(t_connection * c, char const * text);
-		static int _handle_ladderactivate_command(t_connection * c, char const * text);
-		static int _handle_rehash_command(t_connection * c, char const * text);
 		static int _handle_find_command(t_connection * c, char const *text);
 		static int _handle_save_command(t_connection * c, char const * text);
 
@@ -495,6 +490,9 @@ namespace pvpgn
 			{ "/squelch", _handle_squelch_command },
 			{ "/unignore", _handle_unsquelch_command },
 			{ "/unsquelch", _handle_unsquelch_command },
+			{ "/logout", _handle_quit_command },
+			{ "/quit", _handle_quit_command },
+			{ "/exit", _handle_quit_command },
 			
 			{ "/clan", _handle_clan_command },
 			{ "/c", _handle_clan_command },
@@ -525,34 +523,22 @@ namespace pvpgn
 			{ "/away", _handle_away_command },
 			{ "/dnd", _handle_dnd_command },
 			{ "/kick", _handle_kick_command },
-
 			{ "/ann", _handle_announce_command },
 			{ "/r", _handle_reply_command },
 			{ "/reply", _handle_reply_command },
 			{ "/realmann", _handle_realmann_command },
-			{ "/lusers", _handle_lusers_command },
-			{ "/news", _handle_news_command },
 			{ "/games", _handle_games_command },
 			{ "/channels", _handle_channels_command },
 			{ "/chs", _handle_channels_command },
 			{ "/addacct", _handle_addacct_command },
 			{ "/chpass", _handle_chpass_command },
-			{ "/connections", _handle_connections_command },
-			{ "/con", _handle_connections_command },
 			{ "/finger", _handle_finger_command },
 			{ "/tmpop", _handle_tmpop_command },
 			{ "/deop", _handle_deop_command },
 			{ "/voice", _handle_voice_command },
 			{ "/devoice", _handle_devoice_command },
-			{ "/admins", _handle_admins_command },
-			{ "/logout", _handle_quit_command },
-			{ "/quit", _handle_quit_command },
-			{ "/exit", _handle_quit_command },
 			{ "/kill", _handle_kill_command },
 			{ "/killsession", _handle_killsession_command },
-			{ "/gameinfo", _handle_gameinfo_command },
-			{ "/ladderactivate", _handle_ladderactivate_command },
-			{ "/rehash", _handle_rehash_command },
 			{ "/find", _handle_find_command },
 			{ "/save", _handle_save_command },
 			{ "/shutdown", _handle_shutdown_command },
@@ -967,6 +953,113 @@ namespace pvpgn
 			}
 			else
 				message_send_text(c, message_type_info, c, localize(c, "ï€€ All users removed from your watch list."));
+
+			return 0;
+		}
+		
+		static int _handle_squelch_command(t_connection * c, char const *text)
+		{
+			t_account *  account;
+
+			std::vector<std::string> args = split_command(text, 1);
+
+			if (args[1].empty())
+			{
+				message_send_text(c, message_type_info, c, localize(c, "--------------------------------------------------------"));
+				message_send_text(c, message_type_error, c, localize(c, "Usage: /squelch [username] (alias: ignore, see also: /unsquelch)"));
+				message_send_text(c, message_type_info, c, localize(c, "** Blocks future messages sent from [username]."));
+				return -1;
+			}
+			text = args[1].c_str(); // username
+
+			/* D2 std::puts * before username */
+			if (text[0] == '*')
+				text++;
+
+			if (!(account = accountlist_find_account(text)))
+			{
+				message_send_text(c, message_type_error, c, localize(c, "That user doesn't exist!"));
+				return -1;
+			}
+
+			if (conn_get_account(c) == account)
+			{
+				message_send_text(c, message_type_error, c, localize(c, "You can't squelch yourself!"));
+				return -1;
+			}
+
+			if (conn_add_ignore(c, account) < 0)
+			{
+				message_send_text(c, message_type_error, c, localize(c, "Could not squelch user!"));
+				return -1;
+			}
+			else
+			{
+				msgtemp = localize(c, " User {} has been squelched.", account_get_name(account));
+				message_send_text(c, message_type_info, c, msgtemp);
+			}
+
+			return 0;
+		}
+
+		static int _handle_unsquelch_command(t_connection * c, char const *text)
+		{
+			t_account * account;
+			t_connection * dest_c;
+
+			std::vector<std::string> args = split_command(text, 1);
+
+			if (args[1].empty())
+			{
+				message_send_text(c, message_type_info, c, localize(c, "--------------------------------------------------------"));
+				message_send_text(c, message_type_error, c, localize(c, "Usage: /unsquelch [username] (alias: /unignore)"));
+				message_send_text(c, message_type_info, c, localize(c, "** Allows a previously squelched [player] to talk to you normally."));
+				return -1;
+			}
+			text = args[1].c_str(); // username
+
+			/* D2 std::puts * before username */
+			if (text[0] == '*')
+				text++;
+
+			if (!(account = accountlist_find_account(text)))
+			{
+				message_send_text(c, message_type_error, c, localize(c, "That user doesn't exist!"));
+				return -1;
+			}
+
+			if (conn_del_ignore(c, account) < 0)
+			{
+				message_send_text(c, message_type_info, c, localize(c, "User was not being ignored."));
+				return -1;
+			}
+			else
+			{
+				t_message * message;
+
+				message_send_text(c, message_type_info, c, localize(c, "No longer ignoring."));
+
+				if ((dest_c = account_get_conn(account)))
+				{
+					if (!(message = message_create(message_type_userflags, dest_c, NULL))) /* handles NULL text */
+						return -1;
+					message_send(message, c);
+					message_destroy(message);
+				}
+			}
+
+			return 0;
+		}
+		
+		static int _handle_quit_command(t_connection * c, char const *text)
+		{
+			if (conn_get_game(c))
+				eventlog(eventlog_level_warn, __FUNCTION__, "[{}] user '{}' tried to disconnect while in game, cheat attempt ?", conn_get_socket(c), conn_get_loggeduser(c));
+			else {
+				message_send_text(c, message_type_info, c, localize(c, "Thanks for login today."));
+				message_send_text(c, message_type_info, c, localize(c, "See you tomorrow :)"));
+				conn_set_state(c, conn_state_destroy);
+			}
 
 			return 0;
 		}
@@ -2387,100 +2480,6 @@ namespace pvpgn
 			return 0;
 		}
 		
-		static int _handle_squelch_command(t_connection * c, char const *text)
-		{
-			t_account *  account;
-
-			std::vector<std::string> args = split_command(text, 1);
-
-			if (args[1].empty())
-			{
-				message_send_text(c, message_type_info, c, localize(c, "--------------------------------------------------------"));
-				message_send_text(c, message_type_error, c, localize(c, "Usage: /squelch [username] (alias: ignore, see also: /unsquelch)"));
-				message_send_text(c, message_type_info, c, localize(c, "** Blocks future messages sent from [username]."));
-				return -1;
-			}
-			text = args[1].c_str(); // username
-
-			/* D2 std::puts * before username */
-			if (text[0] == '*')
-				text++;
-
-			if (!(account = accountlist_find_account(text)))
-			{
-				message_send_text(c, message_type_error, c, localize(c, "That user doesn't exist!"));
-				return -1;
-			}
-
-			if (conn_get_account(c) == account)
-			{
-				message_send_text(c, message_type_error, c, localize(c, "You can't squelch yourself!"));
-				return -1;
-			}
-
-			if (conn_add_ignore(c, account) < 0)
-			{
-				message_send_text(c, message_type_error, c, localize(c, "Could not squelch user!"));
-				return -1;
-			}
-			else
-			{
-				msgtemp = localize(c, " User {} has been squelched.", account_get_name(account));
-				message_send_text(c, message_type_info, c, msgtemp);
-			}
-
-			return 0;
-		}
-
-		static int _handle_unsquelch_command(t_connection * c, char const *text)
-		{
-			t_account * account;
-			t_connection * dest_c;
-
-			std::vector<std::string> args = split_command(text, 1);
-
-			if (args[1].empty())
-			{
-				message_send_text(c, message_type_info, c, localize(c, "--------------------------------------------------------"));
-				message_send_text(c, message_type_error, c, localize(c, "Usage: /unsquelch [username] (alias: /unignore)"));
-				message_send_text(c, message_type_info, c, localize(c, "** Allows a previously squelched [player] to talk to you normally."));
-				return -1;
-			}
-			text = args[1].c_str(); // username
-
-			/* D2 std::puts * before username */
-			if (text[0] == '*')
-				text++;
-
-			if (!(account = accountlist_find_account(text)))
-			{
-				message_send_text(c, message_type_error, c, localize(c, "That user doesn't exist!"));
-				return -1;
-			}
-
-			if (conn_del_ignore(c, account) < 0)
-			{
-				message_send_text(c, message_type_info, c, localize(c, "User was not being ignored."));
-				return -1;
-			}
-			else
-			{
-				t_message * message;
-
-				message_send_text(c, message_type_info, c, localize(c, "No longer ignoring."));
-
-				if ((dest_c = account_get_conn(account)))
-				{
-					if (!(message = message_create(message_type_userflags, dest_c, NULL))) /* handles NULL text */
-						return -1;
-					message_send(message, c);
-					message_destroy(message);
-				}
-			}
-
-			return 0;
-		}
-		
 		static int _handle_kick_command(t_connection * c, char const *text)
 		{
 			char const * username;
@@ -2628,72 +2627,6 @@ namespace pvpgn
 
 			message_destroy(message);
 
-			return 0;
-		}
-
-		static int _handle_lusers_command(t_connection * c, char const *text)
-		{
-			t_channel *    channel;
-			t_elem const * curr;
-			char const *   banned;
-			unsigned int   i;
-
-			if (!(channel = conn_get_channel(c)))
-			{
-				message_send_text(c, message_type_error, c, localize(c, "This command can only be used inside a channel."));
-				return -1;
-			}
-
-			std::snprintf(msgtemp0, sizeof msgtemp0, "%s", localize(c, "Banned users:").c_str());
-			i = std::strlen(msgtemp0);
-			LIST_TRAVERSE_CONST(channel_get_banlist(channel), curr)
-			{
-				banned = (char*)elem_get_data(curr);
-				if (i + std::strlen(banned) + 2 > sizeof(msgtemp0)) /* " ", name, '\0' */
-				{
-					message_send_text(c, message_type_info, c, msgtemp0);
-					i = 0;
-				}
-				std::sprintf(&msgtemp0[i], " %s", banned);
-				i += std::strlen(&msgtemp0[i]);
-			}
-			if (i > 0)
-				message_send_text(c, message_type_info, c, msgtemp0);
-
-			return 0;
-		}
-
-		static int _news_cb(std::time_t date, t_lstr *lstr, void *data)
-		{
-			char	strdate[64];
-			struct std::tm 	*tm;
-			char	save, *p, *q;
-			t_connection *c = (t_connection*)data;
-
-			tm = std::localtime(&date);
-			if (tm)
-				std::strftime(strdate, 64, "%B %d, %Y", tm);
-			else
-				std::snprintf(strdate, sizeof strdate, "%s", localize(c, "(invalid date)").c_str());
-
-			message_send_text(c, message_type_info, c, strdate);
-
-			for (p = lstr_get_str(lstr); *p;) {
-				for (q = p; *q && *q != '\r' && *q != '\n'; q++);
-				save = *q;
-				*q = '\0';
-				message_send_text(c, message_type_info, c, p);
-				*q = save;
-				p = q;
-				for (; *p == '\n' || *p == '\r'; p++);
-			}
-
-			return 0;
-		}
-
-		static int _handle_news_command(t_connection * c, char const *text)
-		{
-			news_traverse(_news_cb, c);
 			return 0;
 		}
 
@@ -3024,102 +2957,6 @@ namespace pvpgn
 			return 0;
 		}
 
-		static int _handle_connections_command(t_connection *c, char const *text)
-		{
-			t_elem const * curr;
-			t_connection * conn;
-			char           name[19];
-			char const *   channel_name;
-			char           clienttag_str[5];
-
-			if (!prefs_get_enable_conn_all() && !(account_get_command_groups(conn_get_account(c)) & command_get_group("/admin-con"))) /* default to false */
-			{
-				message_send_text(c, message_type_error, c, localize(c, "This command is only enabled for admins."));
-				return -1;
-			}
-
-			message_send_text(c, message_type_info, c, localize(c, "Current connections:"));
-
-			std::vector<std::string> args = split_command(text, 1);
-			text = args[1].c_str();
-
-			if (text[0] == '\0')
-			{
-				msgtemp = localize(c, " -class -tag -----name------ -lat(ms)- ----channel---- --game--");
-				message_send_text(c, message_type_info, c, msgtemp);
-			}
-			else
-			if (std::strcmp(text, "all") == 0) /* print extended info */
-			{
-				if (prefs_get_hide_addr() && !(account_get_command_groups(conn_get_account(c)) & command_get_group("/admin-addr")))
-					msgtemp = localize(c, " -#- -class ----state--- -tag -----name------ -session-- -flag- -lat(ms)- ----channel---- --game--");
-				else
-					msgtemp = localize(c, " -#- -class ----state--- -tag -----name------ -session-- -flag- -lat(ms)- ----channel---- --game-- ---------addr--------");
-				message_send_text(c, message_type_info, c, msgtemp);
-			}
-			else
-			{
-				message_send_text(c, message_type_error, c, localize(c, "Unknown option."));
-				return -1;
-			}
-
-			LIST_TRAVERSE_CONST(connlist(), curr)
-			{
-				conn = (t_connection*)elem_get_data(curr);
-				std::snprintf(name, sizeof name, "%s", conn_get_account(conn) ? conn_get_username(conn) : "(none)");
-
-				if (conn_get_channel(conn) != NULL)
-					channel_name = channel_get_name(conn_get_channel(conn));
-				else
-					channel_name = localize(c, "none").c_str();
-
-				std::string game_name;
-				if (conn_get_game(conn) != NULL)
-					game_name = game_get_name(conn_get_game(conn));
-				else
-					game_name = localize(c, "none");
-
-				if (text[0] == '\0')
-					std::snprintf(msgtemp0, sizeof(msgtemp0), " %-6.6s %4.4s %-15.15s %9u %-16.16s %-8.8s",
-					conn_class_get_str(conn_get_class(conn)),
-					tag_uint_to_str(clienttag_str, conn_get_fake_clienttag(conn)),
-					name,
-					conn_get_latency(conn),
-					channel_name,
-					game_name.c_str());
-				else
-				if (prefs_get_hide_addr() && !(account_get_command_groups(conn_get_account(c)) & command_get_group("/admin-addr"))) /* default to false */
-					std::snprintf(msgtemp0, sizeof(msgtemp0), " %3d %-6.6s %-12.12s %4.4s %-15.15s 0x%08x 0x%04x %9u %-16.16s %-8.8s",
-					conn_get_socket(conn),
-					conn_class_get_str(conn_get_class(conn)),
-					conn_state_get_str(conn_get_state(conn)),
-					tag_uint_to_str(clienttag_str, conn_get_fake_clienttag(conn)),
-					name,
-					conn_get_sessionkey(conn),
-					conn_get_flags(conn),
-					conn_get_latency(conn),
-					channel_name,
-					game_name.c_str());
-				else
-					std::snprintf(msgtemp0, sizeof(msgtemp0), " %3d %-6.6s %-12.12s %4.4s %-15.15s 0x%08x 0x%04x %9u %-16.16s %-8.8s %.16s",
-					conn_get_socket(conn),
-					conn_class_get_str(conn_get_class(conn)),
-					conn_state_get_str(conn_get_state(conn)),
-					tag_uint_to_str(clienttag_str, conn_get_fake_clienttag(conn)),
-					name,
-					conn_get_sessionkey(conn),
-					conn_get_flags(conn),
-					conn_get_latency(conn),
-					channel_name,
-					game_name.c_str(),
-					addr_num_to_addr_str(conn_get_addr(conn), conn_get_port(conn)));
-
-				message_send_text(c, message_type_info, c, msgtemp0);
-			}
-
-			return 0;
-		}
-
 		static int _handle_finger_command(t_connection * c, char const *text)
 		{
 			char const * dest;
@@ -3279,56 +3116,6 @@ namespace pvpgn
 			return 0;
 		}
 
-
-		/* FIXME: do we want to show just Server Admin or Channel Admin Also? [Omega] */
-		static int _handle_admins_command(t_connection * c, char const *text)
-		{
-			unsigned int    i;
-			t_elem const *  curr;
-			t_connection *  tc;
-			char const *    nick;
-
-			std::snprintf(msgtemp0, sizeof msgtemp0, "%s", localize(c, "Currently logged on Administrators:").c_str());
-			i = std::strlen(msgtemp0);
-			LIST_TRAVERSE_CONST(connlist(), curr)
-			{
-				tc = (t_connection*)elem_get_data(curr);
-				if (!tc)
-					continue;
-				if (!conn_get_account(tc))
-					continue;
-				if (account_get_auth_admin(conn_get_account(tc), NULL) == 1)
-				{
-					if ((nick = conn_get_username(tc)))
-					{
-						if (i + std::strlen(nick) + 2 > sizeof(msgtemp0)) /* " ", name, '\0' */
-						{
-							message_send_text(c, message_type_info, c, msgtemp0);
-							i = 0;
-						}
-						std::sprintf(&msgtemp0[i], " %s", nick);
-						i += std::strlen(&msgtemp0[i]);
-					}
-				}
-			}
-			if (i > 0)
-				message_send_text(c, message_type_info, c, msgtemp0);
-
-			return 0;
-		}
-
-		static int _handle_quit_command(t_connection * c, char const *text)
-		{
-			if (conn_get_game(c))
-				eventlog(eventlog_level_warn, __FUNCTION__, "[{}] user '{}' tried to disconnect while in game, cheat attempt ?", conn_get_socket(c), conn_get_loggeduser(c));
-			else {
-				message_send_text(c, message_type_info, c, localize(c, "Connection closed."));
-				conn_set_state(c, conn_state_destroy);
-			}
-
-			return 0;
-		}
-
 		static int _handle_kill_command(t_connection * c, char const *text)
 		{
 			t_connection *	user;
@@ -3408,221 +3195,6 @@ namespace pvpgn
 			return 0;
 		}
 
-		static int _handle_gameinfo_command(t_connection * c, char const *text)
-		{
-			t_game const * game;
-			char clienttag_str[5];
-
-			std::vector<std::string> args = split_command(text, 1);
-			text = args[1].c_str();
-
-			if (text[0] == '\0')
-			{
-				// current user game
-				if (!(game = conn_get_game(c)))
-				{
-					message_send_text(c, message_type_error, c, localize(c, "You are not in a game."));
-					return -1;
-				}
-			}
-			else
-			if (!(game = gamelist_find_game_available(text, conn_get_clienttag(c), game_type_all)))
-			{
-				message_send_text(c, message_type_error, c, localize(c, "That game does not exist."));
-				return -1;
-			}
-			std::string pub = localize(c, "public");
-			std::string prv = localize(c, "private");
-			msgtemp = localize(c, "Name: {}    ID: {} ({})", game_get_name(game), game_get_id(game), game_get_flag(game) != game_flag_private ? pub : prv);
-			message_send_text(c, message_type_info, c, msgtemp);
-
-			{
-				t_account *  owner;
-				char const * tname;
-				char const * namestr;
-
-				if (!(owner = conn_get_account(game_get_owner(game))))
-				{
-					tname = NULL;
-					namestr = localize(c, "none").c_str();
-				}
-				else
-				if (!(tname = conn_get_loggeduser(game_get_owner(game))))
-					namestr = localize(c, "unknown").c_str();
-				else
-					namestr = tname;
-
-				msgtemp = localize(c, "Owner: {}", namestr);
-
-			}
-			message_send_text(c, message_type_info, c, msgtemp);
-
-			if (!prefs_get_hide_addr() || (account_get_command_groups(conn_get_account(c)) & command_get_group("/admin-addr"))) /* default to false */
-			{
-				unsigned int   addr;
-				unsigned short port;
-				unsigned int   taddr;
-				unsigned short tport;
-
-				taddr = addr = game_get_addr(game);
-				tport = port = game_get_port(game);
-				trans_net(conn_get_addr(c), &taddr, &tport);
-
-				if (taddr == addr && tport == port)
-					msgtemp = localize(c, "Address: {}",
-						addr_num_to_addr_str(addr, port));
-				else
-					msgtemp = localize(c, "Address: {} (trans {})",
-						addr_num_to_addr_str(addr, port),
-						addr_num_to_addr_str(taddr, tport));
-				message_send_text(c, message_type_info, c, msgtemp);
-			}
-
-			msgtemp = localize(c, "Client: {} (version {}, startver {})", tag_uint_to_str(clienttag_str, game_get_clienttag(game)), vernum_to_verstr(game_get_version(game)), game_get_startver(game));
-			message_send_text(c, message_type_info, c, msgtemp);
-
-			{
-				std::time_t      gametime;
-				struct std::tm * gmgametime;
-
-				gametime = game_get_create_time(game);
-				if (!(gmgametime = std::localtime(&gametime)))
-					std::strcpy(msgtemp0, "?");
-				else
-					std::strftime(msgtemp0, sizeof(msgtemp0), GAME_TIME_FORMAT, gmgametime);
-				msgtemp = localize(c, "Created: {}", msgtemp0);
-				message_send_text(c, message_type_info, c, msgtemp);
-
-				gametime = game_get_start_time(game);
-				if (gametime != (std::time_t)0)
-				{
-					if (!(gmgametime = std::localtime(&gametime)))
-						std::strcpy(msgtemp0, "?");
-					else
-						std::strftime(msgtemp0, sizeof(msgtemp0), GAME_TIME_FORMAT, gmgametime);
-				}
-				else
-					std::strcpy(msgtemp0, "");
-				msgtemp = localize(c, "Started: {}", msgtemp0);
-				message_send_text(c, message_type_info, c, msgtemp);
-			}
-
-			msgtemp = localize(c, "Status: {}", game_status_get_str(game_get_status(game)));
-			message_send_text(c, message_type_info, c, msgtemp);
-
-			msgtemp = localize(c, "Type: {}", game_type_get_str(game_get_type(game)));
-			message_send_text(c, message_type_info, c, msgtemp);
-
-			msgtemp = localize(c, "Speed: {}", game_speed_get_str(game_get_speed(game)));
-			message_send_text(c, message_type_info, c, msgtemp);
-
-			msgtemp = localize(c, "Difficulty: {}", game_difficulty_get_str(game_get_difficulty(game)));
-			message_send_text(c, message_type_info, c, msgtemp);
-
-			msgtemp = localize(c, "Option: {}", game_option_get_str(game_get_option(game)));
-			message_send_text(c, message_type_info, c, msgtemp);
-
-			{
-				char const * mapname;
-
-				if (!(mapname = game_get_mapname(game)))
-					mapname = localize(c, "unknown").c_str();
-				msgtemp = localize(c, "Map: {}", mapname);
-				message_send_text(c, message_type_info, c, msgtemp);
-			}
-
-			msgtemp = localize(c, "Map Size: {}x{}", game_get_mapsize_x(game), game_get_mapsize_y(game));
-			message_send_text(c, message_type_info, c, msgtemp);
-			msgtemp = localize(c, "Map Tileset: {}", game_tileset_get_str(game_get_tileset(game)));
-			message_send_text(c, message_type_info, c, msgtemp);
-			msgtemp = localize(c, "Map Type: {}", game_maptype_get_str(game_get_maptype(game)));
-			message_send_text(c, message_type_info, c, msgtemp);
-
-			msgtemp = localize(c, "Players: {} current, {} total, {} max", game_get_ref(game), game_get_count(game), game_get_maxplayers(game));
-			message_send_text(c, message_type_info, c, msgtemp);
-
-			{
-				char const * description;
-
-				if (!(description = game_get_description(game)))
-					description = "";
-				msgtemp = localize(c, "Description: {}", description);
-			}
-
-			return 0;
-		}
-
-		static int _handle_ladderactivate_command(t_connection * c, char const *text)
-		{
-			ladders.activate();
-			message_send_text(c, message_type_info, c, localize(c, "Copied current scores to active scores on all ladders."));
-			return 0;
-		}
-
-		static int _handle_rehash_command(t_connection * c, char const *text)
-		{
-			int mode = restart_mode_all; // all by default
-
-			std::vector<std::string> args = split_command(text, 1);
-
-			if (args[1].empty())
-			{
-				describe_command(c, args[0].c_str());
-				return -1;
-			}
-			std::string mode_str = args[1];
-
-			if (mode_str == "all")
-				mode = restart_mode_all;
-			else if (mode_str == "i18n")
-				mode = restart_mode_i18n;
-			else if (mode_str == "channels")
-				mode = restart_mode_channels;
-			else if (mode_str == "realms")
-				mode = restart_mode_realms;
-			else if (mode_str == "autoupdate")
-				mode = restart_mode_autoupdate;
-			else if (mode_str == "news")
-				mode = restart_mode_news;
-			else if (mode_str == "versioncheck")
-				mode = restart_mode_versioncheck;
-			else if (mode_str == "ipbans")
-				mode = restart_mode_ipbans;
-			else if (mode_str == "helpfile")
-				mode = restart_mode_helpfile;
-			else if (mode_str == "banners")
-				mode = restart_mode_banners;
-			else if (mode_str == "tracker")
-				mode = restart_mode_tracker;
-			else if (mode_str == "commandgroups")
-				mode = restart_mode_commandgroups;
-			else if (mode_str == "aliasfile")
-				mode = restart_mode_aliasfile;
-			else if (mode_str == "transfile")
-				mode = restart_mode_transfile;
-			else if (mode_str == "tournament")
-				mode = restart_mode_tournament;
-			else if (mode_str == "icons")
-				mode = restart_mode_icons;
-			else if (mode_str == "anongame")
-				mode = restart_mode_anongame;
-			else if (mode_str == "lua")
-				mode = restart_mode_lua;
-			else
-			{
-				message_send_text(c, message_type_info, c, localize(c, "Invalid mode."));
-				return -1;
-			}
-
-			server_restart_wraper(mode);
-			msgtemp = localize(c, "Rehash of \"{}\" is complete!", mode_str.c_str());
-			message_send_text(c, message_type_info, c, msgtemp);
-			return 0;
-		}
-
-		/**
-		* /find <substr to search for inside username>
-		*/
 		static int _handle_find_command(t_connection * c, char const *text)
 		{
 			unsigned int  i = 0;
