@@ -1,51 +1,3 @@
-#	///////////////////////////////////////////////////////////////////////
-#	//////////////     Command Groups Configuration File     //////////////
-#	///////////////////////////////////////////////////////////////////////
-#
-#	Format of this file is simple. There are 8 different groups.
-#
-#	Each line must start with the group number followed by as many
-#	commands as you wish.
-#
-#	Group '1' is common user commands and can be used by any user.
-#
-#	Rights to use commands in Groups '2' through '8' must be given
-#	to a user using the /commandgroups or /cg command.
-#
-#	usage /cg <add|del|list> <username> [<groups>]
-#
-#	ie. /cg list pvpgnplayer  <-- list the current command groups for user
-#	ie. /cg add pvpgnplayer 234  <-- adds groups 2, 3, & 4 to user
-#	ie. /cg del pvpgnplayer 24 <-- deletes groups 2 & 4 from user
-#
-#	If the following commands were done, pvpgnplayer would have access
-#	to commands in groups 1 & 3
-#
-#	Commands not listed in this file will be deactivated by the server
-#
-#	FILE MODE:
-#	    Add the following line to your user file to get access to all groups:
-#	    	"BNET\\auth\\command_groups"="255"
-#
-#	    For regular users to be able to use the regular commands make sure to
-#	    	use the updated 'bnetd_default_user' file
-#
-#	SQL MODE:
-#	    Issue the following commands to get access to all groups:
-#	    	ALTER TABLE BNET ADD COLUMN auth_command_groups VARCHAR(128) default '1';
-#	    	UPDATE BNET SET auth_command_groups='255' WHERE uid='youruserid'
-#	    
-#	    For regular users to be able to use the regular commands
-#	    issue the following command:
-#	    	UPDATE BNET SET auth_command_groups='1' WHERE uid='0'
-#
-
-# <group>	<command>	[<command2> 	<command3>	<...>]
-
-#	////////////////////////////////////////////////
-#	///// Regular commands usable by all users /////
-#	////////////////////////////////////////////////
-
 1	/c /clan
 1	/f /friends
 1	/me /emote
@@ -60,7 +12,6 @@
 1	/time
 1	/channel /join /j /rejoin
 1	/away /dnd /ignore /unignore /squelch /unsquelch
-1	/watch /unwatch /watchall /unwatchall
 1	/news /games /channels /chs /admins
 1	/logout /quit /exit
 1	/ladderinfo
@@ -186,5 +137,6 @@
 #	//////////////////////////////////////
 
 # New
+1	/watch /unwatch /watchall /unwatchall
 8 /botchatblue /botchatred
 8 /operator /admin
