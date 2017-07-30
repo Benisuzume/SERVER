@@ -472,13 +472,12 @@ namespace pvpgn
 		static int _handle_tag_command(t_connection * c, char const * text);
 		static int _handle_ipscan_command(t_connection * c, char const * text);
 		static int _handle_set_command(t_connection * c, char const * text);
-		static int _handle_motd_command(t_connection * c, char const * text);
 		static int _handle_ping_command(t_connection * c, char const * text);
 		static int _handle_commandgroups_command(t_connection * c, char const * text);
 		static int _handle_topic_command(t_connection * c, char const * text);
 		static int _handle_moderate_command(t_connection * c, char const * text);
 		static int _handle_clearstats_command(t_connection * c, char const * text);
-		static int _handle_tos_command(t_connection * c, char const * text);
+		
 		static int _handle_alert_command(t_connection * c, char const * text);
 
 		static const t_command_table_row standard_command_table[] =
@@ -526,7 +525,6 @@ namespace pvpgn
 			{ "/away", _handle_away_command },
 			{ "/dnd", _handle_dnd_command },
 			{ "/kick", _handle_kick_command },
-			{ "/tos", _handle_tos_command },
 
 			{ "/ann", _handle_announce_command },
 			{ "/r", _handle_reply_command },
@@ -579,7 +577,6 @@ namespace pvpgn
 			{ "/ipban", handle_ipban_command }, // in ipban.c
 			{ "/ipscan", _handle_ipscan_command },
 			{ "/set", _handle_set_command },
-			{ "/motd", _handle_motd_command },
 			{ "/latency", _handle_ping_command },
 			{ "/ping", _handle_ping_command },
 			{ "/p", _handle_ping_command },
@@ -4445,85 +4442,6 @@ namespace pvpgn
 			}
 			return 0;
 		}
-
-		static int _handle_motd_command(t_connection * c, char const *text)
-		{
-			std::string filename = i18n_filename(prefs_get_motdfile(), conn_get_gamelang_localized(c));
-
-			std::FILE* fp = std::fopen(filename.c_str(), "r");
-			if (fp)
-			{
-				message_send_file(c, fp);
-				if (std::fclose(fp) < 0)
-					eventlog(eventlog_level_error, __FUNCTION__, "could not close motd file \"{}\" after reading (std::fopen: {})", filename, std::strerror(errno));
-			}
-			else
-			{
-				eventlog(eventlog_level_error, __FUNCTION__, "could not open motd file \"{}\" for reading (std::fopen: {})", filename, std::strerror(errno));
-				message_send_text(c, message_type_error, c, localize(c, "Unable to open motd."));
-			}
-
-			return 0;
-		}
-
-		static int _handle_tos_command(t_connection * c, char const * text)
-		{
-			/* handle /tos - shows terms of service by user request -raistlinthewiz */
-
-			std::string filename = i18n_filename(prefs_get_tosfile(), conn_get_gamelang_localized(c));
-			/* FIXME: if user enters relative path to tos file in config,
-			   above routine will fail */
-			std::FILE* fp = std::fopen(filename.c_str(), "r");
-			if (fp)
-			{
-				char * buff;
-				unsigned len;
-
-				while ((buff = file_get_line(fp)))
-				{
-
-					if ((len = std::strlen(buff)) < MAX_MESSAGE_LEN)
-					{
-						i18n_convert(c, buff);
-						message_send_text(c, message_type_info, c, buff);
-					}
-					else {
-						/*  lines in TOS file can be > MAX_MESSAGE_LEN, so split them
-						truncating is not an option for TOS -raistlinthewiz
-						*/
-
-						while (len  > MAX_MESSAGE_LEN - 1)
-						{
-							std::strncpy(msgtemp0, buff, MAX_MESSAGE_LEN - 1);
-							msgtemp0[MAX_MESSAGE_LEN-1] = '\0';
-							buff += MAX_MESSAGE_LEN - 1;
-							len -= MAX_MESSAGE_LEN - 1;
-							message_send_text(c, message_type_info, c, msgtemp0);
-						}
-
-						if (len > 0) /* does it exist a small last part ? */
-						{
-							i18n_convert(c, buff);
-							message_send_text(c, message_type_info, c, buff);
-						}
-
-					}
-				}
-
-
-				if (std::fclose(fp) < 0)
-					eventlog(eventlog_level_error, __FUNCTION__, "could not close tos file \"{}\" after reading (std::fopen: {})", filename, std::strerror(errno));
-			}
-			else
-			{
-				eventlog(eventlog_level_error, __FUNCTION__, "could not open tos file \"{}\" for reading (std::fopen: {})", filename, std::strerror(errno));
-				message_send_text(c, message_type_error, c, localize(c, "Unable to send TOS (Terms of Service)."));
-			}
-
-			return 0;
-
-		}
-
 
 		static int _handle_ping_command(t_connection * c, char const *text)
 		{
