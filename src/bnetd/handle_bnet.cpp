@@ -3556,10 +3556,10 @@ namespace pvpgn
 					break;
 				case CLIENT_JOINCHANNEL_GENERIC:
 
-					if ((user_clan = account_get_clan(account)) && (clantag = clan_get_clantag(user_clan)))
+					if ((user_clan = account_get_clan(account)) && (clantag = clan_get_clanid(user_clan)))
 					{
 						std::ostringstream ostr;
-						ostr << "Clan " << clantag_to_str(clantag);
+						ostr << "" << account_get_channel(account);
 						tmpstr = ostr.str();
 						cname = tmpstr.c_str();
 					}
