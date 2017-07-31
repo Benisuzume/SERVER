@@ -97,7 +97,7 @@ maxusers_per_channel = 0
 savebyname = true
 sync_on_logoff = true
 hashtable_size = 61
-account_allowed_symbols = "-_[]"
+account_allowed_symbols = "|ï€€-_[]"
 account_force_username = false
 max_friends = 200
 
