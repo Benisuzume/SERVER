@@ -213,7 +213,17 @@ namespace pvpgn
 
 			if (args[1].empty())
 			{
-				describe_command(c, args[0].c_str());
+				message_send_text(c, message_type_info, c, "--------------------------------------------------------");
+				message_send_text(c, message_type_error, c, "Usage: /icon add [username] [icon] (alias: a)");
+				message_send_text(c, message_type_info, c, "** Add icon into user stash.");
+				message_send_text(c, message_type_error, c, "Usage: /icon del [username] [icon] (alias: d)");
+				message_send_text(c, message_type_info, c, "** Remove icon from user stash.");
+				message_send_text(c, message_type_error, c, "Usage: /icon set [username] [icon] (alias: s)");
+				message_send_text(c, message_type_info, c, "** Set custom icon to user without adding it in user stash.");
+				message_send_text(c, message_type_error, c, "Usage: /icon list [username] (alias: l)");
+				message_send_text(c, message_type_info, c, "** Display icons in user's stash.");
+				message_send_text(c, message_type_error, c, "Usage: /icon list (alias: l)");
+				message_send_text(c, message_type_info, c, "** Display availaible icons in server stash that can be assigned to users");
 				return -1;
 			}
 			subcommand = args[1].c_str(); // sub command
@@ -230,12 +240,17 @@ namespace pvpgn
 				message_send_text(c, message_type_info, c, msgtemp);
 				return 0;
 			}
-
+			
+			if (username[0] == '\0')
+			{
+				message_send_text(c, message_type_error, c, localize(c, "You must supply a username!"));
+				return -1;
+			}
 
 			// find user account
 			if (!(account = accountlist_find_account(username)))
 			{
-				message_send_text(c, message_type_error, c, localize(c, "Invalid user."));
+				message_send_text(c, message_type_error, c, localize(c, "That user doesn't exist!"));
 				return -1;
 			}
 			user_c = account_get_conn(account);
@@ -247,14 +262,16 @@ namespace pvpgn
 				case 's':
 					if (iconname[0] == '\0')
 					{
-						describe_command(c, args[0].c_str());
+						message_send_text(c, message_type_info, c, "--------------------------------------------------------");
+						message_send_text(c, message_type_error, c, "Usage: /icon set [username] [icon] (alias: s)");
+						message_send_text(c, message_type_info, c, "** Set custom icon to user without adding it in user stash.");
 						return -1;
 					}
 
 					// unset value
 					if (strcasecmp(iconname, "default") == 0)
 					{
-						msgtemp = localize(c, "Set default icon for {}", account_get_name(account));
+						msgtemp = localize(c, " Set default icon for {}", account_get_name(account));
 						usericon = NULL;
 					}
 					// set usericon (reversed)
@@ -263,10 +280,10 @@ namespace pvpgn
 						// find icon in server stash
 						if (!(iconcode = customicons_stash_find(clienttag, iconname)))
 						{
-							message_send_text(c, message_type_error, c, localize(c, "That icon doesn't exist in server stash."));
+							message_send_text(c, message_type_error, c, localize(c, "That icon doesn't exist in server stash!"));
 							return -1;
 						}
-						msgtemp = localize(c, "Set new icon is succeed for {}", account_get_name(account));
+						msgtemp = localize(c, " Set new icon is succeed for {}", account_get_name(account));
 						usericon = strreverse((char*)iconcode);
 					}
 					account_set_user_icon(account, clienttag, usericon);
@@ -337,15 +354,25 @@ namespace pvpgn
 
 				// add
 				case 'a':
-					if (iconname[0] == '\0')
+				
+					if (args[2].empty())
 					{
-						describe_command(c, args[0].c_str());
+						message_send_text(c, message_type_error, c, localize(c, "You must supply a username!"));
 						return -1;
 					}
+					
+					if (iconname[0] == '\0')
+					{
+						message_send_text(c, message_type_info, c, "--------------------------------------------------------");
+						message_send_text(c, message_type_error, c, "Usage: /icon add [username] [icon] (alias: a)");
+						message_send_text(c, message_type_info, c, "** Add icon into user stash.");
+						return -1;
+					}
+					
 					// find icon in server stash
 					if (!(iconcode = customicons_stash_find(clienttag, iconname)))
 					{
-						message_send_text(c, message_type_error, c, localize(c, "That icon doesn't exist in server stash."));
+						message_send_text(c, message_type_error, c, localize(c, "That icon doesn't exist in server stash!"));
 						return -1;
 					}
 
@@ -366,7 +393,7 @@ namespace pvpgn
 
 							if (strcasecmp(_icon.c_str(), iconcode) == 0)
 							{
-								message_send_text(c, message_type_error, c, localize(c, "User already has that icon in stash."));
+								message_send_text(c, message_type_error, c, localize(c, "User already has that icon in stash!"));
 								return -1;
 							}
 						} while (iss);
@@ -379,7 +406,7 @@ namespace pvpgn
 					// save stash
 					account_set_user_iconstash(account, clienttag, output_icons.c_str());
 
-					msgtemp = localize(c, "Add new icon to {}'s stash.", account_get_name(account));
+					msgtemp = localize(c, " Add new icon to {}'s stash.", account_get_name(account));
 					message_send_text(c, message_type_info, c, msgtemp);
 
 					return 0;
@@ -389,7 +416,9 @@ namespace pvpgn
 				case 'd':
 					if (iconname[0] == '\0')
 					{
-						describe_command(c, args[0].c_str());
+						message_send_text(c, message_type_info, c, "--------------------------------------------------------");
+						message_send_text(c, message_type_error, c, "Usage: /icon del [username] [icon] (alias: d)");
+						message_send_text(c, message_type_info, c, "** Remove icon from user stash.");
 						return -1;
 					}
 					bool is_found = false;
@@ -429,13 +458,13 @@ namespace pvpgn
 					}
 					if (!is_found)
 					{
-						message_send_text(c, message_type_error, c, localize(c, "That icon doesn't exist in user stash."));
+						message_send_text(c, message_type_error, c, localize(c, "That icon doesn't exist in user stash!"));
 						return -1;
 					}
 					// save stash
 					account_set_user_iconstash(account, clienttag, output_icons.c_str());
 
-					msgtemp = localize(c, "Delete icon from {}'s stash.", account_get_name(account));
+					msgtemp = localize(c, " Delete icon from {}'s stash.", account_get_name(account));
 					message_send_text(c, message_type_info, c, msgtemp);
 
 					return 0;
