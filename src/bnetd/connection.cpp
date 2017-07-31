@@ -1923,40 +1923,7 @@ namespace pvpgn
 				clantag = str_to_clantag(&channelname[5]);
 
 			if ((clantag) && !((account_get_auth_admin(acc, channelname) == 1) || (account_get_auth_admin(acc, NULL) == 1))) {
-				/* PELISH: Admins should be able to join any channel */
 				clan = account_get_clan(acc);
-				if ((!clan) || (clan_get_clantag(clan) != clantag)) {
-					if (!channel)
-					{
-						message_send_text(c, message_type_error, c, std::string("Unable to join channel " + std::string(channelname) + ", there is no member of that clan in the channel!").c_str());
-
-						if (conn_get_game(c) || c->protocol.chat.channel == NULL)
-						{
-							// FIXME: This is not tested to be according to battle.net!!
-							// This is fix for empty clan channels with preventing to join CHANNEL_NAME_BANNED when is used _handle_join_command
-							message_send_text(c, message_type_error, c, std::string("You have been redirected to " + std::string(CHANNEL_NAME_BANNED)).c_str());
-							channel = channellist_find_channel_by_name(CHANNEL_NAME_BANNED, conn_get_country(c), realm_get_name(conn_get_realm(c)));
-						}
-						else
-							return 0;
-					}
-					else
-					{
-						t_clan * ch_clan;
-						if ((ch_clan = clanlist_find_clan_by_clantag(clantag)) && (clan_get_channel_type(ch_clan) == 1))
-						{
-							message_send_text(c, message_type_error, c, localize(c, "This is a private clan channel, unable to join!"));
-							return 0;
-						}
-					}
-				}
-				else {
-					if ((clan) && (clan_get_clantag(clan) == clantag) && (member = account_get_clanmember(acc))) {
-						if (clanmember_get_status(member) >= CLAN_SHAMAN)
-							/* PELISH: Giving tmpOP to SHAMAN and CHIEFTAIN on clanchannel */
-							conn_set_tmpOP_channel(c, channelname);
-					}
-				}
 			}
 
 			if (c->protocol.chat.channel)
@@ -2031,13 +1998,6 @@ namespace pvpgn
 
 			if (c->protocol.chat.channel && (channel_get_flags(c->protocol.chat.channel) & channel_flags_thevoid))
 				message_send_text(c, message_type_info, c, localize(c, "This channel does not have chat privileges."));
-			if (clantag && clan && (clan_get_clantag(clan) == clantag))
-			{
-				char msgtemp[MAX_MESSAGE_LEN];
-				std::sprintf(msgtemp, "%s", clan_get_motd(clan));
-				message_send_text(c, message_type_info, c, msgtemp);
-			}
-
 			
 			if (conn_is_irc_variant(c) == 0)
 			{
