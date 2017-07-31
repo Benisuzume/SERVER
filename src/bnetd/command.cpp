@@ -754,7 +754,7 @@ namespace pvpgn
 				}
 				else {
 					account_set_auth_admin(acc, NULL, 1);
-					msgtemp = localize(c, "ï€€ User {} has been promoted to administrators.", account_get_name(acc));
+					msgtemp = localize(c, "User {} has been promoted to administrators.", account_get_name(acc));
 					message_send_text(c, message_type_info, c, msgtemp);
 					changed = 1;
 				}
@@ -766,7 +766,7 @@ namespace pvpgn
 				}
 				else {
 					account_set_auth_admin(acc, NULL, 0);
-					msgtemp = localize(c, "ï€€ User {} has been demoted from administrators.", account_get_name(acc));
+					msgtemp = localize(c, "User {} has been demoted from administrators.", account_get_name(acc));
 					message_send_text(c, message_type_info, c, msgtemp);
 					changed = 1;
 				}
@@ -815,7 +815,7 @@ namespace pvpgn
 					message_send_text(c, message_type_error, c, "That user already on operators!");
 				else {
 					account_set_auth_operator(acc, NULL, 1);
-					msgtemp = localize(c, "ï€€ User {} has been promoted to operators.", account_get_name(acc));
+					msgtemp = localize(c, "User {} has been promoted to operators.", account_get_name(acc));
 					message_send_text(c, message_type_info, c, msgtemp);
 					changed = 1;
 				}
@@ -827,7 +827,7 @@ namespace pvpgn
 				}
 				else {
 					account_set_auth_operator(acc, NULL, 0);
-					msgtemp = localize(c, "ï€€ User {} has been demoted from operators.", account_get_name(acc));
+					msgtemp = localize(c, "User {} has been demoted from operators.", account_get_name(acc));
 					message_send_text(c, message_type_info, c, msgtemp);
 					changed = 1;
 				}
@@ -865,7 +865,7 @@ namespace pvpgn
 			}
 			else
 			{
-				msgtemp = localize(c, "ï€€ User {} added to your watch list.", account_get_name(account));
+				msgtemp = localize(c, "User {} added to your watch list.", account_get_name(account));
 				message_send_text(c, message_type_info, c, msgtemp);
 			}
 
@@ -899,7 +899,7 @@ namespace pvpgn
 			}
 			else
 			{
-				msgtemp = localize(c, "ï€€ User {} removed from your watch list.", account_get_name(account));
+				msgtemp = localize(c, "User {} removed from your watch list.", account_get_name(account));
 				message_send_text(c, message_type_info, c, msgtemp);
 			}
 
@@ -927,11 +927,11 @@ namespace pvpgn
 				message_send_text(c, message_type_error, c, localize(c, "Add to watch list failed!"));
 			else
 			if (clienttag) {
-				msgtemp = localize(c, "ï€€ All {} users added to your watch list.", tag_uint_to_str((char*)clienttag_str, clienttag));
+				msgtemp = localize(c, "All {} users added to your watch list.", tag_uint_to_str((char*)clienttag_str, clienttag));
 				message_send_text(c, message_type_info, c, msgtemp);
 			}
 			else
-				message_send_text(c, message_type_info, c, localize(c, "ï€€ All users added to your watch list."));
+				message_send_text(c, message_type_info, c, localize(c, "All users added to your watch list."));
 
 			return 0;
 		}
@@ -957,11 +957,11 @@ namespace pvpgn
 				message_send_text(c, message_type_error, c, localize(c, "Removal from watch list failed!"));
 			else
 			if (clienttag) {
-				msgtemp = localize(c, "ï€€ All {} users removed from your watch list.", tag_uint_to_str((char*)clienttag_str, clienttag));
+				msgtemp = localize(c, "All {} users removed from your watch list.", tag_uint_to_str((char*)clienttag_str, clienttag));
 				message_send_text(c, message_type_info, c, msgtemp);
 			}
 			else
-				message_send_text(c, message_type_info, c, localize(c, "ï€€ All users removed from your watch list."));
+				message_send_text(c, message_type_info, c, localize(c, "All users removed from your watch list."));
 
 			return 0;
 		}
@@ -1004,7 +1004,7 @@ namespace pvpgn
 			}
 			else
 			{
-				msgtemp = localize(c, " User {} has been squelched.", account_get_name(account));
+				msgtemp = localize(c, "User {} has been squelched.", account_get_name(account));
 				message_send_text(c, message_type_info, c, msgtemp);
 			}
 
@@ -1109,7 +1109,7 @@ namespace pvpgn
 
 
 			// send message to author
-			msgtemp = localize(c, " User {} is now locked from server.", account_get_name(account));
+			msgtemp = localize(c, "User {} is now locked from server.", account_get_name(account));
 			message_send_text(c, message_type_info, c, msgtemp);
 
 			return 0;
@@ -1137,7 +1137,7 @@ namespace pvpgn
 			}
 
 			account_set_auth_lock(account, 0);
-			msgtemp = localize(c, " User {} is now unlocked from server.", account_get_name(account));
+			msgtemp = localize(c, "User {} is now unlocked from server.", account_get_name(account));
 			message_send_text(c, message_type_info, c, msgtemp);
 			
 			return 0;
@@ -1178,7 +1178,7 @@ namespace pvpgn
 			account_set_auth_muteby(account, conn_get_username(c));
 
 			// send message to author
-			msgtemp = localize(c, " User {} is now muted", account_get_name(account));
+			msgtemp = localize(c, "User {} is now muted", account_get_name(account));
 			message_send_text(c, message_type_info, c, msgtemp);
 
 			return 0;
@@ -1206,7 +1206,7 @@ namespace pvpgn
 			}
 
 			account_set_auth_mute(account, 0);
-			msgtemp = localize(c, " User {} is now unmuted from server.", account_get_name(account));
+			msgtemp = localize(c, "User {} is now unmuted from server.", account_get_name(account));
 			message_send_text(c, message_type_info, c, msgtemp);
 			
 			return 0;
@@ -1377,7 +1377,7 @@ namespace pvpgn
 
 			std::snprintf(msgtemp0, sizeof(msgtemp0), "0x%08x.", newflag);
 
-			msgtemp = localize(c, " Flags set to {}.", msgtemp0);
+			msgtemp = localize(c, "Flags set to {}.", msgtemp0);
 			message_send_text(c, message_type_info, c, msgtemp);
 			return 0;
 		}
@@ -1406,7 +1406,7 @@ namespace pvpgn
 				channel_rejoin(c);
 				conn_set_flags(c, oldflags);
 				channel_update_userflags(c);
-				msgtemp = localize(c, " Client tag set to {}.", tag_s);
+				msgtemp = localize(c, "Client tag set to {}.", tag_s);
 			}
 			else
 				msgtemp = localize(c, "Invalid clienttag {} specified!", tag_s);
@@ -1557,7 +1557,7 @@ namespace pvpgn
 						else
 						{
 							conn_set_tmpVOICE_channel(dst_c, channel);
-							msgtemp = localize(c, " User {} has been granted voice in this channel.", account_get_name(acc));
+							msgtemp = localize(c, "User {} has been granted voice in this channel.", account_get_name(acc));
 							message_send_text(c, message_type_info, c, msgtemp);
 							changed = 1;
 						}
@@ -1609,7 +1609,7 @@ namespace pvpgn
 				if ((account_get_auth_admin(conn_get_account(c), channel) == 1) || (account_get_auth_admin(conn_get_account(c), NULL) == 1))
 				{
 					account_set_auth_voice(acc, channel, 0);
-					msgtemp = localize(c, " User {} has been removed from voice list.", account_get_name(acc));
+					msgtemp = localize(c, "User {} has been removed from voice list.", account_get_name(acc));
 					message_send_text(c, message_type_info, c, msgtemp);
 					changed = 1;
 				}
@@ -1626,7 +1626,7 @@ namespace pvpgn
 			if ((dst_c) && channel_conn_has_tmpVOICE(conn_get_channel(c), dst_c) == 1)
 			{
 				conn_set_tmpVOICE_channel(dst_c, NULL);
-				msgtemp = localize(c, " Voice has been taken from user {} in this channel", account_get_name(acc));
+				msgtemp = localize(c, "Voice has been taken from user {} in this channel", account_get_name(acc));
 				changed = 1;
 				done = 1;
 			}
@@ -1635,7 +1635,7 @@ namespace pvpgn
 
 			if (!done)
 			{
-				msgtemp = localize(c, " User {} has no voice in this channel, so it can't be taken away!", account_get_name(acc));
+				msgtemp = localize(c, "User {} has no voice in this channel, so it can't be taken away!", account_get_name(acc));
 				message_send_text(c, message_type_error, c, msgtemp);
 			}
 
@@ -1698,7 +1698,7 @@ namespace pvpgn
 					else
 					{
 						conn_set_tmpOP_channel(dst_c, channel);
-						msgtemp = localize(c, " User {} has been promoted to tmpOP in this channel.", username);
+						msgtemp = localize(c, "User {} has been promoted to tmpOP in this channel.", username);
 						message_send_text(c, message_type_info, c, msgtemp);
 						changed = 1;
 					}
@@ -2023,9 +2023,9 @@ namespace pvpgn
 				}
 
 				if (text[0] != '\0')
-					msgtemp = localize(c, " User {} has been kicked by {} ({}).", tname1, tname2, text);
+					msgtemp = localize(c, "User {} has been kicked by {} ({}).", tname1, tname2, text);
 				else
-					msgtemp = localize(c, " User {} has been kicked by {}.", tname1, tname2);
+					msgtemp = localize(c, "User {} has been kicked by {}.", tname1, tname2);
 				channel_message_send(channel, message_type_info, c, msgtemp.c_str());
 			}
 			conn_kick_channel(kuc, "Bye");
@@ -2094,10 +2094,10 @@ namespace pvpgn
 			trans_net(conn_get_addr(c), &taddr, &tport);
 
 			if (taddr == addr && tport == port)
-				msgtemp = localize(c, " Network ID: {}",
+				msgtemp = localize(c, "Network ID: {}",
 				addr_num_to_addr_str(addr, port));
 			else
-				msgtemp = localize(c, " Network ID: {} (trans {})",
+				msgtemp = localize(c, "Network ID: {} (trans {})",
 				addr_num_to_addr_str(addr, port),
 				addr_num_to_addr_str(taddr, tport));
 			message_send_text(c, message_type_info, c, msgtemp);
@@ -2145,7 +2145,7 @@ namespace pvpgn
 				ip = text;
 			}
 
-			message_send_text(c, message_type_error, c, localize(c, " Scanning online users for IP {}:", ip));
+			message_send_text(c, message_type_error, c, localize(c, "Scanning online users for IP {}:", ip));
 
 			t_elem const * curr;
 			int count = 0;
@@ -2202,7 +2202,7 @@ namespace pvpgn
 
 			bnet_hash(&passhash, std::strlen(pass), pass);
 
-			msgtemp = localize(c, " Trying to add account \"{}\" with password \"{}\"", username, pass);
+			msgtemp = localize(c, "Trying to add account \"{}\" with password \"{}\"", username, pass);
 			message_send_text(c, message_type_info, c, msgtemp);
 
 			temp = accountlist_create_account(username, hash_get_str(passhash));
@@ -2212,7 +2212,7 @@ namespace pvpgn
 				return -1;
 			}
 
-			msgtemp = localize(c, " Account {} created.", account_get_uid(temp));
+			msgtemp = localize(c, "Account {} created.", account_get_uid(temp));
 			message_send_text(c, message_type_info, c, msgtemp);
 			eventlog(eventlog_level_debug, __FUNCTION__, "[{}] account \"{}\" created", conn_get_socket(c), username);
 
@@ -2279,7 +2279,7 @@ namespace pvpgn
 
 			bnet_hash(&passhash, pass.length(), pass.c_str());
 
-			msgtemp = localize(c, " Trying to change password for account \"{}\" to \"{}\"", username, pass.c_str());
+			msgtemp = localize(c, "Trying to change password for account \"{}\" to \"{}\"", username, pass.c_str());
 			message_send_text(c, message_type_info, c, msgtemp);
 
 			if (account_set_pass(temp, hash_get_str(passhash)) < 0)
@@ -2290,11 +2290,11 @@ namespace pvpgn
 
 			if (account_get_auth_admin(account, NULL) == 1 ||
 				account_get_auth_operator(account, NULL) == 1) {
-				msgtemp = localize(c, " Password for account {} updated.", account_get_uid(temp));
+				msgtemp = localize(c, "Password for account {} updated.", account_get_uid(temp));
 				message_send_text(c, message_type_info, c, msgtemp);
 			}
 			else {
-				msgtemp = localize(c, " Password for account {} updated.", username);
+				msgtemp = localize(c, "Password for account {} updated.", username);
 				message_send_text(c, message_type_info, c, msgtemp);
 			}
 
@@ -2359,7 +2359,7 @@ namespace pvpgn
 			}
 			else
 			{
-				msgtemp = localize(c, " Key set successfully for");
+				msgtemp = localize(c, "Key set successfully for");
 				msgtemp += msgtemp0;
 				message_send_text(c, message_type_info, c, msgtemp);
 				eventlog(eventlog_level_warn, __FUNCTION__, "Key set by \"{}\" for {}", account_get_name(conn_get_account(c)),msgtemp0);
@@ -2436,14 +2436,14 @@ namespace pvpgn
 
 			if (!std::strcmp(command, "add") || !std::strcmp(command, "a")) {
 				account_set_command_groups(account, usergroups | groups);
-				msgtemp = localize(c, " Groups {} has been added to {}", args[3].c_str(), username);
+				msgtemp = localize(c, "Groups {} has been added to {}", args[3].c_str(), username);
 				message_send_text(c, message_type_info, c, msgtemp);
 				return 0;
 			}
 
 			if (!std::strcmp(command, "del") || !std::strcmp(command, "d")) {
 				account_set_command_groups(account, usergroups & (255 - groups));
-				msgtemp = localize(c, " Groups {} has been deleted from {}", args[3].c_str(), username);
+				msgtemp = localize(c, "Groups {} has been deleted from {}", args[3].c_str(), username);
 				message_send_text(c, message_type_info, c, msgtemp);
 				return 0;
 			}
@@ -2582,7 +2582,7 @@ namespace pvpgn
 			else
 				conn_set_state(user, conn_state_destroy);
 
-			message_send_text(c, message_type_info, c, localize(c, " Operation successful."));
+			message_send_text(c, message_type_info, c, localize(c, "Operation successful."));
 
 			return 0;
 		}
@@ -2762,9 +2762,9 @@ namespace pvpgn
 			}
 			else {
 				if (oldflags & channel_flags_moderated)
-					channel_message_send(channel, message_type_info, c, localize(c, " Channel is now unmoderated.").c_str());
+					channel_message_send(channel, message_type_info, c, localize(c, "Channel is now unmoderated.").c_str());
 				else
-					channel_message_send(channel, message_type_info, c, localize(c, " Channel is now moderated.").c_str());
+					channel_message_send(channel, message_type_info, c, localize(c, "Channel is now moderated.").c_str());
 			}
 
 			return 0;
@@ -3261,7 +3261,7 @@ namespace pvpgn
 
 						clan_set_motd(clan, msg);
 
-						message_send_text(c, message_type_info, c, localize(c, " Clan message of day is updated!"));
+						message_send_text(c, message_type_info, c, localize(c, "Clan message of day is updated!"));
 						return 0;
 					}
 					
@@ -3342,7 +3342,7 @@ namespace pvpgn
 						}
 
 						if (!clan_remove_member(clan, account_get_clanmember(friend_acc))) { 
-							msgtemp = localize(c, " Successfully kick user {} from clan.", account_get_name(friend_acc));
+							msgtemp = localize(c, "Successfully kick user {} from clan.", account_get_name(friend_acc));
 							message_send_text(c, message_type_info, c, msgtemp);
 							return 0; 
 						}
@@ -3398,7 +3398,7 @@ namespace pvpgn
 						}
 
 						clanmember_set_status(account_get_clanmember(friend_acc), CLAN_SHAMAN);
-						msgtemp = localize(c, " Successfully change status shaman for user {}.", account_get_name(friend_acc));
+						msgtemp = localize(c, "Successfully change status shaman for user {}.", account_get_name(friend_acc));
 						message_send_text(c, message_type_info, c, msgtemp);
 					}
 					
@@ -3451,7 +3451,7 @@ namespace pvpgn
 						}
 
 						clanmember_set_status(account_get_clanmember(friend_acc), CLAN_GRUNT);
-						msgtemp = localize(c, " Successfully change status grunt for user {}.", account_get_name(friend_acc));
+						msgtemp = localize(c, "Successfully change status grunt for user {}.", account_get_name(friend_acc));
 						message_send_text(c, message_type_info, c, msgtemp);
 					}
 					
@@ -3504,7 +3504,7 @@ namespace pvpgn
 						}
 
 						clanmember_set_status(account_get_clanmember(friend_acc), CLAN_PEON);
-						msgtemp = localize(c, " Successfully change status peon for user {}.", account_get_name(friend_acc));
+						msgtemp = localize(c, "Successfully change status peon for user {}.", account_get_name(friend_acc));
 						message_send_text(c, message_type_info, c, msgtemp);
 					}
 					
@@ -3608,7 +3608,7 @@ namespace pvpgn
 						}
 
 						if (!clan_remove_member(clan, account_get_clanmember(friend_acc))) { 
-							msgtemp = localize(c, " Successfully kick user {} from clan.", account_get_name(friend_acc));
+							msgtemp = localize(c, "Successfully kick user {} from clan.", account_get_name(friend_acc));
 							message_send_text(c, message_type_info, c, msgtemp);
 							return 0; 
 						}
@@ -3654,7 +3654,7 @@ namespace pvpgn
 						}
 
 						clanmember_set_status(account_get_clanmember(friend_acc), CLAN_CHIEFTAIN);
-						msgtemp = localize(c, " Successfully change status chieftain for user {}.", account_get_name(friend_acc));
+						msgtemp = localize(c, "Successfully change status chieftain for user {}.", account_get_name(friend_acc));
 						message_send_text(c, message_type_info, c, msgtemp);
 					}
 					
@@ -3702,7 +3702,7 @@ namespace pvpgn
 						}
 
 						clanmember_set_status(account_get_clanmember(friend_acc), CLAN_SHAMAN);
-						msgtemp = localize(c, " Successfully change status shaman for user {}.", account_get_name(friend_acc));
+						msgtemp = localize(c, "Successfully change status shaman for user {}.", account_get_name(friend_acc));
 						message_send_text(c, message_type_info, c, msgtemp);
 					}
 					
@@ -3750,7 +3750,7 @@ namespace pvpgn
 						}
 
 						clanmember_set_status(account_get_clanmember(friend_acc), CLAN_GRUNT);
-						msgtemp = localize(c, " Successfully change status grunt for user {}.", account_get_name(friend_acc));
+						msgtemp = localize(c, "Successfully change status grunt for user {}.", account_get_name(friend_acc));
 						message_send_text(c, message_type_info, c, msgtemp);
 					}
 					
@@ -3798,7 +3798,7 @@ namespace pvpgn
 						}
 
 						clanmember_set_status(account_get_clanmember(friend_acc), CLAN_PEON);
-						msgtemp = localize(c, " Successfully change status peon for user {}.", account_get_name(friend_acc));
+						msgtemp = localize(c, "Successfully change status peon for user {}.", account_get_name(friend_acc));
 						message_send_text(c, message_type_info, c, msgtemp);
 					}
 					
@@ -3814,7 +3814,7 @@ namespace pvpgn
 						if (clan_set_channel(clan, channel)<0)
 							message_send_text(c, message_type_error, c, "Failed to change Clan channel!");
 						else
-							message_send_text(c, message_type_info, c, " Sucsessfully to change your clan channel.");
+							message_send_text(c, message_type_info, c, "Sucsessfully to change your clan channel.");
 					}
 					
 					else if (args[1] == "disband" || args[1] == "dis") // Fix
@@ -3829,7 +3829,7 @@ namespace pvpgn
 								if (clan_get_created(clan) == 1)
 									clan_remove(clan_get_clantag(clan));
 								clan_destroy(clan);
-								message_send_text(c, message_type_info, c, " Your clan was disbanded :(");
+								message_send_text(c, message_type_info, c, "Your clan was disbanded :(");
 							}
 							return 0;
 						}
@@ -3860,7 +3860,7 @@ namespace pvpgn
 					}
 					
 					else if (args[2] == "get") { // Fix
-						msgtemp = localize(c, " You have been invited to {}", clan_get_name(clan));
+						msgtemp = localize(c, "You have been invited to {}", clan_get_name(clan));
 						message_send_text(c, message_type_info, c, msgtemp);
 						return 0;
 					}
@@ -3870,7 +3870,7 @@ namespace pvpgn
 
 						clanmember_set_fullmember(member, 1);
 						clanmember_set_join_time(member, std::time(NULL));
-						msgtemp = localize(c, " You are now a clan member of {}", clan_get_name(clan));
+						msgtemp = localize(c, "You are now a clan member of {}", clan_get_name(clan));
 						message_send_text(c, message_type_info, c, msgtemp);
 						if (created > 0) {
 							DEBUG1("clan {} has already been created", clan_get_name(clan));
@@ -3894,7 +3894,7 @@ namespace pvpgn
 					}
 					else if (args[2] == "decline" || args[2] == "dec") { // Fix
 						clan_remove_member(clan, member);
-						msgtemp = localize(c, " You are no longer ivited to {}", clan_get_name(clan));
+						msgtemp = localize(c, "You are no longer ivited to {}", clan_get_name(clan));
 						message_send_text(c, message_type_info, c, msgtemp);
 						return 0;
 					}
