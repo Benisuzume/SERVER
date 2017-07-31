@@ -1,4 +1,4 @@
-storage_path = "sql:mode=mysql;host=127.0.0.1;name=battlenet;user=root;pass=;default=0;prefix="
+storage_path = "sql:mode=mysql;host=127.0.0.1;name=battlenet;user=root;pass=12345678;default=0;prefix="
 
 #----------------------------------------------------------------------------#
 filedir     = "${LOCALSTATEDIR}/files"
