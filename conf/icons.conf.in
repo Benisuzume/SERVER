@@ -56,11 +56,11 @@ username = "BNET\acct\username"
 
 [icons]
 0	Beginner    KBKB
-1	Dungeon   KBKD
-2	Expert    KBKE
-3	Mid   KBKM
-4	Pro   KBKP
-5	World   KBKW
+1	Dungeon     KBKD
+2	Expert      KBKE
+3	Mid         KBKM
+4	Pro         KBKP
+5	World       KBKW
 6	Universe    WCYB
 [/icons]
 
