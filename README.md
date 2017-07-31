@@ -22,19 +22,22 @@ Version: 1.99.7.1.1 <br/>
 [+] Added /chat, /accept, /decline, /lock, /unlock, /mute, /unmute. <br/>
 <hr>
 
-<b> ** INSTALLATION : </b><br/>
+<b> ** INSTALLATION LINUX UBUNTU 14.04 : </b><br/>
+[+] apt-get update <br/>
 [+] sudo apt-get -y install build-essential zlib1g-dev git <br/>
+[+] sudo apt-get install software-properties-common <br/>
 [+] sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test <br/>
 [+] sudo apt-get -y update <br/>
 [+] sudo apt-get -y install gcc-5 g++-5 <br/>
 [+] sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 60 --slave /usr/bin/g++ g++ /usr/bin/g++-5 <br/>
 [+] sudo add-apt-repository -y ppa:george-edison55/cmake-3.x <br/>
 [+] sudo apt-get update <br/>
-[+] apt-get install liblua5.1-0-dev <br/>
-[+] apt-get install mysql-server mysql-client libmysqlclient-dev <br/>
+[+] apt-get -y install liblua5.1-0-dev <br/>
+[+] apt-get -y install mysql-server mysql-client libmysqlclient-dev <br/>
 [+] apt-get -y install phpmyadmin <br/>
 [+] sudo apt-get -y install cmake <br/>
 [+] git clone https://github.com/EXILEDNONAME/SERVER.git <br/>
+[+] cd SERVER <br/>
 [+] mkdir build <br/>
 [+] cd build <br/>
 [+] cmake -D CMAKE_INSTALL_PREFIX=/usr/local/pvpgn -D WITH_MYSQL=true -D WITH_LUA=true ../ <br/>
