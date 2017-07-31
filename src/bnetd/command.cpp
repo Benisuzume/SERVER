@@ -415,6 +415,15 @@ namespace pvpgn
 		static int _handle_squelch_command(t_connection * c, char const * text);
 		static int _handle_unsquelch_command(t_connection * c, char const * text);
 		static int _handle_quit_command(t_connection * c, char const * text);
+		static int _handle_lockacct_command(t_connection * c, char const * text);
+		static int _handle_unlockacct_command(t_connection * c, char const * text);
+		static int _handle_muteacct_command(t_connection * c, char const * text);
+		static int _handle_unmuteacct_command(t_connection * c, char const * text);
+		static int _handle_users_command(t_connection * c, char const * text);
+		static int _handle_away_command(t_connection * c, char const * text);
+		static int _handle_dnd_command(t_connection * c, char const * text);
+		static int _handle_join_command(t_connection * c, char const * text);
+		static int _handle_rejoin_command(t_connection * c, char const * text);
 		
 		static int command_set_flags(t_connection * c); // [Omega]
 		// command handler prototypes
@@ -426,23 +435,15 @@ namespace pvpgn
 		static int _handle_friends_command(t_connection * c, char const * text);
 		static int _handle_me_command(t_connection * c, char const * text);
 		static int _handle_whisper_command(t_connection * c, char const * text);
-		static int _handle_status_command(t_connection * c, char const * text);
 		static int _handle_who_command(t_connection * c, char const * text);
 		static int _handle_whois_command(t_connection * c, char const * text);
 		static int _handle_whoami_command(t_connection * c, char const * text);
 		static int _handle_announce_command(t_connection * c, char const * text);
 		static int _handle_uptime_command(t_connection * c, char const * text);
-		static int _handle_stats_command(t_connection * c, char const * text);
 		static int _handle_time_command(t_connection * c, char const * text);
-		static int _handle_channel_command(t_connection * c, char const * text);
-		static int _handle_rejoin_command(t_connection * c, char const * text);
-		static int _handle_away_command(t_connection * c, char const * text);
-		static int _handle_dnd_command(t_connection * c, char const * text);
+		
 		static int _handle_kick_command(t_connection * c, char const * text);
 		static int _handle_reply_command(t_connection * c, char const * text);
-		static int _handle_realmann_command(t_connection * c, char const * text);
-		
-		
 		static int _handle_games_command(t_connection * c, char const * text);
 		static int _handle_channels_command(t_connection * c, char const * text);
 		static int _handle_addacct_command(t_connection * c, char const * text);
@@ -450,19 +451,9 @@ namespace pvpgn
 		static int _handle_finger_command(t_connection * c, char const * text);
 		static int _handle_kill_command(t_connection * c, char const * text);
 		static int _handle_killsession_command(t_connection * c, char const * text);
-		static int _handle_find_command(t_connection * c, char const *text);
-		static int _handle_save_command(t_connection * c, char const * text);
-
-		static int _handle_shutdown_command(t_connection * c, char const * text);
-		static int _handle_ladderinfo_command(t_connection * c, char const * text);
-		static int _handle_timer_command(t_connection * c, char const * text);
 		static int _handle_serverban_command(t_connection * c, char const * text);
 		static int _handle_netinfo_command(t_connection * c, char const * text);
 		static int _handle_quota_command(t_connection * c, char const * text);
-		static int _handle_lockacct_command(t_connection * c, char const * text);
-		static int _handle_unlockacct_command(t_connection * c, char const * text);
-		static int _handle_muteacct_command(t_connection * c, char const * text);
-		static int _handle_unmuteacct_command(t_connection * c, char const * text);
 		static int _handle_flag_command(t_connection * c, char const * text);
 		static int _handle_tag_command(t_connection * c, char const * text);
 		static int _handle_ipscan_command(t_connection * c, char const * text);
@@ -471,9 +462,6 @@ namespace pvpgn
 		static int _handle_commandgroups_command(t_connection * c, char const * text);
 		static int _handle_topic_command(t_connection * c, char const * text);
 		static int _handle_moderate_command(t_connection * c, char const * text);
-		static int _handle_clearstats_command(t_connection * c, char const * text);
-		
-		static int _handle_alert_command(t_connection * c, char const * text);
 
 		static const t_command_table_row standard_command_table[] =
 		{
@@ -493,6 +481,16 @@ namespace pvpgn
 			{ "/logout", _handle_quit_command },
 			{ "/quit", _handle_quit_command },
 			{ "/exit", _handle_quit_command },
+			{ "/lockacct", _handle_lockacct_command },
+			{ "/unlockacct", _handle_unlockacct_command },
+			{ "/muteacct", _handle_muteacct_command },
+			{ "/unmuteacct", _handle_unmuteacct_command },
+			{ "/users", _handle_users_command },
+			{ "/away", _handle_away_command },
+			{ "/dnd", _handle_dnd_command },
+			{ "/join", _handle_join_command },
+			{ "/j", _handle_join_command },
+			{ "/rejoin", _handle_rejoin_command },
 			
 			{ "/clan", _handle_clan_command },
 			{ "/c", _handle_clan_command },
@@ -504,8 +502,7 @@ namespace pvpgn
 			{ "/whisper", _handle_whisper_command },
 			{ "/w", _handle_whisper_command },
 			{ "/m", _handle_whisper_command },
-			{ "/status", _handle_status_command },
-			{ "/users", _handle_status_command },
+			
 			{ "/who", _handle_who_command },
 			{ "/whois", _handle_whois_command },
 			{ "/whereis", _handle_whois_command },
@@ -513,20 +510,13 @@ namespace pvpgn
 			{ "/whoami", _handle_whoami_command },
 			{ "/announce", _handle_announce_command },
 			{ "/uptime", _handle_uptime_command },
-			{ "/stats", _handle_stats_command },
-			{ "/astat", _handle_stats_command },
 			{ "/time", _handle_time_command },
-			{ "/channel", _handle_channel_command },
-			{ "/join", _handle_channel_command },
-			{ "/j", _handle_channel_command },
-			{ "/rejoin", _handle_rejoin_command },
-			{ "/away", _handle_away_command },
-			{ "/dnd", _handle_dnd_command },
+			
 			{ "/kick", _handle_kick_command },
 			{ "/ann", _handle_announce_command },
 			{ "/r", _handle_reply_command },
 			{ "/reply", _handle_reply_command },
-			{ "/realmann", _handle_realmann_command },
+			
 			{ "/games", _handle_games_command },
 			{ "/channels", _handle_channels_command },
 			{ "/chs", _handle_channels_command },
@@ -539,22 +529,12 @@ namespace pvpgn
 			{ "/devoice", _handle_devoice_command },
 			{ "/kill", _handle_kill_command },
 			{ "/killsession", _handle_killsession_command },
-			{ "/find", _handle_find_command },
-			{ "/save", _handle_save_command },
-			{ "/shutdown", _handle_shutdown_command },
-			{ "/ladderinfo", _handle_ladderinfo_command },
-			{ "/timer", _handle_timer_command },
+			
 			{ "/serverban", _handle_serverban_command },
 			{ "/netinfo", _handle_netinfo_command },
 			{ "/quota", _handle_quota_command },
-			{ "/lockacct", _handle_lockacct_command },
-			{ "/lock", _handle_lockacct_command },
-			{ "/unlockacct", _handle_unlockacct_command },
-			{ "/unlock", _handle_unlockacct_command },
-			{ "/muteacct", _handle_muteacct_command },
-			{ "/mute", _handle_muteacct_command },
-			{ "/unmuteacct", _handle_unmuteacct_command },
-			{ "/unmute", _handle_unmuteacct_command },
+			
+			
 			{ "/flag", _handle_flag_command },
 			{ "/tag", _handle_tag_command },
 			{ "/help", handle_help_command },
@@ -570,12 +550,8 @@ namespace pvpgn
 			{ "/cg", _handle_commandgroups_command },
 			{ "/topic", _handle_topic_command },
 			{ "/moderate", _handle_moderate_command },
-			{ "/clearstats", _handle_clearstats_command },
+			
 			{ "/icon", handle_icon_command },
-			{ "/alert", _handle_alert_command },
-			{ "/language", handle_language_command },
-			{ "/lang", handle_language_command },
-			{ "/log", handle_log_command },
 
 			{ NULL, NULL }
 
@@ -1060,6 +1036,290 @@ namespace pvpgn
 				message_send_text(c, message_type_info, c, localize(c, "See you tomorrow :)"));
 				conn_set_state(c, conn_state_destroy);
 			}
+
+			return 0;
+		}
+		
+		static int _handle_lockacct_command(t_connection * c, char const *text)
+		{
+			t_connection * user;
+			t_account *    account;
+			char const * username, *reason = "", *hours = "24"; // default time 24 hours
+			unsigned int sectime;
+
+			std::vector<std::string> args = split_command(text, 3);
+			if (args[1].empty())
+			{
+				message_send_text(c, message_type_info, c, localize(c, "--------------------------------------------------------"));
+				message_send_text(c, message_type_error, c, localize(c, "Usage: /lockacct [username] [days] [reason] (no have alias)"));
+				message_send_text(c, message_type_info, c, localize(c, "** Locks [username] to prevent him/her from logging in with it."));
+				return -1;
+			}
+			
+			username = args[1].c_str(); // username
+			if (!args[2].empty())
+				hours = args[2].c_str(); // hours
+			if (!args[3].empty())
+				reason = args[3].c_str(); // reason
+
+			if (!(account = accountlist_find_account(username)))
+			{
+				message_send_text(c, message_type_error, c, localize(c, "That user doesn't exist!"));
+				return -1;
+			}
+
+			account_set_auth_lock(account, 1);
+			sectime = (atoi(hours) == 0) ? 0 : (atoi(hours) * 3600 * 24) + now; // get unlock time in the future
+			account_set_auth_locktime(account, sectime);
+			account_set_auth_lockreason(account, reason);
+			account_set_auth_lockby(account, conn_get_username(c));
+
+
+			// send message to author
+			msgtemp = localize(c, " User {} is now locked from server.", account_get_name(account));
+			message_send_text(c, message_type_info, c, msgtemp);
+
+			return 0;
+		}
+
+		static int _handle_unlockacct_command(t_connection * c, char const *text)
+		{
+			t_connection * user;
+			t_account *    account;
+
+			std::vector<std::string> args = split_command(text, 1);
+			if (args[1].empty())
+			{
+				message_send_text(c, message_type_info, c, localize(c, "--------------------------------------------------------"));
+				message_send_text(c, message_type_error, c, localize(c, "Usage: /unlockacct [username] (no have alias)"));
+				message_send_text(c, message_type_info, c, localize(c, "** Unlocks [username] to allow him/her to log in with it."));
+				return -1;
+			}
+			text = args[1].c_str(); // username
+
+			if (!(account = accountlist_find_account(text)))
+			{
+				message_send_text(c, message_type_error, c, localize(c, "That user doesn't exist!"));
+				return -1;
+			}
+
+			account_set_auth_lock(account, 0);
+			msgtemp = localize(c, " User {} is now unlocked from server.", account_get_name(account));
+			message_send_text(c, message_type_info, c, msgtemp);
+			
+			return 0;
+		}
+		
+		static int _handle_muteacct_command(t_connection * c, char const *text)
+		{
+			t_connection * user;
+			t_account *    account;
+			char const * username, *reason = "", *hours = "1"; // default time 1 hour
+			unsigned int sectime;
+
+			std::vector<std::string> args = split_command(text, 3);
+			if (args[1].empty())
+			{
+				message_send_text(c, message_type_info, c, localize(c, "--------------------------------------------------------"));
+				message_send_text(c, message_type_error, c, localize(c, "Usage: /muteacct [username] [hours] [reason] (no have alias)"));
+				message_send_text(c, message_type_info, c, localize(c, "** Mutes [username] to prevent him/her from talking on channels."));
+				return -1;
+			}
+			username = args[1].c_str(); // username
+			if (!args[2].empty())
+				hours = args[2].c_str(); // hours
+			if (!args[3].empty())
+				reason = args[3].c_str(); // reason
+
+			if (!(account = accountlist_find_account(username)))
+			{
+				message_send_text(c, message_type_error, c, localize(c, "That user doesn't exist!"));
+				return -1;
+			}
+
+			account_set_auth_mute(account, 1);
+			// get unlock time in the future
+			sectime = (atoi(hours) == 0) ? 0 : (atoi(hours) * 60 * 60) + now;
+			account_set_auth_mutetime(account, sectime);
+			account_set_auth_mutereason(account, reason);
+			account_set_auth_muteby(account, conn_get_username(c));
+
+			// send message to author
+			msgtemp = localize(c, " User {} is now muted", account_get_name(account));
+			message_send_text(c, message_type_info, c, msgtemp);
+
+			return 0;
+		}
+
+		static int _handle_unmuteacct_command(t_connection * c, char const *text)
+		{
+			t_connection * user;
+			t_account *    account;
+
+			std::vector<std::string> args = split_command(text, 1);
+			if (args[1].empty())
+			{
+				message_send_text(c, message_type_info, c, localize(c, "--------------------------------------------------------"));
+				message_send_text(c, message_type_error, c, localize(c, "Usage: /unmuteacct [username] (no have alias)"));
+				message_send_text(c, message_type_info, c, localize(c, "** Unmutes [username] to allow him/her to talk on channels."));
+				return -1;
+			}
+			text = args[1].c_str(); // username
+
+			if (!(account = accountlist_find_account(text)))
+			{
+				message_send_text(c, message_type_error, c, localize(c, "That user doesn't exist!"));
+				return -1;
+			}
+
+			account_set_auth_mute(account, 0);
+			msgtemp = localize(c, " User {} is now unmuted from server.", account_get_name(account));
+			message_send_text(c, message_type_info, c, msgtemp);
+			
+			return 0;
+		}
+		
+		static int _handle_users_command(t_connection * c, char const *text)
+		{
+			t_clienttag clienttag;
+
+			// get clienttag
+			std::vector<std::string> args = split_command(text, 1);
+
+			if (!args[1].empty() && (clienttag = tag_validate_client(args[1].c_str())))
+			{
+				// clienttag status
+				msgtemp = localize(c, "There are currently {} user(s) in {} games of {}",
+					conn_get_user_count_by_clienttag(clienttag),
+					game_get_count_by_clienttag(clienttag),
+					clienttag_get_title(clienttag));
+				message_send_text(c, message_type_info, c, msgtemp);
+			}
+			else
+			{
+				// overall status
+				msgtemp = localize(c, "There are currently {} users online, in {} games, and in {} channels.",
+					connlist_login_get_length(),
+					gamelist_get_length(),
+					channellist_get_length());
+				message_send_text(c, message_type_info, c, msgtemp);
+			}
+
+			return 0;
+		}
+		
+		static int _handle_away_command(t_connection * c, char const *text)
+		{
+			std::vector<std::string> args = split_command(text, 1);
+			text = args[1].c_str(); // message
+
+			if (text[0] == '\0') /* toggle away mode */
+			{
+				if (!conn_get_awaystr(c))
+				{
+					message_send_text(c, message_type_info, c, localize(c, "You are now marked as being away."));
+					conn_set_awaystr(c, "Currently not available");
+				}
+				else
+				{
+					message_send_text(c, message_type_info, c, localize(c, "You are no longer marked as away."));
+					conn_set_awaystr(c, NULL);
+				}
+			}
+			else
+			{
+				message_send_text(c, message_type_info, c, localize(c, "You are now marked as being away."));
+				conn_set_awaystr(c, text);
+			}
+
+			return 0;
+		}
+
+		static int _handle_dnd_command(t_connection * c, char const *text)
+		{
+			std::vector<std::string> args = split_command(text, 1);
+			text = args[1].c_str(); // message
+
+			if (text[0] == '\0') /* toggle dnd mode */
+			{
+				if (!conn_get_dndstr(c))
+				{
+					message_send_text(c, message_type_info, c, localize(c, "Don't disturb mode engaged."));
+					conn_set_dndstr(c, localize(c, "Not available").c_str());
+				}
+				else
+				{
+					message_send_text(c, message_type_info, c, localize(c, "Don't disturb mode canceled."));
+					conn_set_dndstr(c, NULL);
+				}
+			}
+			else
+			{
+				message_send_text(c, message_type_info, c, localize(c, "Don't disturb mode engaged."));
+				conn_set_dndstr(c, text);
+			}
+
+			return 0;
+		}
+		
+		static int _handle_join_command(t_connection * c, char const *text)
+		{
+			t_channel * channel;
+
+			std::vector<std::string> args = split_command(text, 1);
+			
+			if ((conn_get_clienttag(c) == CLIENTTAG_WARCRAFT3_UINT) || (conn_get_clienttag(c) == CLIENTTAG_WAR3XP_UINT)) {
+				if (args[1].empty())
+				{
+					message_send_text(c, message_type_info, c, localize(c, "--------------------------------------------------------"));
+					message_send_text(c, message_type_error, c, localize(c, "Usage: /join [channel] (alias: /j)"));
+					message_send_text(c, message_type_info, c, localize(c, "** Moves you to [channel]."));
+					return -1;
+				}
+				text = args[1].c_str(); // channelname
+
+				if (!conn_get_game(c)) {
+					if (strcasecmp(text, "Arranged Teams") == 0)
+					{
+						message_send_text(c, message_type_error, c, msgtemp = localize(c, "Channel Arranged Teams is a RESTRICTED Channel!"));
+						return -1;
+					}
+
+					if (!(std::strlen(text) < MAX_CHANNELNAME_LEN))
+					{
+						msgtemp = localize(c, "Max channel name length exceeded (max {} symbols)", MAX_CHANNELNAME_LEN - 1);
+						message_send_text(c, message_type_error, c, msgtemp);
+						return -1;
+					}
+
+					if ((channel = conn_get_channel(c)) && (strcasecmp(channel_get_name(channel), text) == 0))
+						return -1; // we don't have to do anything, we are already in this channel
+
+					if (conn_set_channel(c, text) < 0)
+						conn_set_channel(c, CHANNEL_NAME_BANNED); /* should not fail */
+					if ((conn_get_clienttag(c) == CLIENTTAG_WARCRAFT3_UINT) || (conn_get_clienttag(c) == CLIENTTAG_WAR3XP_UINT))
+						conn_update_w3_playerinfo(c);
+					command_set_flags(c);
+				}
+				else
+					message_send_text(c, message_type_error, c, localize(c, "Command disabled while inside a game."));
+
+				return 0;
+			}
+			else
+				message_send_text(c, message_type_error, c, localize(c, "You don't have access to that command."));
+
+			return 0;
+		}
+		
+		static int _handle_rejoin_command(t_connection * c, char const *text)
+		{
+
+			if (channel_rejoin(c) != 0)
+				message_send_text(c, message_type_error, c, localize(c, "You are not in a channel!"));
+			if ((conn_get_clienttag(c) == CLIENTTAG_WARCRAFT3_UINT) || (conn_get_clienttag(c) == CLIENTTAG_WAR3XP_UINT))
+				conn_update_w3_playerinfo(c);
+			command_set_flags(c);
 
 			return 0;
 		}
@@ -2001,34 +2261,7 @@ namespace pvpgn
 			return 0;
 		}
 
-		static int _handle_status_command(t_connection * c, char const *text)
-		{
-			t_clienttag clienttag;
-
-			// get clienttag
-			std::vector<std::string> args = split_command(text, 1);
-
-			if (!args[1].empty() && (clienttag = tag_validate_client(args[1].c_str())))
-			{
-				// clienttag status
-				msgtemp = localize(c, "There are currently {} user(s) in {} games of {}",
-					conn_get_user_count_by_clienttag(clienttag),
-					game_get_count_by_clienttag(clienttag),
-					clienttag_get_title(clienttag));
-				message_send_text(c, message_type_info, c, msgtemp);
-			}
-			else
-			{
-				// overall status
-				msgtemp = localize(c, "There are currently {} users online, in {} games, and in {} channels.",
-					connlist_login_get_length(),
-					gamelist_get_length(),
-					channellist_get_length());
-				message_send_text(c, message_type_info, c, msgtemp);
-			}
-
-			return 0;
-		}
+		
 
 		static int _handle_who_command(t_connection * c, char const *text)
 		{
@@ -2143,202 +2376,6 @@ namespace pvpgn
 			return 0;
 		}
 
-		static int _handle_stats_command(t_connection * c, char const *text)
-		{
-			char const * username;
-			t_account *  account;
-			char const * clienttag = NULL;
-			t_clienttag  clienttag_uint;
-			char         clienttag_str[5];
-
-			std::vector<std::string> args = split_command(text, 2);
-
-			// username
-			username = args[1].c_str();
-			if (args[1].empty()) {
-				account = conn_get_account(c);
-			}
-			else if (!(account = accountlist_find_account(username))) {
-				message_send_text(c, message_type_error, c, localize(c, "Invalid user."));
-				return -1;
-			}
-
-			// clienttag
-			if (!args[2].empty() && args[2].length() == 4)
-				clienttag = args[2].c_str();
-			else if (!(clienttag = tag_uint_to_str(clienttag_str, conn_get_clienttag(c)))) {
-				message_send_text(c, message_type_error, c, localize(c, "Unable to determine client game."));
-				return -1;
-			}
-
-			clienttag_uint = tag_case_str_to_uint(clienttag);
-
-			// custom stats
-			if (prefs_get_custom_icons() == 1 && customicons_allowed_by_client(clienttag_uint))
-			{
-				const char *text;
-
-				// if text is not empty
-				if (text = customicons_get_stats_text(account, clienttag_uint))
-				{
-					// split by lines
-					char* output_array = strtok((char*)text, "\n");
-					while (output_array)
-					{
-						message_send_text(c, message_type_info, c, output_array);
-						output_array = strtok(NULL, "\n");
-					}
-					xfree((char*)text);
-
-					return 0;
-				}
-			}
-
-
-			switch (clienttag_uint)
-			{
-			case CLIENTTAG_BNCHATBOT_UINT:
-				message_send_text(c, message_type_error, c, localize(c, "This game does not support win/loss records."));
-				message_send_text(c, message_type_error, c, localize(c, "You must supply a user name and a valid program ID."));
-				message_send_text(c, message_type_error, c, localize(c, "Example: /stats joe STAR"));
-				return -1;
-			case CLIENTTAG_DIABLORTL_UINT:
-			case CLIENTTAG_DIABLOSHR_UINT:
-				msgtemp = localize(c, "{}'s record:", account_get_name(account));
-				message_send_text(c, message_type_info, c, msgtemp);
-				msgtemp = localize(c, "level: {}", account_get_normal_level(account, clienttag_uint));
-				message_send_text(c, message_type_info, c, msgtemp);
-				msgtemp = localize(c, "class: {}", bnclass_get_str(account_get_normal_class(account, clienttag_uint)));
-				message_send_text(c, message_type_info, c, msgtemp);
-				msgtemp = localize(c, "stats: {} str  {} mag  {} dex  {} vit  {} gld",
-					account_get_normal_strength(account, clienttag_uint),
-					account_get_normal_magic(account, clienttag_uint),
-					account_get_normal_dexterity(account, clienttag_uint),
-					account_get_normal_vitality(account, clienttag_uint),
-					account_get_normal_gold(account, clienttag_uint));
-				message_send_text(c, message_type_info, c, msgtemp);
-				msgtemp = localize(c, "Diablo kills: {}", account_get_normal_diablo_kills(account, clienttag_uint));
-				message_send_text(c, message_type_info, c, msgtemp);
-				return 0;
-			case CLIENTTAG_WARCIIBNE_UINT:
-				msgtemp = localize(c, "{}'s record:", account_get_name(account));
-				message_send_text(c, message_type_info, c, msgtemp);
-				msgtemp = localize(c, "Normal games: {}-{}-{}",
-					account_get_normal_wins(account, clienttag_uint),
-					account_get_normal_losses(account, clienttag_uint),
-					account_get_normal_disconnects(account, clienttag_uint));
-				message_send_text(c, message_type_info, c, msgtemp);
-				if (account_get_ladder_rating(account, clienttag_uint, ladder_id_normal) > 0)
-					msgtemp = localize(c, "Ladder games: {}-{}-{} (rating {})",
-					account_get_ladder_wins(account, clienttag_uint, ladder_id_normal),
-					account_get_ladder_losses(account, clienttag_uint, ladder_id_normal),
-					account_get_ladder_disconnects(account, clienttag_uint, ladder_id_normal),
-					account_get_ladder_rating(account, clienttag_uint, ladder_id_normal));
-				else
-					msgtemp = localize(c, "Ladder games: 0-0-0");
-				message_send_text(c, message_type_info, c, msgtemp);
-				if (account_get_ladder_rating(account, clienttag_uint, ladder_id_ironman) > 0)
-					msgtemp = localize(c, "IronMan games: {}-{}-{} (rating {})",
-					account_get_ladder_wins(account, clienttag_uint, ladder_id_ironman),
-					account_get_ladder_losses(account, clienttag_uint, ladder_id_ironman),
-					account_get_ladder_disconnects(account, clienttag_uint, ladder_id_ironman),
-					account_get_ladder_rating(account, clienttag_uint, ladder_id_ironman));
-				else
-					msgtemp = localize(c, "IronMan games: 0-0-0");
-				message_send_text(c, message_type_info, c, msgtemp);
-				return 0;
-			case CLIENTTAG_WARCRAFT3_UINT:
-			case CLIENTTAG_WAR3XP_UINT:
-				msgtemp = localize(c, "{}'s Ladder Record's:", account_get_name(account));
-				message_send_text(c, message_type_info, c, msgtemp);
-				msgtemp = localize(c, "Users Solo Level: {}, Experience: {}",
-					account_get_ladder_level(account, clienttag_uint, ladder_id_solo),
-					account_get_ladder_xp(account, clienttag_uint, ladder_id_solo));
-				message_send_text(c, message_type_info, c, msgtemp);
-				msgtemp = localize(c, "SOLO Ladder Record: {}-{}-0",
-					account_get_ladder_wins(account, clienttag_uint, ladder_id_solo),
-					account_get_ladder_losses(account, clienttag_uint, ladder_id_solo));
-				message_send_text(c, message_type_info, c, msgtemp);
-				msgtemp = localize(c, "SOLO Rank: {}",
-					account_get_ladder_rank(account, clienttag_uint, ladder_id_solo));
-				message_send_text(c, message_type_info, c, msgtemp);
-				msgtemp = localize(c, "Users Team Level: {}, Experience: {}",
-					account_get_ladder_level(account, clienttag_uint, ladder_id_team),
-					account_get_ladder_xp(account, clienttag_uint, ladder_id_team));
-				message_send_text(c, message_type_info, c, msgtemp);
-				msgtemp = localize(c, "TEAM Ladder Record: {}-{}-0",
-					account_get_ladder_wins(account, clienttag_uint, ladder_id_team),
-					account_get_ladder_losses(account, clienttag_uint, ladder_id_team));
-				message_send_text(c, message_type_info, c, msgtemp);
-				msgtemp = localize(c, "TEAM Rank: {}",
-					account_get_ladder_rank(account, clienttag_uint, ladder_id_team));
-				message_send_text(c, message_type_info, c, msgtemp);
-				msgtemp = localize(c, "Users FFA Level: {}, Experience: {}",
-					account_get_ladder_level(account, clienttag_uint, ladder_id_ffa),
-					account_get_ladder_xp(account, clienttag_uint, ladder_id_ffa));
-				message_send_text(c, message_type_info, c, msgtemp);
-				msgtemp = localize(c, "FFA Ladder Record: {}-{}-0",
-					account_get_ladder_wins(account, clienttag_uint, ladder_id_ffa),
-					account_get_ladder_losses(account, clienttag_uint, ladder_id_ffa));
-				message_send_text(c, message_type_info, c, msgtemp);
-				msgtemp = localize(c, "FFA Rank: {}",
-					account_get_ladder_rank(account, clienttag_uint, ladder_id_ffa));
-				message_send_text(c, message_type_info, c, msgtemp);
-				if (account_get_teams(account)) {
-					t_elem * curr;
-					t_list * list;
-					t_team * team;
-					int teamcount = 0;
-
-					list = account_get_teams(account);
-
-					LIST_TRAVERSE(list, curr)
-					{
-						if (!(team = (t_team*)elem_get_data(curr)))
-						{
-							eventlog(eventlog_level_error, __FUNCTION__, "found NULL entry in list");
-							continue;
-						}
-
-						if (team_get_clienttag(team) != clienttag_uint)
-							continue;
-
-						teamcount++;
-						msgtemp = localize(c, "Users AT Team No. {}", teamcount);
-						message_send_text(c, message_type_info, c, msgtemp);
-						msgtemp = localize(c, "Users AT TEAM Level: {}, Experience: {}",
-							team_get_level(team), team_get_xp(team));
-						message_send_text(c, message_type_info, c, msgtemp);
-						msgtemp = localize(c, "AT TEAM Ladder Record: {}-{}-0",
-							team_get_wins(team), team_get_losses(team));
-						message_send_text(c, message_type_info, c, msgtemp);
-						msgtemp = localize(c, "AT TEAM Rank: {}",
-							team_get_rank(team));
-						message_send_text(c, message_type_info, c, msgtemp);
-					}
-				}
-				return 0;
-			default:
-				msgtemp = localize(c, "{}'s record:", account_get_name(account));
-				message_send_text(c, message_type_info, c, msgtemp);
-				msgtemp = localize(c, "Normal games: {}-{}-{}",
-					account_get_normal_wins(account, clienttag_uint),
-					account_get_normal_losses(account, clienttag_uint),
-					account_get_normal_disconnects(account, clienttag_uint));
-				message_send_text(c, message_type_info, c, msgtemp);
-				if (account_get_ladder_rating(account, clienttag_uint, ladder_id_normal) > 0)
-					msgtemp = localize(c, "Ladder games: {}-{}-{} (rating {})",
-					account_get_ladder_wins(account, clienttag_uint, ladder_id_normal),
-					account_get_ladder_losses(account, clienttag_uint, ladder_id_normal),
-					account_get_ladder_disconnects(account, clienttag_uint, ladder_id_normal),
-					account_get_ladder_rating(account, clienttag_uint, ladder_id_normal));
-				else
-					msgtemp = localize(c, "Ladder games: 0-0-0");
-				message_send_text(c, message_type_info, c, msgtemp);
-				return 0;
-			}
-		}
-
 		static int _handle_time_command(t_connection * c, char const *text)
 		{
 			t_bnettime  btsystem;
@@ -2367,114 +2404,6 @@ namespace pvpgn
 					std::strftime(msgtemp0, sizeof(msgtemp0), "%a %b %d %H:%M:%S", tmnow);
 				msgtemp = localize(c, "Your local time: {}", msgtemp0);
 				message_send_text(c, message_type_info, c, msgtemp);
-			}
-
-			return 0;
-		}
-
-		static int _handle_channel_command(t_connection * c, char const *text)
-		{
-			t_channel * channel;
-
-			std::vector<std::string> args = split_command(text, 1);
-
-			if (args[1].empty())
-			{
-				describe_command(c, args[0].c_str());
-				return -1;
-			}
-			text = args[1].c_str(); // channelname
-
-			if (!conn_get_game(c)) {
-				if (strcasecmp(text, "Arranged Teams") == 0)
-				{
-					message_send_text(c, message_type_error, c, msgtemp = localize(c, "Channel Arranged Teams is a RESTRICTED Channel!"));
-					return -1;
-				}
-
-				if (!(std::strlen(text) < MAX_CHANNELNAME_LEN))
-				{
-					msgtemp = localize(c, "Max channel name length exceeded (max {} symbols)", MAX_CHANNELNAME_LEN - 1);
-					message_send_text(c, message_type_error, c, msgtemp);
-					return -1;
-				}
-
-				if ((channel = conn_get_channel(c)) && (strcasecmp(channel_get_name(channel), text) == 0))
-					return -1; // we don't have to do anything, we are already in this channel
-
-				if (conn_set_channel(c, text) < 0)
-					conn_set_channel(c, CHANNEL_NAME_BANNED); /* should not fail */
-				if ((conn_get_clienttag(c) == CLIENTTAG_WARCRAFT3_UINT) || (conn_get_clienttag(c) == CLIENTTAG_WAR3XP_UINT))
-					conn_update_w3_playerinfo(c);
-				command_set_flags(c);
-			}
-			else
-				message_send_text(c, message_type_error, c, localize(c, "Command disabled while inside a game."));
-
-			return 0;
-		}
-
-		static int _handle_rejoin_command(t_connection * c, char const *text)
-		{
-
-			if (channel_rejoin(c) != 0)
-				message_send_text(c, message_type_error, c, localize(c, "You are not in a channel."));
-			if ((conn_get_clienttag(c) == CLIENTTAG_WARCRAFT3_UINT) || (conn_get_clienttag(c) == CLIENTTAG_WAR3XP_UINT))
-				conn_update_w3_playerinfo(c);
-			command_set_flags(c);
-
-			return 0;
-		}
-
-		static int _handle_away_command(t_connection * c, char const *text)
-		{
-			std::vector<std::string> args = split_command(text, 1);
-			text = args[1].c_str(); // message
-
-			if (text[0] == '\0') /* toggle away mode */
-			{
-				if (!conn_get_awaystr(c))
-				{
-					message_send_text(c, message_type_info, c, localize(c, "You are now marked as being away."));
-					conn_set_awaystr(c, "Currently not available");
-				}
-				else
-				{
-					message_send_text(c, message_type_info, c, localize(c, "You are no longer marked as away."));
-					conn_set_awaystr(c, NULL);
-				}
-			}
-			else
-			{
-				message_send_text(c, message_type_info, c, localize(c, "You are now marked as being away."));
-				conn_set_awaystr(c, text);
-			}
-
-			return 0;
-		}
-
-		static int _handle_dnd_command(t_connection * c, char const *text)
-		{
-			std::vector<std::string> args = split_command(text, 1);
-			text = args[1].c_str(); // message
-
-			if (text[0] == '\0') /* toggle dnd mode */
-			{
-				if (!conn_get_dndstr(c))
-				{
-					message_send_text(c, message_type_info, c, localize(c, "Do Not Disturb mode engaged."));
-					conn_set_dndstr(c, localize(c, "Not available").c_str());
-				}
-				else
-				{
-					message_send_text(c, message_type_info, c, localize(c, "Do Not Disturb mode canceled."));
-					conn_set_dndstr(c, NULL);
-				}
-			}
-			else
-			{
-				message_send_text(c, message_type_info, c, localize(c, "Do Not Disturb mode engaged."));
-				conn_set_dndstr(c, text);
 			}
 
 			return 0;
@@ -2580,53 +2509,6 @@ namespace pvpgn
 			text = args[1].c_str(); // message
 
 			do_whisper(c, dest, text);
-			return 0;
-		}
-
-		static int _handle_realmann_command(t_connection * c, char const *text)
-		{
-			t_realm * realm;
-			t_realm * trealm;
-			t_connection * tc;
-			t_elem const * curr;
-			t_message    * message;
-
-			if (!(realm = conn_get_realm(c))) {
-				message_send_text(c, message_type_info, c, localize(c, "You must join a realm first"));
-				return -1;
-			}
-
-			std::vector<std::string> args = split_command(text, 1);
-
-			if (args[1].empty())
-			{
-				describe_command(c, args[0].c_str());
-				return -1;
-			}
-			text = args[1].c_str(); // message
-
-			msgtemp = localize(c, "Announcement from {}@{}: {}", conn_get_username(c), realm_get_name(realm), text);
-			if (!(message = message_create(message_type_broadcast, c, msgtemp.c_str())))
-			{
-				message_send_text(c, message_type_info, c, "Could not broadcast message.");
-				return -1;
-			}
-			else
-			{
-				LIST_TRAVERSE_CONST(connlist(), curr)
-				{
-					tc = (t_connection*)elem_get_data(curr);
-					if (!tc)
-						continue;
-					if ((trealm = conn_get_realm(tc)) && (trealm == realm))
-					{
-						message_send(message, tc);
-					}
-				}
-			}
-
-			message_destroy(message);
-
 			return 0;
 		}
 
@@ -3195,370 +3077,6 @@ namespace pvpgn
 			return 0;
 		}
 
-		static int _handle_find_command(t_connection * c, char const *text)
-		{
-			unsigned int  i = 0;
-			t_account *account;
-			char const *tname;
-			t_entry *curr;
-			t_hashtable *accountlist_head = accountlist();
-
-			std::vector<std::string> args = split_command(text, 1);
-			if (args[1].empty())
-			{
-				describe_command(c, args[0].c_str());
-				return -1;
-			}
-			text = args[1].c_str();
-
-			msgtemp = localize(c, " -- name -- similar to {}", text);
-			message_send_text(c, message_type_info, c, msgtemp);
-
-
-			HASHTABLE_TRAVERSE(accountlist_head, curr)
-			{
-				if (!curr)
-				{
-					eventlog(eventlog_level_error, __FUNCTION__, "found NULL account in list");
-				}
-				else
-				{
-					account = (t_account *)entry_get_data(curr);
-					if ((tname = accountlist_find_vague_account(account, text)) != NULL) {
-						message_send_text(c, message_type_info, c, tname);
-						return 0;
-					}
-				}
-			}
-			return 0;
-		}
-
-		/**
-		* Save changes of accounts and clans from the cache to a storage
-		*/
-		static int _handle_save_command(t_connection * c, char const *text)
-		{
-			clanlist_save();
-
-			accountlist_save(FS_FORCE | FS_ALL);
-			accountlist_flush(FS_FORCE | FS_ALL);
-
-			message_send_text(c, message_type_info, c, localize(c, "Pending changes has been saved into the database."));
-			return 0;
-		}
-
-		static int _handle_shutdown_command(t_connection * c, char const *text)
-		{
-			char const * dest;
-			unsigned int delay;
-
-			std::vector<std::string> args = split_command(text, 1);
-			dest = args[1].c_str(); // delay
-
-			if (dest[0] == '\0')
-				delay = prefs_get_shutdown_delay();
-			else
-			if (clockstr_to_seconds(dest, &delay) < 0)
-			{
-				message_send_text(c, message_type_error, c, localize(c, "Invalid delay."));
-				return -1;
-			}
-
-			server_quit_delay(delay);
-
-			if (delay)
-				message_send_text(c, message_type_info, c, localize(c, "You've initialized the shutdown sequence."));
-			else
-				message_send_text(c, message_type_info, c, localize(c, "You've canceled the shutdown sequence."));
-
-			return 0;
-		}
-
-		static int _handle_ladderinfo_command(t_connection * c, char const *text)
-		{
-			char const * rank_s, *tag_s;
-			unsigned int rank;
-			t_account *  account;
-			t_team * team;
-			t_clienttag clienttag;
-			const LadderReferencedObject* referencedObject;
-			LadderList* ladderList;
-
-			std::vector<std::string> args = split_command(text, 2);
-			if (args[1].empty())
-			{
-				describe_command(c, args[0].c_str());
-				return -1;
-			}
-			rank_s = args[1].c_str(); // rank
-			tag_s = args[2].c_str(); // clienttag
-
-			if (str_to_uint(rank_s, &rank) < 0 || rank < 1)
-			{
-				message_send_text(c, message_type_error, c, "Invalid rank.");
-				return -1;
-			}
-
-			if (!(clienttag = tag_validate_client(tag_s)))
-			{
-				if (!(clienttag = conn_get_clienttag(c)))
-				{
-					message_send_text(c, message_type_error, c, localize(c, "Unable to determine client game."));
-					return -1;
-				}
-			}
-
-			if (clienttag == CLIENTTAG_STARCRAFT_UINT)
-			{
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_normal, clienttag, ladder_sort_highestrated, ladder_time_active));
-				referencedObject = ladderList->getReferencedObject(rank);
-				if ((referencedObject) && (account = referencedObject->getAccount()))
-				{
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "StarCraft active %5u: %-20.20s %u/%u/%u rating %u",
-						rank,
-						account_get_name(account),
-						account_get_ladder_active_wins(account, CLIENTTAG_STARCRAFT_UINT, ladder_id_normal),
-						account_get_ladder_active_losses(account, CLIENTTAG_STARCRAFT_UINT, ladder_id_normal),
-						account_get_ladder_active_disconnects(account, CLIENTTAG_STARCRAFT_UINT, ladder_id_normal),
-						account_get_ladder_active_rating(account, CLIENTTAG_STARCRAFT_UINT, ladder_id_normal));
-				}
-				else
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "StarCraft active %5u: <none>", rank);
-				message_send_text(c, message_type_info, c, msgtemp0);
-
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_normal, clienttag, ladder_sort_highestrated, ladder_time_current));
-				referencedObject = ladderList->getReferencedObject(rank);
-				if ((referencedObject) && (account = referencedObject->getAccount()))
-				{
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "StarCraft current %5u: %-20.20s %u/%u/%u rating %u",
-						rank,
-						account_get_name(account),
-						account_get_ladder_wins(account, CLIENTTAG_STARCRAFT_UINT, ladder_id_normal),
-						account_get_ladder_losses(account, CLIENTTAG_STARCRAFT_UINT, ladder_id_normal),
-						account_get_ladder_disconnects(account, CLIENTTAG_STARCRAFT_UINT, ladder_id_normal),
-						account_get_ladder_rating(account, CLIENTTAG_STARCRAFT_UINT, ladder_id_normal));
-				}
-				else
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "StarCraft current %5u: <none>", rank);
-				message_send_text(c, message_type_info, c, msgtemp0);
-			}
-			else if (clienttag == CLIENTTAG_BROODWARS_UINT)
-			{
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_normal, clienttag, ladder_sort_highestrated, ladder_time_active));
-				referencedObject = ladderList->getReferencedObject(rank);
-				if ((referencedObject) && (account = referencedObject->getAccount()))
-				{
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "Brood War active %5u: %-20.20s %u/%u/%u rating %u",
-						rank,
-						account_get_name(account),
-						account_get_ladder_active_wins(account, CLIENTTAG_BROODWARS_UINT, ladder_id_normal),
-						account_get_ladder_active_losses(account, CLIENTTAG_BROODWARS_UINT, ladder_id_normal),
-						account_get_ladder_active_disconnects(account, CLIENTTAG_BROODWARS_UINT, ladder_id_normal),
-						account_get_ladder_active_rating(account, CLIENTTAG_BROODWARS_UINT, ladder_id_normal));
-				}
-				else
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "Brood War active %5u: <none>", rank);
-				message_send_text(c, message_type_info, c, msgtemp0);
-
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_normal, clienttag, ladder_sort_highestrated, ladder_time_current));
-				referencedObject = ladderList->getReferencedObject(rank);
-				if ((referencedObject) && (account = referencedObject->getAccount()))
-				{
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "Brood War current %5u: %-20.20s %u/%u/%u rating %u",
-						rank,
-						account_get_name(account),
-						account_get_ladder_wins(account, CLIENTTAG_BROODWARS_UINT, ladder_id_normal),
-						account_get_ladder_losses(account, CLIENTTAG_BROODWARS_UINT, ladder_id_normal),
-						account_get_ladder_disconnects(account, CLIENTTAG_BROODWARS_UINT, ladder_id_normal),
-						account_get_ladder_rating(account, CLIENTTAG_BROODWARS_UINT, ladder_id_normal));
-				}
-				else
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "Brood War current %5u: <none>", rank);
-				message_send_text(c, message_type_info, c, msgtemp0);
-			}
-			else if (clienttag == CLIENTTAG_WARCIIBNE_UINT)
-			{
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_normal, clienttag, ladder_sort_highestrated, ladder_time_active));
-				referencedObject = ladderList->getReferencedObject(rank);
-				if ((referencedObject) && (account = referencedObject->getAccount()))
-				{
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "WarCraft II standard active %5u: %-20.20s %u/%u/%u rating %u",
-						rank,
-						account_get_name(account),
-						account_get_ladder_active_wins(account, CLIENTTAG_WARCIIBNE_UINT, ladder_id_normal),
-						account_get_ladder_active_losses(account, CLIENTTAG_WARCIIBNE_UINT, ladder_id_normal),
-						account_get_ladder_active_disconnects(account, CLIENTTAG_WARCIIBNE_UINT, ladder_id_normal),
-						account_get_ladder_active_rating(account, CLIENTTAG_WARCIIBNE_UINT, ladder_id_normal));
-				}
-				else
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "WarCraft II standard active %5u: <none>", rank);
-				message_send_text(c, message_type_info, c, msgtemp0);
-
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_ironman, clienttag, ladder_sort_highestrated, ladder_time_active));
-				referencedObject = ladderList->getReferencedObject(rank);
-				if ((referencedObject) && (account = referencedObject->getAccount()))
-				{
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "WarCraft II IronMan active %5u: %-20.20s %u/%u/%u rating %u",
-						rank,
-						account_get_name(account),
-						account_get_ladder_active_wins(account, CLIENTTAG_WARCIIBNE_UINT, ladder_id_ironman),
-						account_get_ladder_active_losses(account, CLIENTTAG_WARCIIBNE_UINT, ladder_id_ironman),
-						account_get_ladder_active_disconnects(account, CLIENTTAG_WARCIIBNE_UINT, ladder_id_ironman),
-						account_get_ladder_active_rating(account, CLIENTTAG_WARCIIBNE_UINT, ladder_id_ironman));
-				}
-				else
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "WarCraft II IronMan active %5u: <none>", rank);
-				message_send_text(c, message_type_info, c, msgtemp0);
-
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_normal, clienttag, ladder_sort_highestrated, ladder_time_current));
-				referencedObject = ladderList->getReferencedObject(rank);
-				if ((referencedObject) && (account = referencedObject->getAccount()))
-				{
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "WarCraft II standard current %5u: %-20.20s %u/%u/%u rating %u",
-						rank,
-						account_get_name(account),
-						account_get_ladder_wins(account, CLIENTTAG_WARCIIBNE_UINT, ladder_id_normal),
-						account_get_ladder_losses(account, CLIENTTAG_WARCIIBNE_UINT, ladder_id_normal),
-						account_get_ladder_disconnects(account, CLIENTTAG_WARCIIBNE_UINT, ladder_id_normal),
-						account_get_ladder_rating(account, CLIENTTAG_WARCIIBNE_UINT, ladder_id_normal));
-				}
-				else
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "WarCraft II standard current %5u: <none>", rank);
-				message_send_text(c, message_type_info, c, msgtemp0);
-
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_ironman, clienttag, ladder_sort_highestrated, ladder_time_current));
-				referencedObject = ladderList->getReferencedObject(rank);
-				if ((referencedObject) && (account = referencedObject->getAccount()))
-				{
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "WarCraft II IronMan current %5u: %-20.20s %u/%u/%u rating %u",
-						rank,
-						account_get_name(account),
-						account_get_ladder_wins(account, CLIENTTAG_WARCIIBNE_UINT, ladder_id_ironman),
-						account_get_ladder_losses(account, CLIENTTAG_WARCIIBNE_UINT, ladder_id_ironman),
-						account_get_ladder_disconnects(account, CLIENTTAG_WARCIIBNE_UINT, ladder_id_ironman),
-						account_get_ladder_rating(account, CLIENTTAG_WARCIIBNE_UINT, ladder_id_ironman));
-				}
-				else
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "WarCraft II IronMan current %5u: <none>", rank);
-				message_send_text(c, message_type_info, c, msgtemp0);
-			}
-			// --> aaron
-			else if (clienttag == CLIENTTAG_WARCRAFT3_UINT || clienttag == CLIENTTAG_WAR3XP_UINT)
-			{
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_solo, clienttag, ladder_sort_default, ladder_time_default));
-				referencedObject = ladderList->getReferencedObject(rank);
-				if ((referencedObject) && (account = referencedObject->getAccount()))
-				{
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "WarCraft3 Solo %5u: %-20.20s %u/%u/0",
-						rank,
-						account_get_name(account),
-						account_get_ladder_wins(account, clienttag, ladder_id_solo),
-						account_get_ladder_losses(account, clienttag, ladder_id_solo));
-				}
-				else
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "WarCraft3 Solo %5u: <none>", rank);
-				message_send_text(c, message_type_info, c, msgtemp0);
-
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_team, clienttag, ladder_sort_default, ladder_time_default));
-				referencedObject = ladderList->getReferencedObject(rank);
-				if ((referencedObject) && (account = referencedObject->getAccount()))
-				{
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "WarCraft3 Team %5u: %-20.20s %u/%u/0",
-						rank,
-						account_get_name(account),
-						account_get_ladder_wins(account, clienttag, ladder_id_team),
-						account_get_ladder_losses(account, clienttag, ladder_id_team));
-				}
-				else
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "WarCraft3 Team %5u: <none>", rank);
-				message_send_text(c, message_type_info, c, msgtemp0);
-
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_ffa, clienttag, ladder_sort_default, ladder_time_default));
-				referencedObject = ladderList->getReferencedObject(rank);
-				if ((referencedObject) && (account = referencedObject->getAccount()))
-				{
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "WarCraft3 FFA %5u: %-20.20s %u/%u/0",
-						rank,
-						account_get_name(account),
-						account_get_ladder_wins(account, clienttag, ladder_id_ffa),
-						account_get_ladder_losses(account, clienttag, ladder_id_ffa));
-				}
-				else
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "WarCraft3 FFA %5u: <none>", rank);
-				message_send_text(c, message_type_info, c, msgtemp0);
-
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_ateam, clienttag, ladder_sort_default, ladder_time_default));
-				referencedObject = ladderList->getReferencedObject(rank);
-				if ((referencedObject) && (team = referencedObject->getTeam()))
-				{
-					t_xstr * membernames = xstr_alloc();
-					for (unsigned char i = 0; i < team_get_size(team); i++){
-						xstr_cat_str(membernames, account_get_name(team_get_member(team, i)));
-						if ((i)) xstr_cat_char(membernames, ',');
-					}
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "WarCraft3 AT Team %5u: %-80.80s %d/%d/0",
-						rank,
-						xstr_get_str(membernames),
-						team_get_wins(team),
-						team_get_losses(team));
-					xstr_free(membernames);
-				}
-				else
-					std::snprintf(msgtemp0, sizeof(msgtemp0), "WarCraft3 AT Team %5u: <none>", rank);
-				message_send_text(c, message_type_info, c, msgtemp0);
-			}
-			//<---
-			else
-			{
-				message_send_text(c, message_type_error, c, localize(c, "This game does not support win/loss records."));
-				message_send_text(c, message_type_error, c, localize(c, "You must supply a rank and a valid program ID."));
-				message_send_text(c, message_type_error, c, localize(c, "Example: /ladderinfo 1 STAR"));
-			}
-
-			return 0;
-		}
-
-		static int _handle_timer_command(t_connection * c, char const *text)
-		{
-			unsigned int delta;
-			t_timer_data data;
-
-			char const * delta_s, *msgtext_s;
-			std::vector<std::string> args = split_command(text, 2);
-			if (args[1].empty())
-			{
-				describe_command(c, args[0].c_str());
-				return -1;
-			}
-			delta_s = args[1].c_str(); // timer delta
-			msgtext_s = args[2].c_str(); // message text display when timer elapsed
-
-			if (clockstr_to_seconds(delta_s, &delta) < 0)
-			{
-				message_send_text(c, message_type_error, c, localize(c, "Invalid duration."));
-				return -1;
-			}
-
-			if (msgtext_s[0] == '\0')
-				data.p = xstrdup(localize(c, "Your timer has expired.").c_str());
-			else
-				data.p = xstrdup(msgtext_s);
-
-			if (timerlist_add_timer(c, std::time(NULL) + (std::time_t)delta, user_timer_cb, data) < 0)
-			{
-				eventlog(eventlog_level_error, __FUNCTION__, "Could not add timer");
-				xfree(data.p);
-				message_send_text(c, message_type_error, c, localize(c, "Could not set timer."));
-			}
-			else
-			{
-				msgtemp = localize(c, "Timer set for {} second(s)", seconds_to_timestr(delta));
-				message_send_text(c, message_type_info, c, msgtemp);
-			}
-
-			return 0;
-		}
-
 		static int _handle_serverban_command(t_connection *c, char const *text)
 		{
 			char const * username;
@@ -3669,163 +3187,6 @@ namespace pvpgn
 			msgtemp = localize(c, "You are not allowed to send lines with more than {} characters.", prefs_get_quota_maxline());
 			message_send_text(c, message_type_info, c, msgtemp);
 
-			return 0;
-		}
-
-		static int _handle_lockacct_command(t_connection * c, char const *text)
-		{
-			t_connection * user;
-			t_account *    account;
-			char const * username, *reason = "", *hours = "24"; // default time 24 hours
-			unsigned int sectime;
-
-			std::vector<std::string> args = split_command(text, 3);
-			if (args[1].empty())
-			{
-				describe_command(c, args[0].c_str());
-				return -1;
-			}
-			username = args[1].c_str(); // username
-			if (!args[2].empty())
-				hours = args[2].c_str(); // hours
-			if (!args[3].empty())
-				reason = args[3].c_str(); // reason
-
-			if (!(account = accountlist_find_account(username)))
-			{
-				message_send_text(c, message_type_error, c, localize(c, "Invalid user."));
-				return -1;
-			}
-
-			account_set_auth_lock(account, 1);
-			sectime = (atoi(hours) == 0) ? 0 : (atoi(hours) * 60 * 60) + now; // get unlock time in the future
-			account_set_auth_locktime(account, sectime);
-			account_set_auth_lockreason(account, reason);
-			account_set_auth_lockby(account, conn_get_username(c));
-
-
-			// send message to author
-			msgtemp = localize(c, "Account {} is now locked", account_get_name(account));
-			msgtemp += account_get_locktext(c, account, false);
-			message_send_text(c, message_type_error, c, msgtemp);
-
-			// send message to locked user
-			if ((user = connlist_find_connection_by_accountname(username)))
-			{
-				msgtemp = localize(c, "Your account has just been locked");
-				msgtemp += account_get_locktext(c, account, true);
-				message_send_text(user, message_type_error, user, msgtemp);
-			}
-
-			return 0;
-		}
-
-		static int _handle_unlockacct_command(t_connection * c, char const *text)
-		{
-			t_connection * user;
-			t_account *    account;
-
-			std::vector<std::string> args = split_command(text, 1);
-			if (args[1].empty())
-			{
-				describe_command(c, args[0].c_str());
-				return -1;
-			}
-			text = args[1].c_str(); // username
-
-			if (!(account = accountlist_find_account(text)))
-			{
-				message_send_text(c, message_type_error, c, localize(c, "Invalid user."));
-				return -1;
-			}
-
-			if ((user = connlist_find_connection_by_accountname(text)))
-			{
-				msgtemp = localize(c, "Your account has just been unlocked by {}", conn_get_username(c));
-				message_send_text(user, message_type_info, user, msgtemp);
-			}
-
-			account_set_auth_lock(account, 0);
-			message_send_text(c, message_type_error, c, localize(c, "That user's account is now unlocked."));
-			return 0;
-		}
-
-
-		static int _handle_muteacct_command(t_connection * c, char const *text)
-		{
-			t_connection * user;
-			t_account *    account;
-			char const * username, *reason = "", *hours = "1"; // default time 1 hour
-			unsigned int sectime;
-
-			std::vector<std::string> args = split_command(text, 3);
-			if (args[1].empty())
-			{
-				describe_command(c, args[0].c_str());
-				return -1;
-			}
-			username = args[1].c_str(); // username
-			if (!args[2].empty())
-				hours = args[2].c_str(); // hours
-			if (!args[3].empty())
-				reason = args[3].c_str(); // reason
-
-			if (!(account = accountlist_find_account(username)))
-			{
-				message_send_text(c, message_type_error, c, localize(c, "Invalid user."));
-				return -1;
-			}
-
-			account_set_auth_mute(account, 1);
-			// get unlock time in the future
-			sectime = (atoi(hours) == 0) ? 0 : (atoi(hours) * 60 * 60) + now;
-			account_set_auth_mutetime(account, sectime);
-			account_set_auth_mutereason(account, reason);
-			account_set_auth_muteby(account, conn_get_username(c));
-
-			// send message to author
-			msgtemp = localize(c, "Account {} is now muted", account_get_name(account));
-			msgtemp += account_get_mutetext(c, account, false);
-			message_send_text(c, message_type_error, c, msgtemp);
-
-			// send message to muted user
-			if ((user = connlist_find_connection_by_accountname(username)))
-			{
-				msgtemp = localize(c, "Your account has just been muted");
-				msgtemp += account_get_mutetext(c, account, true);
-				message_send_text(user, message_type_error, user, msgtemp);
-			}
-
-			return 0;
-		}
-
-		static int _handle_unmuteacct_command(t_connection * c, char const *text)
-		{
-			t_connection * user;
-			t_account *    account;
-
-			std::vector<std::string> args = split_command(text, 1);
-			if (args[1].empty())
-			{
-				describe_command(c, args[0].c_str());
-				return -1;
-			}
-			text = args[1].c_str(); // username
-
-			if (!(account = accountlist_find_account(text)))
-			{
-				message_send_text(c, message_type_error, c, localize(c, "Invalid user."));
-				return -1;
-			}
-
-			if ((user = connlist_find_connection_by_accountname(text)))
-			{
-				msgtemp = localize(c, "Your account has just been unmuted by {}", conn_get_username(c));
-				message_send_text(user, message_type_info, user, msgtemp);
-			}
-
-			account_set_auth_mute(account, 0);
-			message_send_text(c, message_type_error, c, localize(c, "That user's account is now unmuted."));
 			return 0;
 		}
 
@@ -4215,252 +3576,5 @@ namespace pvpgn
 
 			return 0;
 		}
-
-		static void _reset_d1_stats(t_account *account, t_clienttag ctag, t_connection *c)
-		{
-			account_set_normal_level(account, ctag, 0);
-			account_set_normal_strength(account, ctag, 0),
-				account_set_normal_magic(account, ctag, 0),
-				account_set_normal_dexterity(account, ctag, 0),
-				account_set_normal_vitality(account, ctag, 0),
-				account_set_normal_gold(account, ctag, 0);
-
-			msgtemp = localize(c, "Reset {}'s {} stats", account_get_name(account), clienttag_get_title(ctag));
-			message_send_text(c, message_type_info, c, msgtemp);
-		}
-
-		static void _reset_scw2_stats(t_account *account, t_clienttag ctag, t_connection *c)
-		{
-			LadderList* ladderList;
-			unsigned int uid = account_get_uid(account);
-
-			account_set_normal_wins(account, ctag, 0);
-			account_set_normal_losses(account, ctag, 0);
-			account_set_normal_draws(account, ctag, 0);
-			account_set_normal_disconnects(account, ctag, 0);
-
-			// normal, current
-			if (account_get_ladder_rating(account, ctag, ladder_id_normal) > 0) {
-				account_set_ladder_wins(account, ctag, ladder_id_normal, 0);
-				account_set_ladder_losses(account, ctag, ladder_id_normal, 0);
-				account_set_ladder_draws(account, ctag, ladder_id_normal, 0);
-				account_set_ladder_disconnects(account, ctag, ladder_id_normal, 0);
-				account_set_ladder_rating(account, ctag, ladder_id_normal, 0);
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_normal, ctag, ladder_sort_highestrated, ladder_time_current));
-				if (ladderList != NULL)
-					ladderList->delEntry(uid);
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_normal, ctag, ladder_sort_mostwins, ladder_time_current));
-				if (ladderList != NULL)
-					ladderList->delEntry(uid);
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_normal, ctag, ladder_sort_mostgames, ladder_time_current));
-				if (ladderList != NULL)
-					ladderList->delEntry(uid);
-			}
-
-			// ironman, current
-			if (account_get_ladder_rating(account, ctag, ladder_id_ironman) > 0) {
-				account_set_ladder_wins(account, ctag, ladder_id_ironman, 0);
-				account_set_ladder_losses(account, ctag, ladder_id_ironman, 0);
-				account_set_ladder_draws(account, ctag, ladder_id_ironman, 0);
-				account_set_ladder_disconnects(account, ctag, ladder_id_ironman, 0);
-				account_set_ladder_rating(account, ctag, ladder_id_ironman, 0);
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_ironman, ctag, ladder_sort_highestrated, ladder_time_current));
-				if (ladderList != NULL)
-					ladderList->delEntry(uid);
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_ironman, ctag, ladder_sort_mostwins, ladder_time_current));
-				if (ladderList != NULL)
-					ladderList->delEntry(uid);
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_ironman, ctag, ladder_sort_mostgames, ladder_time_current));
-				if (ladderList != NULL)
-					ladderList->delEntry(uid);
-			}
-
-			// normal, active
-			if (account_get_ladder_active_rating(account, ctag, ladder_id_normal) > 0) {
-				account_set_ladder_active_wins(account, ctag, ladder_id_normal, 0);
-				account_set_ladder_active_losses(account, ctag, ladder_id_normal, 0);
-				account_set_ladder_active_draws(account, ctag, ladder_id_normal, 0);
-				account_set_ladder_active_disconnects(account, ctag, ladder_id_normal, 0);
-				account_set_ladder_active_rating(account, ctag, ladder_id_normal, 0);
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_normal, ctag, ladder_sort_highestrated, ladder_time_active));
-				if (ladderList != NULL)
-					ladderList->delEntry(uid);
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_normal, ctag, ladder_sort_mostwins, ladder_time_active));
-				if (ladderList != NULL)
-					ladderList->delEntry(uid);
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_normal, ctag, ladder_sort_mostgames, ladder_time_active));
-				if (ladderList != NULL)
-					ladderList->delEntry(uid);
-			}
-
-			// ironman, active
-			if (account_get_ladder_active_rating(account, ctag, ladder_id_ironman) > 0) {
-				account_set_ladder_active_wins(account, ctag, ladder_id_ironman, 0);
-				account_set_ladder_active_losses(account, ctag, ladder_id_ironman, 0);
-				account_set_ladder_active_draws(account, ctag, ladder_id_ironman, 0);
-				account_set_ladder_active_disconnects(account, ctag, ladder_id_ironman, 0);
-				account_set_ladder_active_rating(account, ctag, ladder_id_ironman, 0);
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_ironman, ctag, ladder_sort_highestrated, ladder_time_active));
-				if (ladderList != NULL)
-					ladderList->delEntry(uid);
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_ironman, ctag, ladder_sort_mostwins, ladder_time_active));
-				if (ladderList != NULL)
-					ladderList->delEntry(uid);
-				ladderList = ladders.getLadderList(LadderKey(ladder_id_ironman, ctag, ladder_sort_mostgames, ladder_time_active));
-				if (ladderList != NULL)
-					ladderList->delEntry(uid);
-			}
-
-			msgtemp = localize(c, "Reset {}'s {} stats", account_get_name(account), clienttag_get_title(ctag));
-			message_send_text(c, message_type_info, c, msgtemp);
-		}
-
-		static void _reset_w3_stats(t_account *account, t_clienttag ctag, t_connection *c)
-		{
-			LadderList* ladderList;
-			unsigned int uid = account_get_uid(account);
-
-			account_set_ladder_level(account, ctag, ladder_id_solo, 0);
-			account_set_ladder_xp(account, ctag, ladder_id_solo, 0);
-			account_set_ladder_wins(account, ctag, ladder_id_solo, 0);
-			account_set_ladder_losses(account, ctag, ladder_id_solo, 0);
-			account_set_ladder_rank(account, ctag, ladder_id_solo, 0);
-			ladderList = ladders.getLadderList(LadderKey(ladder_id_solo, ctag, ladder_sort_default, ladder_time_default));
-			if (ladderList != NULL)
-				ladderList->delEntry(uid);
-
-			account_set_ladder_level(account, ctag, ladder_id_team, 0);
-			account_set_ladder_xp(account, ctag, ladder_id_team, 0);
-			account_set_ladder_wins(account, ctag, ladder_id_team, 0);
-			account_set_ladder_losses(account, ctag, ladder_id_team, 0);
-			account_set_ladder_rank(account, ctag, ladder_id_team, 0);
-			ladderList = ladders.getLadderList(LadderKey(ladder_id_team, ctag, ladder_sort_default, ladder_time_default));
-			if (ladderList != NULL)
-				ladderList->delEntry(uid);
-
-			account_set_ladder_level(account, ctag, ladder_id_ffa, 0);
-			account_set_ladder_xp(account, ctag, ladder_id_ffa, 0);
-			account_set_ladder_wins(account, ctag, ladder_id_ffa, 0);
-			account_set_ladder_losses(account, ctag, ladder_id_ffa, 0);
-			account_set_ladder_rank(account, ctag, ladder_id_ffa, 0);
-			ladderList = ladders.getLadderList(LadderKey(ladder_id_ffa, ctag, ladder_sort_default, ladder_time_default));
-			if (ladderList != NULL)
-				ladderList->delEntry(uid);
-			// this would now need a way to delete the team for all members now
-			//account_set_atteamcount(account,ctag,0);
-
-			msgtemp = localize(c, "Reset {}'s {} stats", account_get_name(account), clienttag_get_title(ctag));
-			message_send_text(c, message_type_info, c, msgtemp);
-		}
-
-		static int _handle_clearstats_command(t_connection *c, char const *text)
-		{
-			char const * username, * tag;
-			unsigned int all;
-			t_account *  account;
-			t_clienttag  ctag = 0;
-
-			std::vector<std::string> args = split_command(text, 2);
-			if (args[2].empty())
-			{
-				describe_command(c, args[0].c_str());
-				return -1;
-			}
-			username = args[1].c_str();
-			tag = args[2].c_str(); // clienttag
-
-			account = accountlist_find_account(username);
-			if (!account) {
-				message_send_text(c, message_type_error, c, localize(c, "Invalid user."));
-				return -1;
-			}
-
-			if (strcasecmp(tag, "all") != 0)
-			{
-				ctag = tag_validate_client(tag);
-				all = 0;
-			}
-			else all = 1;
-
-			if (all || ctag == CLIENTTAG_DIABLORTL_UINT)
-				_reset_d1_stats(account, CLIENTTAG_DIABLORTL_UINT, c);
-
-			if (all || ctag == CLIENTTAG_DIABLOSHR_UINT)
-				_reset_d1_stats(account, CLIENTTAG_DIABLOSHR_UINT, c);
-
-			if (all || ctag == CLIENTTAG_WARCIIBNE_UINT)
-				_reset_scw2_stats(account, CLIENTTAG_WARCIIBNE_UINT, c);
-
-			if (all || ctag == CLIENTTAG_STARCRAFT_UINT)
-				_reset_scw2_stats(account, CLIENTTAG_STARCRAFT_UINT, c);
-
-			if (all || ctag == CLIENTTAG_BROODWARS_UINT)
-				_reset_scw2_stats(account, CLIENTTAG_BROODWARS_UINT, c);
-
-			if (all || ctag == CLIENTTAG_SHAREWARE_UINT)
-				_reset_scw2_stats(account, CLIENTTAG_SHAREWARE_UINT, c);
-
-			if (all || ctag == CLIENTTAG_WARCRAFT3_UINT)
-				_reset_w3_stats(account, CLIENTTAG_WARCRAFT3_UINT, c);
-
-			if (all || ctag == CLIENTTAG_WAR3XP_UINT)
-				_reset_w3_stats(account, CLIENTTAG_WAR3XP_UINT, c);
-
-			ladders.update();
-
-			return 0;
-		}
-
-		/* Send message to all clients (similar to announce, but in messagebox) */
-		static int _handle_alert_command(t_connection * c, char const * text)
-		{
-			t_clienttag  clienttag;
-			t_clienttag  clienttag_dest;
-
-			clienttag = conn_get_clienttag(c);
-			// disallow clients that doesn't support SID_MESSAGEBOX
-			if (clienttag != CLIENTTAG_STARCRAFT_UINT && clienttag != CLIENTTAG_BROODWARS_UINT && clienttag != CLIENTTAG_STARJAPAN_UINT && clienttag != CLIENTTAG_SHAREWARE_UINT &&
-				clienttag != CLIENTTAG_DIABLORTL_UINT && clienttag != CLIENTTAG_DIABLOSHR_UINT &&
-				clienttag != CLIENTTAG_WARCIIBNE_UINT && clienttag != CLIENTTAG_BNCHATBOT_UINT)
-			{
-				message_send_text(c, message_type_error, c, localize(c, "Your game client doesn't support MessageBox."));
-				return -1;
-			}
-
-			std::vector<std::string> args = split_command(text, 1);
-			if (args[1].empty())
-			{
-				describe_command(c, args[0].c_str());
-				return -1;
-			}
-
-			// reduntant line - it adds a caption to message box
-			std::string goodtext = args[1] + localize(c, "\n\n***************************\nBy {}", conn_get_username(c));
-
-			// caption
-			msgtemp = localize(c, "Information from {}", prefs_get_servername());
-			msgtemp = localize(c, " for {}", prefs_get_servername());
-
-			t_connection * conn;
-			t_elem const * curr;
-			// send to online users
-			LIST_TRAVERSE_CONST(connlist(), curr)
-			{
-				if (conn = (t_connection*)elem_get_data(curr))
-				{
-					clienttag_dest = conn_get_clienttag(conn);
-
-					if (clienttag_dest != CLIENTTAG_STARCRAFT_UINT && clienttag_dest != CLIENTTAG_BROODWARS_UINT && clienttag_dest != CLIENTTAG_STARJAPAN_UINT && clienttag_dest != CLIENTTAG_SHAREWARE_UINT &&
-						clienttag_dest != CLIENTTAG_DIABLORTL_UINT && clienttag_dest != CLIENTTAG_DIABLOSHR_UINT &&
-						clienttag_dest != CLIENTTAG_WARCIIBNE_UINT && clienttag_dest != CLIENTTAG_BNCHATBOT_UINT) {
-						continue;
-					}
-					messagebox_show(conn, goodtext.c_str(), msgtemp.c_str());
-				}
-			}
-
-			return 0;
-		}
-
 	}
 }
