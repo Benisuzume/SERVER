@@ -184,10 +184,10 @@ namespace pvpgn
 			{
 				char channelname[10];
 				if (clan->tag)
-					std::sprintf(channelname, "Clan %s", clantag_to_str(clan->tag));
+					std::sprintf(channelname, "CLAN %s", clantag_to_str(clan->tag));
 				else
 				{
-					std::sprintf(channelname, "Clans");
+					std::sprintf(channelname, "Battlenet");
 					eventlog(eventlog_level_error, __FUNCTION__, "clan has NULL clantag");
 				}
 
@@ -1498,6 +1498,30 @@ namespace pvpgn
 
 			std::sprintf(tagstr, "%c%c%c%c", tag >> 24, (tag >> 16) & 0xff, (tag >> 8) & 0xff, tag & 0xff);
 			return tagstr;
+		}
+		
+		extern int clan_set_channel(t_clan * clan, char const *channel)
+		{
+			t_list * cl_member_list;
+			t_elem * curr;
+			t_clanmember * member;
+			t_account * account;
+			if (!clan) {
+				eventlog(eventlog_level_error, __FUNCTION__, "got NULL clan");
+				return -1;
+			}
+			cl_member_list = clan_get_members(clan);
+			LIST_TRAVERSE(cl_member_list,curr) {
+				if (!(member = (t_clanmember*)elem_get_data(curr))) {
+					eventlog(eventlog_level_error,__FUNCTION__,"found NULL entry in list");
+					continue;
+				}
+					account= clanmember_get_account( member );
+				  if ( account_set_strattr(account,"BNET\\clan\\channel",channel) ) {
+				   return 1;
+				}
+			}
+		 return 0;
 		}
 
 	}
