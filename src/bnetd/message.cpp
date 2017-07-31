@@ -39,6 +39,7 @@
 #include "account.h"
 #include "account_wrap.h"
 #include "channel.h"
+#include "clan.h"
 #include "channel_conv.h"
 #include "game.h"
 #include "mail.h"
@@ -1109,6 +1110,70 @@ namespace pvpgn
 				packet_append_string(packet, text);
 
 				break;
+			case message_type_null:
+			if (!text)
+			{
+				eventlog(eventlog_level_error,__FUNCTION__,"got NULL text for %s",message_type_get_str(type));
+				return -1;
+			}
+			if (dstflags&MF_X)
+				return -1; /* player is ignored */
+				bn_int_set(&packet->u.server_message.type,SERVER_MESSAGE_TYPE_WHISPER);
+				bn_int_set(&packet->u.server_message.flags,me?conn_get_flags(me)|dstflags:dstflags);
+				bn_int_set(&packet->u.server_message.latency,me?conn_get_latency(me):0);
+
+			// New Battlenet
+			if (me)
+			{
+				char const * tname;
+				char msgtemp[MAX_MESSAGE_LEN];
+				t_clanmember * clanmemb;
+
+				if ((clanmemb = account_get_clanmember(conn_get_account(me)))) {
+					t_clan *	 clan;
+					char	 status;
+					t_clantag * tag;
+
+					if ((clan = clanmember_get_clan(clanmemb))) {
+						if (status = clanmember_get_status(clanmemb) == CLAN_CHIEFTAIN) {
+							snprintf(msgtemp, sizeof(msgtemp), "[Chieftain] %s", conn_get_chatcharname(me, dst));
+							tname = conn_get_chatcharname(me, dst);
+							packet_append_string(packet, msgtemp);
+							conn_unget_chatcharname(me, tname);
+						}
+						else if (status = clanmember_get_status(clanmemb) == CLAN_SHAMAN) {
+							snprintf(msgtemp, sizeof(msgtemp), "[Shaman] %s", conn_get_chatcharname(me, dst));
+							tname = conn_get_chatcharname(me, dst);
+							packet_append_string(packet, msgtemp);
+							conn_unget_chatcharname(me, tname);
+						}
+						else if (status = clanmember_get_status(clanmemb) == CLAN_GRUNT) {
+							snprintf(msgtemp, sizeof(msgtemp), "[Grunt] %s", conn_get_chatcharname(me, dst));
+							tname = conn_get_chatcharname(me, dst);
+							packet_append_string(packet, msgtemp);
+							conn_unget_chatcharname(me, tname);
+						}
+						else if (status = clanmember_get_status(clanmemb) == CLAN_PEON) {
+							snprintf(msgtemp, sizeof(msgtemp), "[Peon] %s", conn_get_chatcharname(me, dst));
+							tname = conn_get_chatcharname(me, dst);
+							packet_append_string(packet, msgtemp);
+							conn_unget_chatcharname(me, tname);
+						}
+					}
+				}
+
+				else {
+					tname = conn_get_chatcharname(me, dst);
+					packet_append_string(packet, tname);
+					conn_unget_chatcharname(me, tname);
+				}
+			}
+			else
+			packet_append_string(packet,prefs_get_servername());
+
+				packet_append_string(packet,text);
+
+			break;
 			case message_type_talk:
 				if (!me)
 				{
