@@ -25,7 +25,7 @@
 #######################
 1 /rules /donate /event /request /online
 1 /status /stats /dota /imba /lod
-1 /buy /cash
+1 /buy /cash /transfer
 1 /create /host
 2 /chat /accept /decline
 2 /lock /unlock /mute /unmute
@@ -33,6 +33,7 @@
 ###################
 ##### BOT IRC #####
 ###################
+8 /addacct
 8 /lockacct /unlockacct /muteacct /unmuteacct
 8 /admin /operator
 8 /set /commandgroups /cg
