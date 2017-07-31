@@ -277,6 +277,12 @@ namespace pvpgn
 		extern int account_set_locale(t_account * account, int locale);
 		extern int account_get_ladder_points(t_account * account, t_clienttag clienttag, t_ladder_id id);
 		extern int account_set_ladder_points(t_account * account, t_clienttag clienttag, t_ladder_id id, unsigned int points);
+		
+		// New
+		extern char const * account_get_auth_class(t_account * account);
+		extern int account_set_channel(t_account * account, char const * val);
+		extern char const * account_get_channel(t_account * account);
+		
 	}
 
 }
