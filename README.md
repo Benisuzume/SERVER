@@ -8,6 +8,7 @@ Version: 1.99.7.1.1 <br/>
 [+] Import new icon from warcraft3 to /icon in "account_wrap.cpp" and "icons-war3.bni". <br/>
 [+] Added more commands to /clan in "clan.cpp", "clan.h", "handle_bnet.cpp", "command.cpp", "channel.cpp" : <br/>
 ----- Multi Chieftain. <br/>
+----- Change message clan with rank clan. <br/>
 ----- Change member clan status "/clan [rank]". <br/>
 ----- Change your clan channel "/clan channel". <br/>
 ----- Kick your member clan "/clan kick". <br/>
