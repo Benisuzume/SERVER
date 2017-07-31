@@ -42,6 +42,8 @@
 "auth_mutetime int","'0'"
 "auth_mutereason varchar(128)","NULL"
 "auth_command_groups varchar(16)","'1'"
+"request varchar(100)","'false'"
+"request_message varchar(100)","'-'"
 "acct_lastlogin_time int","'0'"
 "acct_lastlogin_owner varchar(128)","NULL"
 "acct_lastlogin_clienttag varchar(4)","NULL"
