@@ -193,6 +193,9 @@ namespace pvpgn
 		extern t_clantag str_to_clantag(const char *str);
 		extern const char* clantag_to_str(t_clantag tag);
 
+		// New
+		extern int clan_set_channel(t_clan * clan, char const *channel);
+
 	}
 
 }
