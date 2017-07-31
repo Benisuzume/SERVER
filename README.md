@@ -5,15 +5,20 @@ Version: 1.99.7.1.1 <br/>
 
 <b> ** CHANGELOG : </b><br/>
 [+] Added do_botchat -- whisper text from username without "message_type_friendwhisperack". <br/>
-[+] Added /botchatblue, /botchatred (null whisper text to target username with info & error). <br/>
 [+] Import new icon from warcraft3 to /icon in "account_wrap.cpp" and "icons-war3.bni". <br/>
 [+] Added more commands to /clan in "clan.cpp", "clan.h", "handle_bnet.cpp", "command.cpp", "channel.cpp" : <br/>
 ----- Multi Chieftain. <br/>
------ Change memberstatus from command "/clan <rank>". <br/>
------ Change your Clan channel "/clan channel". <br/>
+----- Change member clan status "/clan [rank]". <br/>
+----- Change your clan channel "/clan channel". <br/>
 ----- Kick your member clan "/clan kick". <br/>
-
 <hr>
+
+<b> ** MORE COMMANDS ( Connect to IRC-Bot ) : </b><br/>
+[+] Added /botchatblue, /botchatred (null whisper text to target username with info & error). <br/>
+[+] Added /rules, /donate, /event, /request, /online, /buy, /cash, /create, /host. <br/>
+[+] Added /top10, /stats, /status, /dota, /lod, /imba. <br/>
+[+] Added /chat, /accept, /decline, /lock, /unlock, /mute, /unmute. <br/>
+</hr>
 
 <b> ** INSTALLATION : </b><br/>
 [+] sudo apt-get -y install build-essential zlib1g-dev git <br/>
