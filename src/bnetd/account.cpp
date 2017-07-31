@@ -110,10 +110,10 @@ namespace pvpgn
 				return NULL;
 			}
 
-			if (username && account_check_name(username)) {
+			/* if (username && account_check_name(username)) {
 				eventlog(eventlog_level_error, __FUNCTION__, "got invalid chars in username");
 				return NULL;
-			}
+			} */
 
 			account = (t_account*)xmalloc(sizeof(t_account));
 
