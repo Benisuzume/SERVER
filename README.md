@@ -3,18 +3,16 @@ Re-Build: EXILEDNONAME <br/>
 Version: 1.99.7.1.1 <br/>
 <hr>
 
-<b> ** PREFIX COMMAND : </b><br/>
-[+] Remove /version /copyright /tos /motd /license. <br/>
-[+] Remove /beep /unbeep. <br/>
-[+] Remove /admins. <br/>
-[+] Remove /lusers. <br/>
-[+] Remove /news. <br/>
-<hr>
-
 <b> ** CHANGELOG : </b><br/>
 [+] Added do_botchat -- whisper text from username without "message_type_friendwhisperack". <br/>
-[+} Added /botchatblue, /botchatred (null whisper text to target username with info & error). <br/>
-[+} Import new icon from warcraft3 to /icon in "account_wrap.cpp" and "icons-war3.bni". <br/>
+[+] Added /botchatblue, /botchatred (null whisper text to target username with info & error). <br/>
+[+] Import new icon from warcraft3 to /icon in "account_wrap.cpp" and "icons-war3.bni". <br/>
+[+] Added more commands to /clan in "clan.cpp", "clan.h", "handle_bnet.cpp", "command.cpp", "channel.cpp" : <br/>
+----- Multi Chieftain. <br/>
+----- Change memberstatus from command "/clan <rank>". <br/>
+----- Change your Clan channel "/clan channel". <br/>
+----- Kick your member clan "/clan kick". <br/>
+
 <hr>
 
 <b> ** INSTALLATION : </b><br/>
