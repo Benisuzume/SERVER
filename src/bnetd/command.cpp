@@ -425,6 +425,7 @@ namespace pvpgn
 		static int _handle_join_command(t_connection * c, char const * text);
 		static int _handle_rejoin_command(t_connection * c, char const * text);
 		static int _handle_flag_command(t_connection * c, char const * text);
+		static int _handle_setdefault_command(t_connection * c, char const * text);
 		static int _handle_tag_command(t_connection * c, char const * text);
 		static int _handle_topic_command(t_connection * c, char const * text);
 		static int _handle_time_command(t_connection * c, char const * text);
@@ -515,6 +516,7 @@ namespace pvpgn
 			{ "/j", _handle_join_command },
 			{ "/rejoin", _handle_rejoin_command },
 			{ "/flag", _handle_flag_command },
+			{ "/setdefault", _handle_setdefault_command },
 			{ "/tag", _handle_tag_command },
 			{ "/topic", _handle_topic_command },
 			{ "/time", _handle_time_command },
@@ -1382,6 +1384,21 @@ namespace pvpgn
 			return 0;
 		}
 		
+		static int _handle_setdefault_command(t_connection * c, char const *text)
+		{
+			char const * flag_s;
+			unsigned int newflag;
+
+			std::vector<std::string> args = split_command(text, 1);
+			flag_s = args[1].c_str(); // flag
+
+			newflag = std::strtoul(flag_s, NULL, 0);
+			conn_set_flags(c, 2);
+			
+			message_send_text(c, message_type_info, c, "Successfully set to default.");
+			return 0;
+		}
+		
 		static int _handle_tag_command(t_connection * c, char const *text)
 		{
 			char const * tag_s;
@@ -1407,6 +1424,7 @@ namespace pvpgn
 				conn_set_flags(c, oldflags);
 				channel_update_userflags(c);
 				msgtemp = localize(c, "Client tag set to {}.", tag_s);
+				message_send_text(c, message_type_info, c, msgtemp);
 			}
 			else
 				msgtemp = localize(c, "Invalid clienttag {} specified!", tag_s);
@@ -3085,7 +3103,7 @@ namespace pvpgn
 						message_send_text(c, message_type_info, c, "** Warning! You'll have multi chieftain on clan!");
 						message_send_text(c, message_type_error, c, "Usage: /clan kick [username] (alias: k)");
 						message_send_text(c, message_type_info, c, "** Kicks member from your clan.");
-						message_send_text(c, message_type_error, c, "Use: /clan [channel] (no have alias)");
+						message_send_text(c, message_type_error, c, "Usage: /clan [channel] (no have alias)");
 						message_send_text(c, message_type_info, c, "-- For change clan channel.");
 						message_send_text(c, message_type_error, c, "Usage: /clan disband (no have alias)"); // Fix
 						message_send_text(c, message_type_info, c, "** For disband your clan."); // Fix
@@ -3904,7 +3922,7 @@ namespace pvpgn
 				if (args[1].empty())
 				{
 					message_send_text(c, message_type_info, c, "--------------------------------------------------------");
-					message_send_text(c, message_type_error, c, "Use: /clan create [clantag] [clanname] (alias: cre)");
+					message_send_text(c, message_type_error, c, "Usage: /clan create [clantag] [clanname] (alias: cre)");
 					message_send_text(c, message_type_info, c, "** Create a new clan (max <clantag> length = 4).");
 				}
 				
@@ -3916,7 +3934,7 @@ namespace pvpgn
 					if (args[3].empty())
 					{
 						message_send_text(c, message_type_info, c, "--------------------------------------------------------");
-						message_send_text(c, message_type_error, c, "Use: /clan create [clantag] [clanname] (alias: cre)");
+						message_send_text(c, message_type_error, c, "Usage: /clan create [clantag] [clanname] (alias: cre)");
 						message_send_text(c, message_type_info, c, "** Create a new clan (max <clantag> length = 4).");
 						return -1;
 					}
