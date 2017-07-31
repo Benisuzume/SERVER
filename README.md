@@ -18,7 +18,7 @@ Version: 1.99.7.1.1 <br/>
 [+] Added /rules, /donate, /event, /request, /online, /buy, /cash, /create, /host. <br/>
 [+] Added /top10, /stats, /status, /dota, /lod, /imba. <br/>
 [+] Added /chat, /accept, /decline, /lock, /unlock, /mute, /unmute. <br/>
-</hr>
+<hr>
 
 <b> ** INSTALLATION : </b><br/>
 [+] sudo apt-get -y install build-essential zlib1g-dev git <br/>
