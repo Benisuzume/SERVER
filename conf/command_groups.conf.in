@@ -1,24 +1,24 @@
 ###################
 ##### GENERAL #####
 ###################
-1	/c /clan /f /friends
-1	/msg /whisper /w /m /r /reply
-1	/me /emote
-1	/who /whois /whereis /where /whoami
-1	/time /users
-1	/join /j /rejoin
-1	/away /dnd
-1	/games /channels /chs
-1	/help /? /topic
-1	/latency /ping /p
-1	/icon
-1	/games /finger
-1	/chpass
-1	/ignore /unignore /squelch /unsquelch
-1	/logout /quit /exit
-2	/flag
-2	/watch /unwatch
-2	/kick /moderate /deop /voice /devoice /tmpop
+1 /c /clan /f /friends
+1 /msg /whisper /w /m /r /reply
+1 /me /emote
+1 /who /whois /whereis /where /whoami
+1 /time /users
+1 /join /j /rejoin
+1 /away /dnd
+1 /games /channels /chs
+1 /help /? /topic
+1 /latency /ping /p
+1 /icon
+1 /games /finger
+1 /chpass
+1 /ignore /unignore /squelch /unsquelch
+1 /logout /quit /exit
+2 /flag
+2 /watch /unwatch
+2 /kick /moderate /deop /voice /devoice /tmpop
 
 #######################
 ##### NEW COMMAND #####
@@ -33,11 +33,11 @@
 ###################
 ##### BOT IRC #####
 ###################
-8	/lockacct /unlockacct /muteacct /unmuteacct
-8	/admin /operator
-8	/set /commandgroups /cg
-8	/botchatblue /botchatred
+8 /lockacct /unlockacct /muteacct /unmuteacct
+8 /admin /operator
+8 /set /commandgroups /cg
+8 /botchatblue /botchatred
 8 /watchall /unwatchall
-8	/kill /serverban /ipban
-8	/ipscan /netinfo
+8 /kill /serverban /ipban
+8 /ipscan /netinfo
 8 /tag
