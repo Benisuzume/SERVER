@@ -455,6 +455,29 @@ namespace pvpgn
 		static int _handle_friends_command(t_connection * c, char const * text);
 		static int _handle_clan_command(t_connection * c, char const * text);
 		
+		// New
+		static int _handle_botrules_command(t_connection * c, char const * text);
+		static int _handle_botdonate_command(t_connection * c, char const * text);
+		static int _handle_botevent_command(t_connection * c, char const * text);
+		static int _handle_botrequest_command(t_connection * c, char const * text);
+		static int _handle_botonline_command(t_connection * c, char const * text);
+		static int _handle_botbuy_command(t_connection * c, char const * text);
+		static int _handle_botcash_command(t_connection * c, char const * text);
+		static int _handle_botcreate_command(t_connection * c, char const * text);
+		static int _handle_bottop10_command(t_connection * c, char const * text);
+		static int _handle_botstats_command(t_connection * c, char const * text);
+		static int _handle_botstatus_command(t_connection * c, char const * text);
+		static int _handle_botdota_command(t_connection * c, char const * text);
+		static int _handle_botlod_command(t_connection * c, char const * text);
+		static int _handle_botimba_command(t_connection * c, char const * text);
+		static int _handle_botchat_command(t_connection * c, char const * text);
+		static int _handle_botaccept_command(t_connection * c, char const * text);
+		static int _handle_botdecline_command(t_connection * c, char const * text);
+		static int _handle_botlock_command(t_connection * c, char const * text);
+		static int _handle_botunlock_command(t_connection * c, char const * text);
+		static int _handle_botmute_command(t_connection * c, char const * text);
+		static int _handle_botunmute_command(t_connection * c, char const * text);
+		
 		static int command_set_flags(t_connection * c); // [Omega]
 		// command handler prototypes
 		static int _handle_games_command(t_connection * c, char const * text);
@@ -539,6 +562,29 @@ namespace pvpgn
 			{ "/channels", _handle_channels_command },
 			{ "/chs", _handle_channels_command },
 			
+			// New
+			{ "/rules", _handle_botrules_command },
+			{ "/donate", _handle_botdonate_command },
+			{ "/event", _handle_botevent_command },
+			{ "/request", _handle_botrequest_command },
+			{ "/online", _handle_botonline_command },
+			{ "/buy", _handle_botbuy_command },
+			{ "/cash", _handle_botcash_command },
+			{ "/create", _handle_botcreate_command },
+			{ "/host", _handle_botcreate_command },
+			{ "/top10", _handle_bottop10_command },
+			{ "/stats", _handle_botstats_command },
+			{ "/status", _handle_botstatus_command },
+			{ "/dota", _handle_botdota_command },
+			{ "/lod", _handle_botlod_command },
+			{ "/imba", _handle_botimba_command },
+			{ "/chat", _handle_botchat_command },
+			{ "/accept", _handle_botaccept_command },
+			{ "/decline", _handle_botdecline_command },
+			{ "/lock", _handle_botlock_command },
+			{ "/unlock", _handle_botunlock_command },
+			{ "/mute", _handle_botmute_command },
+			{ "/unmute", _handle_botunmute_command },
 
 			{ NULL, NULL }
 
@@ -4105,5 +4151,490 @@ namespace pvpgn
 
 			return 0;
 		}
+		
+		// New
+		static int _handle_botrules_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!rules %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!rules %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botdonate_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!donate %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!donate %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botevent_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!event %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!event %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botrequest_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!request %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!request %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botonline_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!online %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!online %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botbuy_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!buy %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!buy %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botcash_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!cash %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!cash %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botcreate_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!create %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!create %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_bottop10_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!top10 %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!top10 %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botstats_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!stats %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!stats %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botstatus_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!status %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!status %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botdota_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!dota %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!dota %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botlod_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!lod %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!lod %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botimba_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!imba %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!imba %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botchat_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!chat %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!chat %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botaccept_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!accept %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!accept %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botdecline_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!decline %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!decline %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botlock_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!lock %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!lock %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botunlock_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!unlock %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!unlock %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botmute_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!mute %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!mute %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botunmute_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!unmute %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!unmute %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
 	}
 }
