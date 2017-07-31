@@ -21,6 +21,7 @@
 "acct_email varchar(128)","NULL"
 "clan_channel varchar(256)","'Battlenet'"
 "auth_class varchar(256)","'User'"
+"premium varchar(50)","'false'"
 "staff varchar(50)","'false'"
 "admin varchar(50)","'false'"
 "operator varchar(50)","'false'"
