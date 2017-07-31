@@ -2522,7 +2522,7 @@ namespace pvpgn
 			}
 
 			while (wins >= anongame_infos_get_ICON_REQ(level + 1, clienttag) && anongame_infos_get_ICON_REQ(level + 1, clienttag) > 0) level++;
-			if (clienttag == CLIENTTAG_WAR3XP_UINT)
+			if (clienttag == CLIENTTAG_WARCRAFT3_UINT)
 				number_ctag = 6;
 
 			eventlog(eventlog_level_info, __FUNCTION__, "race -> {}; level -> {}; wins -> {}; profileicon -> {}", race, level, wins, profile_code[race + number_ctag][level]);
@@ -2544,23 +2544,35 @@ namespace pvpgn
 
 				std::strncpy(tmp_icon, icon, 4);
 				tmp_icon[0] = tmp_icon[0] - 48;
-				if (ctag == CLIENTTAG_WAR3XP_UINT)
+				if (ctag == CLIENTTAG_WARCRAFT3_UINT)
 					number_ctag = 6;
 
 				if (tmp_icon[0] >= 1)
 				{
-					if (tmp_icon[1] == 'R')
+					if (tmp_icon[1] == '1')
 						result = profile_code[0 + number_ctag][tmp_icon[0] - 1];
-					else if (tmp_icon[1] == 'H')
+					else if (tmp_icon[1] == '2')
 						result = profile_code[1 + number_ctag][tmp_icon[0] - 1];
-					else if (tmp_icon[1] == 'O')
+					else if (tmp_icon[1] == '3')
 						result = profile_code[2 + number_ctag][tmp_icon[0] - 1];
-					else if (tmp_icon[1] == 'U')
+					else if (tmp_icon[1] == '4')
 						result = profile_code[3 + number_ctag][tmp_icon[0] - 1];
-					else if (tmp_icon[1] == 'N')
+					else if (tmp_icon[1] == '5')
 						result = profile_code[4 + number_ctag][tmp_icon[0] - 1];
-					else if (tmp_icon[1] == 'D')
+					else if (tmp_icon[1] == '6')
 						result = profile_code[5 + number_ctag][tmp_icon[0] - 1];
+					else if (tmp_icon[1] == 'R')
+						result = profile_code[6 + number_ctag][tmp_icon[0] - 1];
+					else if (tmp_icon[1] == 'H')
+						result = profile_code[7 + number_ctag][tmp_icon[0] - 1];
+					else if (tmp_icon[1] == 'O')
+						result = profile_code[8 + number_ctag][tmp_icon[0] - 1];
+					else if (tmp_icon[1] == 'U')
+						result = profile_code[9 + number_ctag][tmp_icon[0] - 1];
+					else if (tmp_icon[1] == 'N')
+						result = profile_code[10 + number_ctag][tmp_icon[0] - 1];
+					else if (tmp_icon[1] == 'D')
+						result = profile_code[11 + number_ctag][tmp_icon[0] - 1];
 					else
 					{
 						eventlog(eventlog_level_warn, __FUNCTION__, "got unrecognized race on [{}] icon ", icon);
@@ -2748,6 +2760,11 @@ namespace pvpgn
 			std::string key ("Record\\" + tag_uint_to_str2(clienttag) + "\\" + ladder_id_str.at(static_cast<size_t>(id)) + "\\points");
 			return account_set_numattr(account, key.c_str(), points);
 		}
+		
+		// New
+		extern char const * account_get_auth_class(t_account * account) { return account_get_strattr(account, "BNET\\auth\\class"); }
+		extern int account_set_channel(t_account * account, char const * val) { return account_set_strattr(account, "BNET\\clan\\channel", val); }
+		extern char const * account_get_channel(t_account * account) { return account_get_strattr(account, "BNET\\clan\\channel"); }
 
 	}
 
