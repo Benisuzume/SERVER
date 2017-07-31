@@ -30,9 +30,9 @@ Version: 1.99.7.1.1 <br/>
 [+] sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 60 --slave /usr/bin/g++ g++ /usr/bin/g++-5 <br/>
 [+] sudo add-apt-repository -y ppa:george-edison55/cmake-3.x <br/>
 [+] sudo apt-get update <br/>
-[+] apt-get install liblua5.1-0-dev<br/>
-[+] apt-get install mysql-server mysql-client libmysqlclient-dev<br/>
-[+] apt-get -y install phpmyadmin
+[+] apt-get install liblua5.1-0-dev <br/>
+[+] apt-get install mysql-server mysql-client libmysqlclient-dev <br/>
+[+] apt-get -y install phpmyadmin <br/>
 [+] sudo apt-get -y install cmake <br/>
 [+] git clone https://github.com/EXILEDNONAME/SERVER.git <br/>
 [+] mkdir build <br/>
