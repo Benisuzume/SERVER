@@ -60,13 +60,13 @@ namespace pvpgn
 			t_output *      output;
 			char            temp[MAX_MESSAGE_LEN];
 
-			message_send_text(c, message_type_info, c, localize(c, "Alias list:"));
+			message_send_text(c, message_type_info, c, localize(c, "Shortcut:"));
 			LIST_TRAVERSE_CONST(aliaslist_head, elem1)
 			{
 				if (!(alias = (t_alias*)elem_get_data(elem1)))
 					continue;
 
-				std::sprintf(temp, "@%.128s", alias->alias);
+				std::sprintf(temp, "%.128s", alias->alias);
 				message_send_text(c, message_type_info, c, temp);
 				LIST_TRAVERSE_CONST(alias->output, elem2)
 				{
@@ -77,7 +77,7 @@ namespace pvpgn
 					 * FIXME: need a more user-friendly way to express this... maybe
 					 * add a help line to the file format?
 					 */
-					if (output->min == -1)
+					/* if (output->min == -1)
 						std::sprintf(temp, "[*]%.128s", output->line);
 					else if (output->max == -1)
 						std::sprintf(temp, "[%d+]%.128s", output->min, output->line);
@@ -85,7 +85,7 @@ namespace pvpgn
 						std::sprintf(temp, "[%d]%.128s", output->min, output->line);
 					else
 						std::sprintf(temp, "[%d-%d]%.128s", output->min, output->max, output->line);
-					message_send_text(c, message_type_info, c, temp);
+					message_send_text(c, message_type_info, c, temp); */
 				}
 			}
 			return 0;
