@@ -28,7 +28,7 @@
 #----------------------------------------------------------------------------#
 
 # Enable icon sets below
-custom_icons = true
+custom_icons = false
 
 # Command groups for master users who can manage icons of other users (allowed: 12345678)
 master_commandgroups = 678
@@ -72,10 +72,29 @@ FFA games: [{{ffa_level->rank}}] {{ffa_xp}} xp ({{ffa_wins}} - {{ffa_losses}})
 [/stats]
 
 [iconstash]
-smile		BOMB
-starcraft	SEXP
-warcraft	WAR3
-diablo		DRTL
+Dragon1   W312
+Dragon2		W313
+Dragon3		W314
+Dragon4		W315
+Peasant		W321
+Footman		W322
+Knight		W323
+Ezalor		W324
+Rubick		W325
+Grunt     W332
+Raigor    W333
+Chen      W334
+Thrall		W335
+Acolyle		W341
+Naix      W342
+Pudge     W343
+Lich      W344
+Balanar		W345
+Wisp      W351
+Archer		W352
+Syllabear	W353
+Mirana		W354
+Furion		W355
 [/iconstash]
 
 
