@@ -38,6 +38,7 @@
 "auth_lock varchar(6)","'false'"
 "auth_locktime int","'0'"
 "auth_lockreason varchar(128)","NULL"
+"auth_lockby varchar(128)","NULL"
 "auth_mute varchar(6)","'false'"
 "auth_mutetime int","'0'"
 "auth_mutereason varchar(128)","NULL"
