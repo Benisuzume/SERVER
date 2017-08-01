@@ -37,7 +37,7 @@
 "new_at_team_flag int","'0'"
 "auth_lock varchar(6)","'false'"
 "auth_locktime int","'0'"
-"auth_lockreason varchar(128)","NULL"
+"auth_lockreason varchar(128)","'-'"
 "auth_lockby varchar(128)","NULL"
 "auth_lockcase varchar(128)","'-'"
 "auth_mute varchar(6)","'false'"
