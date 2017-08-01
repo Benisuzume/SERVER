@@ -5,6 +5,9 @@ Version: 1.99.7.1.1 <br/>
 
 <b> ** CHANGELOG : </b><br/>
 [+] Added do_botchat -- whisper text from username without "message_type_friendwhisperack". <br/>
+[+] Added /nullannounceblue -- broadcast message type info without name. <br/>
+[+] Added /nullannouncered -- broadcast message type error without name. <br/>
+[+] Added /nullannouncegreen -- broadcast message type whisper without name. <br/>
 [+] Fixed alias command "//" from "alias_command.cpp" <br/>
 [+] Import new icon from warcraft3 to /icon in "account_wrap.cpp" and "icons-war3.bni". <br/>
 [+] Added more commands to /clan in "clan.cpp", "clan.h", "handle_bnet.cpp", "command.cpp", "channel.cpp" : <br/>
