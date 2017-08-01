@@ -16,7 +16,6 @@
 1 /chpass
 1 /ignore /unignore /squelch /unsquelch
 1 /logout /quit /exit
-2 /flag
 2 /watch /unwatch
 2 /kick /moderate /deop /voice /devoice /tmpop
 
@@ -36,6 +35,7 @@
 ###################
 ##### BOT IRC #####
 ###################
+8 /add /del
 8 /nullannounceblue /nullannouncered /nullannouncegreen
 8 /botannounce
 8 /admin-con /admin-addr /admin-chpass
@@ -47,4 +47,4 @@
 8 /watchall /unwatchall
 8 /kill /serverban /ipban
 8 /ipscan /netinfo
-8 /tag
+8 /tag /flag
