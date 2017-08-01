@@ -467,6 +467,7 @@ namespace pvpgn
 		static int _handle_botonline_command(t_connection * c, char const * text);
 		static int _handle_botbuy_command(t_connection * c, char const * text);
 		static int _handle_botcash_command(t_connection * c, char const * text);
+		static int _handle_bottransfer_command(t_connection * c, char const * text);
 		static int _handle_botcreate_command(t_connection * c, char const * text);
 		static int _handle_bottop10_command(t_connection * c, char const * text);
 		static int _handle_botstats_command(t_connection * c, char const * text);
@@ -482,6 +483,9 @@ namespace pvpgn
 		static int _handle_botmute_command(t_connection * c, char const * text);
 		static int _handle_botunmute_command(t_connection * c, char const * text);
 		static int _handle_botannouncestaff_command(t_connection * c, char const * text);
+		static int _handle_botcmd_command(t_connection * c, char const * text);
+		static int _handle_botadd_command(t_connection * c, char const * text);
+		static int _handle_botdel_command(t_connection * c, char const * text);
 		
 		static int command_set_flags(t_connection * c); // [Omega]
 		// command handler prototypes
@@ -579,6 +583,7 @@ namespace pvpgn
 			{ "/online", _handle_botonline_command },
 			{ "/buy", _handle_botbuy_command },
 			{ "/cash", _handle_botcash_command },
+			{ "/transfer", _handle_bottransfer_command },
 			{ "/create", _handle_botcreate_command },
 			{ "/host", _handle_botcreate_command },
 			{ "/top10", _handle_bottop10_command },
@@ -588,14 +593,17 @@ namespace pvpgn
 			{ "/lod", _handle_botlod_command },
 			{ "/imba", _handle_botimba_command },
 			{ "/chat", _handle_botchat_command },
-			{ "/accept", _handle_botaccept_command },
-			{ "/decline", _handle_botdecline_command },
+			{ "/acc", _handle_botaccept_command },
+			{ "/dec", _handle_botdecline_command },
 			{ "/lock", _handle_botlock_command },
 			{ "/unlock", _handle_botunlock_command },
 			{ "/mute", _handle_botmute_command },
 			{ "/unmute", _handle_botunmute_command },
 			{ "/announce", _handle_botannouncestaff_command },
 			{ "/ann", _handle_botannouncestaff_command },
+			{ "/cmd", _handle_botcmd_command },
+			{ "/add", _handle_botadd_command },
+			{ "/del", _handle_botadd_command },
 
 			{ NULL, NULL }
 
@@ -2384,9 +2392,6 @@ namespace pvpgn
 			}
 			else
 			{
-				msgtemp = localize(c, "Key set successfully for");
-				msgtemp += msgtemp0;
-				message_send_text(c, message_type_info, c, msgtemp);
 				eventlog(eventlog_level_warn, __FUNCTION__, "Key set by \"{}\" for {}", account_get_name(conn_get_account(c)),msgtemp0);
 			}
 			return 0;
@@ -4423,6 +4428,29 @@ namespace pvpgn
 			return 0;
 		}
 		
+		static int _handle_bottransfer_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!transfer %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!transfer %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
 		static int _handle_botcreate_command(t_connection * c, char const *text)
 		{
 			unsigned int i;
@@ -4763,6 +4791,75 @@ namespace pvpgn
 			}
 			
 			std::snprintf(msgtemp0, sizeof(msgtemp0), "!announce %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botcmd_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!cmd %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!cmd %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botadd_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!add %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!add %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botdel_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!del %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!del %s", text);
 			do_botchat(c,bot,msgtemp0);
 			
 			return 0;
