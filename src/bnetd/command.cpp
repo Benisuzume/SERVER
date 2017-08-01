@@ -449,6 +449,9 @@ namespace pvpgn
 		static int _handle_who_command(t_connection * c, char const * text);
 		static int _handle_whoami_command(t_connection * c, char const * text);
 		static int _handle_botannounce_command(t_connection * c, char const * text);
+		static int _handle_nullannounceblue_command(t_connection * c, char const * text);
+		static int _handle_nullannouncered_command(t_connection * c, char const * text);
+		static int _handle_nullannouncegreen_command(t_connection * c, char const * text);
 		static int _handle_kill_command(t_connection * c, char const * text);
 		static int _handle_serverban_command(t_connection * c, char const * text);
 		static int _handle_finger_command(t_connection * c, char const * text);
@@ -551,6 +554,9 @@ namespace pvpgn
 			{ "/who", _handle_who_command },
 			{ "/whoami", _handle_whoami_command },
 			{ "/botannounce", _handle_botannounce_command },
+			{ "/nullannounceblue", _handle_nullannounceblue_command },
+			{ "/nullannouncered", _handle_nullannouncered_command },
+			{ "/nullannouncegreen", _handle_nullannouncegreen_command },
 			{ "/kill", _handle_kill_command },
 			{ "/serverban", _handle_serverban_command },
 			{ "/finger", _handle_finger_command },
@@ -2551,6 +2557,90 @@ namespace pvpgn
 
 			msgtemp = localize(c, "Announcement: {}", text);
 			if (!(message = message_create(message_type_broadcast, c, msgtemp.c_str())))
+				message_send_text(c, message_type_info, c, localize(c, "Could not broadcast message."));
+			else
+			{
+				if (message_send_all(message) < 0)
+					message_send_text(c, message_type_info, c, localize(c, "Could not broadcast message."));
+				message_destroy(message);
+			}
+
+			return 0;
+		}
+		
+		static int _handle_nullannounceblue_command(t_connection * c, char const *text)
+		{
+			t_message *  message;
+
+			std::vector<std::string> args = split_command(text, 1);
+
+			if (args[1].empty())
+			{
+				message_send_text(c, message_type_info, c, "--------------------------------------------------------");
+				message_send_text(c, message_type_error, c, "Usage: /nullannounceblue [message] (no have alias)");
+				message_send_text(c, message_type_info, c, "** Announces [message] to everyone.");
+				return -1;
+			}
+			text = args[1].c_str(); // message
+
+			msgtemp = localize(c, "{}", text);
+			if (!(message = message_create(message_type_info, c, msgtemp.c_str())))
+				message_send_text(c, message_type_info, c, localize(c, "Could not broadcast message."));
+			else
+			{
+				if (message_send_all(message) < 0)
+					message_send_text(c, message_type_info, c, localize(c, "Could not broadcast message."));
+				message_destroy(message);
+			}
+
+			return 0;
+		}
+		
+		static int _handle_nullannouncered_command(t_connection * c, char const *text)
+		{
+			t_message *  message;
+
+			std::vector<std::string> args = split_command(text, 1);
+
+			if (args[1].empty())
+			{
+				message_send_text(c, message_type_info, c, "--------------------------------------------------------");
+				message_send_text(c, message_type_error, c, "Usage: /nullannouncered [message] (no have alias)");
+				message_send_text(c, message_type_info, c, "** Announces [message] to everyone.");
+				return -1;
+			}
+			text = args[1].c_str(); // message
+
+			msgtemp = localize(c, "{}", text);
+			if (!(message = message_create(message_type_error, c, msgtemp.c_str())))
+				message_send_text(c, message_type_info, c, localize(c, "Could not broadcast message."));
+			else
+			{
+				if (message_send_all(message) < 0)
+					message_send_text(c, message_type_info, c, localize(c, "Could not broadcast message."));
+				message_destroy(message);
+			}
+
+			return 0;
+		}
+		
+		static int _handle_nullannouncegreen_command(t_connection * c, char const *text)
+		{
+			t_message *  message;
+
+			std::vector<std::string> args = split_command(text, 1);
+
+			if (args[1].empty())
+			{
+				message_send_text(c, message_type_info, c, "--------------------------------------------------------");
+				message_send_text(c, message_type_error, c, "Usage: /nullannouncegreen [message] (no have alias)");
+				message_send_text(c, message_type_info, c, "** Announces [message] to everyone.");
+				return -1;
+			}
+			text = args[1].c_str(); // message
+
+			msgtemp = localize(c, "{}", text);
+			if (!(message = message_create(message_type_whisper, c, msgtemp.c_str())))
 				message_send_text(c, message_type_info, c, localize(c, "Could not broadcast message."));
 			else
 			{
