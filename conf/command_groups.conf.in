@@ -29,11 +29,13 @@
 1 /create /host
 2 /chat /accept /decline
 2 /lock /unlock /mute /unmute
+2 /announce /ann
 
 ###################
 ##### BOT IRC #####
 ###################
-8 /nullannounceblue /nullannouncered /nullannouncegreen /botannounce
+8 /nullannounceblue /nullannouncered /nullannouncegreen
+8 /botannounce
 8 /admin-con /admin-addr /admin-chpass
 8 /addacct
 8 /lockacct /unlockacct /muteacct /unmuteacct
