@@ -23,11 +23,13 @@
 #######################
 ##### NEW COMMAND #####
 #######################
-1 /rules /donate /event /request /online
+1 /rules /donate /event /request /online /staff
 1 /status /stats /dota /imba /lod
 1 /buy /cash /transfer
 1 /create /host
-2 /chat /accept /decline
+2 /cmd
+2 /setdefault
+2 /chat /acc /dec
 2 /lock /unlock /mute /unmute
 2 /announce /ann
 
