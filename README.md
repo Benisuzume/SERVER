@@ -20,9 +20,9 @@ Version: 1.99.7.1.1 <br/>
 
 <b> ** MORE COMMANDS ( Connect to IRC-Bot ) : </b><br/>
 [+] Added /botchatblue, /botchatred (null whisper text to target username with info & error). <br/>
-[+] Added /rules, /donate, /event, /request, /online, /buy, /cash, /create, /host. <br/>
+[+] Added /rules, /donate, /event, /request, /online, /buy, /cash, /transfer /create, /host. <br/>
 [+] Added /top10, /stats, /status, /dota, /lod, /imba. <br/>
-[+] Added /chat, /accept, /decline, /lock, /unlock, /mute, /unmute. <br/>
+[+] Added /cmd, /add, /del, /chat, /accept, /decline, /lock, /unlock, /mute, /unmute, /ann, /ann, /annonce. <br/>
 <hr>
 
 <b> ** INSTALLATION LINUX UBUNTU 14.04 : </b><br/>
