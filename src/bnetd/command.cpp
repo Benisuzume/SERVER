@@ -465,6 +465,7 @@ namespace pvpgn
 		static int _handle_botevent_command(t_connection * c, char const * text);
 		static int _handle_botrequest_command(t_connection * c, char const * text);
 		static int _handle_botonline_command(t_connection * c, char const * text);
+		static int _handle_botstaff_command(t_connection * c, char const * text);
 		static int _handle_botbuy_command(t_connection * c, char const * text);
 		static int _handle_botcash_command(t_connection * c, char const * text);
 		static int _handle_bottransfer_command(t_connection * c, char const * text);
@@ -581,6 +582,7 @@ namespace pvpgn
 			{ "/event", _handle_botevent_command },
 			{ "/request", _handle_botrequest_command },
 			{ "/online", _handle_botonline_command },
+			{ "/staff", _handle_botstaff_command },
 			{ "/buy", _handle_botbuy_command },
 			{ "/cash", _handle_botcash_command },
 			{ "/transfer", _handle_bottransfer_command },
@@ -4377,6 +4379,29 @@ namespace pvpgn
 			}
 			
 			std::snprintf(msgtemp0, sizeof(msgtemp0), "!online %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botstaff_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!staff %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!staff %s", text);
 			do_botchat(c,bot,msgtemp0);
 			
 			return 0;
