@@ -605,7 +605,7 @@ namespace pvpgn
 			{ "/ann", _handle_botannouncestaff_command },
 			{ "/cmd", _handle_botcmd_command },
 			{ "/add", _handle_botadd_command },
-			{ "/del", _handle_botadd_command },
+			{ "/del", _handle_botdel_command },
 
 			{ NULL, NULL }
 
