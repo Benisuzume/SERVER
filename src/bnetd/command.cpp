@@ -488,6 +488,9 @@ namespace pvpgn
 		static int _handle_botadd_command(t_connection * c, char const * text);
 		static int _handle_botdel_command(t_connection * c, char const * text);
 		
+		static int _handle_systemcheckstats_command(t_connection * c, char const * text);
+		static int _handle_systemreserved_command(t_connection * c, char const * text);
+		
 		static int command_set_flags(t_connection * c); // [Omega]
 		// command handler prototypes
 		static int _handle_games_command(t_connection * c, char const * text);
@@ -606,6 +609,9 @@ namespace pvpgn
 			{ "/cmd", _handle_botcmd_command },
 			{ "/add", _handle_botadd_command },
 			{ "/del", _handle_botdel_command },
+			
+			{ "/checkstats", _handle_systemcheckstats_command },
+			{ "/reserved", _handle_systemreserved_command },
 
 			{ NULL, NULL }
 
@@ -4885,6 +4891,52 @@ namespace pvpgn
 			}
 			
 			std::snprintf(msgtemp0, sizeof(msgtemp0), "!del %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_systemcheckstats_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!checkstats %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!checkstats %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_systemreserved_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!reserved %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!reserved %s", text);
 			do_botchat(c,bot,msgtemp0);
 			
 			return 0;
