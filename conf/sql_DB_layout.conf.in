@@ -44,6 +44,7 @@
 "auth_mutetime int","'0'"
 "auth_mutereason varchar(128)","NULL"
 "auth_command_groups varchar(16)","'1'"
+"cash varchar(50)","'0'"
 "experience varchar(50)","'0'"
 "experience_needed varchar(50)","'0'"
 "all_games varchar(10)","'0'"
