@@ -487,6 +487,8 @@ namespace pvpgn
 		static int _handle_botcmd_command(t_connection * c, char const * text);
 		static int _handle_botadd_command(t_connection * c, char const * text);
 		static int _handle_botdel_command(t_connection * c, char const * text);
+		static int _handle_botsend_command(t_connection * c, char const * text);
+		static int _handle_botget_command(t_connection * c, char const * text);
 		
 		static int _handle_systemcheckstats_command(t_connection * c, char const * text);
 		static int _handle_systemreserved_command(t_connection * c, char const * text);
@@ -609,6 +611,8 @@ namespace pvpgn
 			{ "/cmd", _handle_botcmd_command },
 			{ "/add", _handle_botadd_command },
 			{ "/del", _handle_botdel_command },
+			{ "/send", _handle_botsend_command },
+			{ "/get", _handle_botget_command },
 			
 			{ "/checkstats", _handle_systemcheckstats_command },
 			{ "/reserved", _handle_systemreserved_command },
@@ -4891,6 +4895,52 @@ namespace pvpgn
 			}
 			
 			std::snprintf(msgtemp0, sizeof(msgtemp0), "!del %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botsend_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!send %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!send %s", text);
+			do_botchat(c,bot,msgtemp0);
+			
+			return 0;
+		}
+		
+		static int _handle_botget_command(t_connection * c, char const *text)
+		{
+			unsigned int i;
+			t_connection *    user;
+			t_game     *    game;
+			char const * bot="|c00FF4444Battlenet";
+			
+			std::vector<std::string> args = split_command(text, 1);
+			const char * username = args[1].c_str();
+			text = args[1].c_str(); // message
+			
+			if (args[1].empty()) {
+				std::snprintf(msgtemp0, sizeof(msgtemp0), "!get %s", text);
+				do_botchat(c,bot,msgtemp0);
+				return 0;
+			}
+			
+			std::snprintf(msgtemp0, sizeof(msgtemp0), "!get %s", text);
 			do_botchat(c,bot,msgtemp0);
 			
 			return 0;
