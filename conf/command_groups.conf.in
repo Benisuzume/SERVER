@@ -35,7 +35,7 @@
 ###################
 ##### BOT IRC #####
 ###################
-8 /add /del
+8 /add /del /send /get
 8 /nullannounceblue /nullannouncered /nullannouncegreen
 8 /botannounce
 8 /admin-con /admin-addr /admin-chpass
