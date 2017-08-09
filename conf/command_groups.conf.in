@@ -31,6 +31,7 @@
 2 /chat /acc /dec
 2 /lock /unlock /mute /unmute
 2 /announce /ann
+6 /checkstats
 
 ###################
 ##### BOT IRC #####
